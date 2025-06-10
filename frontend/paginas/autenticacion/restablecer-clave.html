@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Restablecer contraseña - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="restablecer contraseña, recuperar acceso, UNSAAC">
+  <meta name="author" content="UNSAAC">
+  <title>Restablecer Contraseña - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+  
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/autenticacion/recuperar-clave.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarTokenRecuperacion()">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar..." readonly>
+        </div>
+
+        <!-- Redes y usuario -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+            <span class="user-name">Entrar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Restablecer Contraseña</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../../index.html">Inicio</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="login.html">Iniciar Sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="reset-password-container">
+      <div class="reset-form-container">
+        <div class="reset-header">
+          <div class="reset-logo">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <h1>Restablecer Contraseña</h1>
+          <p class="reset-description">
+            Ingrese su nueva contraseña para completar el proceso de recuperación.
+          </p>
+        </div>
+
+        <!-- Estado del token -->
+        <div class="token-status" id="tokenStatus">
+          <div class="status-icon">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <p>Verificando enlace de recuperación...</p>
+        </div>
+
+        <!-- Formulario de restablecimiento -->
+        <form id="resetPasswordForm" class="reset-form" onsubmit="restablecerContrasena(event)" style="display: none;">
+          <input type="hidden" id="resetToken" name="token">
+          
+          <div class="form-group">
+            <label for="nuevaContrasena">Nueva Contraseña</label>
+            <div class="password-input-container">
+              <input type="password" id="nuevaContrasena" name="nuevaContrasena" 
+                     placeholder="Ingrese su nueva contraseña" 
+                     required minlength="8">
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility('nuevaContrasena')">
+                <i class="fas fa-eye" id="toggleIcon1"></i>
+              </button>
+            </div>
+            <div class="password-requirements">
+              <p><i class="fas fa-info-circle"></i> La contraseña debe tener:</p>
+              <ul>
+                <li id="req-length"><i class="fas fa-times"></i> Mínimo 8 caracteres</li>
+                <li id="req-uppercase"><i class="fas fa-times"></i> Al menos una mayúscula</li>
+                <li id="req-lowercase"><i class="fas fa-times"></i> Al menos una minúscula</li>
+                <li id="req-number"><i class="fas fa-times"></i> Al menos un número</li>
+                <li id="req-special"><i class="fas fa-times"></i> Al menos un carácter especial</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="confirmarContrasena">Confirmar Nueva Contraseña</label>
+            <div class="password-input-container">
+              <input type="password" id="confirmarContrasena" name="confirmarContrasena" 
+                     placeholder="Confirme su nueva contraseña" 
+                     required>
+              <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmarContrasena')">
+                <i class="fas fa-eye" id="toggleIcon2"></i>
+              </button>
+            </div>
+            <div class="password-match" id="passwordMatch" style="display: none;">
+              <p><i class="fas fa-times"></i> Las contraseñas no coinciden</p>
+            </div>
+          </div>
+
+          <div class="password-strength">
+            <label>Fortaleza de la contraseña:</label>
+            <div class="strength-bar">
+              <div class="strength-fill" id="strengthBar"></div>
+            </div>
+            <span class="strength-text" id="strengthText">Débil</span>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+              <i class="fas fa-key"></i> Restablecer Contraseña
+            </button>
+            <a href="login.html" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Volver al Login
+            </a>
+          </div>
+
+          <p id="mensaje" class="mensaje"></p>
+        </form>
+
+        <!-- Estado de error del token -->
+        <div class="token-error" id="tokenError" style="display: none;">
+          <div class="error-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3>Enlace de Recuperación Inválido</h3>
+          <p>El enlace de recuperación ha expirado o no es válido.</p>
+          <div class="error-actions">
+            <a href="recuperar.html" class="btn btn-primary">
+              <i class="fas fa-redo"></i> Solicitar Nuevo Enlace
+            </a>
+            <a href="login.html" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Volver al Login
+            </a>
+          </div>
+        </div>
+
+        <!-- Estado de éxito -->
+        <div class="reset-success" id="resetSuccess" style="display: none;">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>¡Contraseña Restablecida con Éxito!</h3>
+          <p>Su contraseña ha sido actualizada correctamente. Ahora puede iniciar sesión con su nueva contraseña.</p>
+          <div class="success-actions">
+            <a href="login.html" class="btn btn-primary">
+              <i class="fas fa-sign-in-alt"></i> Ir al Login
+            </a>
+          </div>
+        </div>
+
+        <div class="reset-footer">
+          <p>Sistema de Gestión de Portafolio Docente &copy; 2025</p>
+        </div>
+      </div>
+
+      <div class="reset-info">
+        <div class="info-content">
+          <h2>Seguridad de su Cuenta</h2>
+          <p>Estamos comprometidos con mantener su cuenta segura.</p>
+
+          <div class="security-tips">
+            <div class="tip-item">
+              <i class="fas fa-shield-alt"></i>
+              <h3>Contraseña Segura</h3>
+              <p>Use una combinación de letras, números y símbolos para mayor seguridad.</p>
+            </div>
+
+            <div class="tip-item">
+              <i class="fas fa-lock"></i>
+              <h3>Mantenga la Privacidad</h3>
+              <p>No comparta su contraseña con otras personas.</p>
+            </div>
+
+            <div class="tip-item">
+              <i class="fas fa-clock"></i>
+              <h3>Actualización Regular</h3>
+              <p>Cambie su contraseña periódicamente para mayor protección.</p>
+            </div>
+          </div>
+
+          <div class="help-section">
+            <h3>¿Necesita Ayuda?</h3>
+            <p>Si continúa teniendo problemas para acceder a su cuenta:</p>
+            <ul>
+              <li>Verifique que el enlace no haya expirado</li>
+              <li>Revise su carpeta de spam/correo no deseado</li>
+              <li>Contacte al soporte técnico si persisten los problemas</li>
+            </ul>
+            <div class="contact-support">
+              <a href="mailto:soporte@unsaac.edu.pe" class="btn btn-outline">
+                <i class="fas fa-envelope"></i> Contactar Soporte
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Script inline para validación de contraseña en tiempo real
+    document.getElementById('nuevaContrasena').addEventListener('input', function() {
+      validarContrasena(this.value);
+    });
+
+    document.getElementById('confirmarContrasena').addEventListener('input', function() {
+      verificarCoincidencia();
+    });
+
+    function validarContrasena(password) {
+      const requirements = {
+        'req-length': password.length >= 8,
+        'req-uppercase': /[A-Z]/.test(password),
+        'req-lowercase': /[a-z]/.test(password),
+        'req-number': /\d/.test(password),
+        'req-special': /[!@#$%^&*(),.?":{}|<>]/.test(password)
+      };
+
+      let score = 0;
+      for (const req in requirements) {
+        const element = document.getElementById(req);
+        if (requirements[req]) {
+          element.querySelector('i').className = 'fas fa-check';
+          element.style.color = 'green';
+          score++;
+        } else {
+          element.querySelector('i').className = 'fas fa-times';
+          element.style.color = 'red';
+        }
+      }
+
+      // Actualizar barra de fortaleza
+      const strengthBar = document.getElementById('strengthBar');
+      const strengthText = document.getElementById('strengthText');
+      const percentage = (score / 5) * 100;
+      
+      strengthBar.style.width = percentage + '%';
+      
+      if (score <= 2) {
+        strengthBar.className = 'strength-fill weak';
+        strengthText.textContent = 'Débil';
+        strengthText.style.color = 'red';
+      } else if (score <= 4) {
+        strengthBar.className = 'strength-fill medium';
+        strengthText.textContent = 'Media';
+        strengthText.style.color = 'orange';
+      } else {
+        strengthBar.className = 'strength-fill strong';
+        strengthText.textContent = 'Fuerte';
+        strengthText.style.color = 'green';
+      }
+
+      verificarFormulario();
+    }
+
+    function verificarCoincidencia() {
+      const password = document.getElementById('nuevaContrasena').value;
+      const confirmPassword = document.getElementById('confirmarContrasena').value;
+      const matchElement = document.getElementById('passwordMatch');
+
+      if (confirmPassword.length > 0) {
+        if (password === confirmPassword) {
+          matchElement.style.display = 'none';
+        } else {
+          matchElement.style.display = 'block';
+          matchElement.querySelector('i').className = 'fas fa-times';
+          matchElement.style.color = 'red';
+        }
+      } else {
+        matchElement.style.display = 'none';
+      }
+
+      verificarFormulario();
+    }
+
+    function verificarFormulario() {
+      const password = document.getElementById('nuevaContrasena').value;
+      const confirmPassword = document.getElementById('confirmarContrasena').value;
+      const submitBtn = document.getElementById('submitBtn');
+
+      const isValidPassword = password.length >= 8 && 
+                             /[A-Z]/.test(password) && 
+                             /[a-z]/.test(password) && 
+                             /\d/.test(password) && 
+                             /[!@#$%^&*(),.?":{}|<>]/.test(password);
+      
+      const passwordsMatch = password === confirmPassword && confirmPassword.length > 0;
+
+      submitBtn.disabled = !(isValidPassword && passwordsMatch);
+    }
+
+    function togglePasswordVisibility(inputId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(inputId === 'nuevaContrasena' ? 'toggleIcon1' : 'toggleIcon2');
+      
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        input.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+  </script>
+</body>
+</html>

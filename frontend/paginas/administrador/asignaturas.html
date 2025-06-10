@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Asignaturas - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gestión de asignaturas - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="asignaturas, materias, cursos, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/crud-asignaturas.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar asignaturas...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-cog"></i></div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Gestión de Asignaturas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html" class="active">Asignaturas</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Gestión de Asignaturas</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Selector de ciclo académico -->
+    <section class="cycle-selector">
+      <div class="selector-header">
+        <h2><i class="fas fa-calendar-check"></i> Seleccionar Ciclo Académico</h2>
+        <div class="cycle-info">
+          <label for="cicloActual">Trabajando en ciclo:</label>
+          <select id="cicloActual" onchange="cambiarCiclo()">
+            <option value="">Seleccionar ciclo...</option>
+            <option value="2025-I" selected>2025-I (Actual)</option>
+            <option value="2024-II">2024-II (Anterior)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas de asignaturas -->
+    <section class="subjects-stats">
+      <div class="stats-cards">
+        <div class="stat-card total-subjects">
+          <div class="card-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Asignaturas</h3>
+            <span class="card-value" id="totalSubjects">45</span>
+            <span class="card-label">En el ciclo actual</span>
+          </div>
+        </div>
+
+        <div class="stat-card assigned-subjects">
+          <div class="card-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="card-info">
+            <h3>Asignadas</h3>
+            <span class="card-value" id="assignedSubjects">38</span>
+            <span class="card-label">Con docente</span>
+          </div>
+        </div>
+
+        <div class="stat-card unassigned-subjects">
+          <div class="card-icon">
+            <i class="fas fa-user-times"></i>
+          </div>
+          <div class="card-info">
+            <h3>Sin Asignar</h3>
+            <span class="card-value" id="unassignedSubjects">7</span>
+            <span class="card-label">Requieren docente</span>
+          </div>
+        </div>
+
+        <div class="stat-card total-credits">
+          <div class="card-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Créditos</h3>
+            <span class="card-value" id="totalCredits">180</span>
+            <span class="card-label">Créditos académicos</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crear nueva asignatura -->
+    <section class="subject-creation">
+      <h2><i class="fas fa-plus-circle"></i> Registrar Nueva Asignatura</h2>
+      
+      <form id="formAsignatura" class="subject-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="codigoAsignatura">Código</label>
+            <input type="text" id="codigoAsignatura" placeholder="Ej: IF611" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="nombreAsignatura">Nombre de la Asignatura</label>
+            <input type="text" id="nombreAsignatura" placeholder="Ej: Metodología de Desarrollo de Software" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="carreraAsignatura">Carrera</label>
+            <select id="carreraAsignatura" required>
+              <option value="">Seleccionar carrera</option>
+              <option value="Ingeniería Informática">Ingeniería Informática</option>
+              <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+              <option value="Ingeniería Civil">Ingeniería Civil</option>
+              <option value="Medicina Humana">Medicina Humana</option>
+              <option value="Administración">Administración</option>
+              <option value="Contabilidad">Contabilidad</option>
+              <option value="Derecho">Derecho</option>
+              <option value="Educación">Educación</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="semestreAsignatura">Semestre</label>
+            <select id="semestreAsignatura" required>
+              <option value="">Seleccionar semestre</option>
+              <option value="I">I Semestre</option>
+              <option value="II">II Semestre</option>
+              <option value="III">III Semestre</option>
+              <option value="IV">IV Semestre</option>
+              <option value="V">V Semestre</option>
+              <option value="VI">VI Semestre</option>
+              <option value="VII">VII Semestre</option>
+              <option value="VIII">VIII Semestre</option>
+              <option value="IX">IX Semestre</option>
+              <option value="X">X Semestre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="anioAsignatura">Año</label>
+            <input type="number" id="anioAsignatura" min="1" max="6" placeholder="1-6" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="creditosAsignatura">Créditos</label>
+            <input type="number" id="creditosAsignatura" min="1" max="8" placeholder="1-8" required>
+          </div>
+
+          <div class="form-group">
+            <label for="tipoAsignatura">Tipo</label>
+            <select id="tipoAsignatura" required>
+              <option value="">Seleccionar tipo</option>
+              <option value="teoria">Teoría</option>
+              <option value="practica">Práctica</option>
+              <option value="laboratorio">Laboratorio</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cicloAsignatura">Ciclo Académico</label>
+            <select id="cicloAsignatura" required>
+              <option value="">Seleccionar ciclo</option>
+              <option value="2025-I" selected>2025-I</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prerequisitosAsignatura">Prerequisitos</label>
+          <input type="text" id="prerequisitosAsignatura" placeholder="Códigos de asignaturas prerequisito separados por comas">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Registrar Asignatura
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-undo"></i> Limpiar
+          </button>
+        </div>
+
+        <div id="mensajeAsignatura" class="mensaje"></div>
+      </form>
+    </section>
+
+    <!-- Filtros y búsqueda -->
+    <section class="subjects-filters">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="filterCarrera">Carrera:</label>
+          <select id="filterCarrera" onchange="filtrarAsignaturas()">
+            <option value="">Todas las carreras</option>
+            <option value="Ingeniería Informática">Ingeniería Informática</option>
+            <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
+            <option value="Ingeniería Civil">Ingeniería Civil</option>
+            <option value="Medicina Humana">Medicina Humana</option>
+            <option value="Administración">Administración</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterSemestre">Semestre:</label>
+          <select id="filterSemestre" onchange="filtrarAsignaturas()">
+            <option value="">Todos</option>
+            <option value="I">I</option>
+            <option value="II">II</option>
+            <option value="III">III</option>
+            <option value="IV">IV</option>
+            <option value="V">V</option>
+            <option value="VI">VI</option>
+            <option value="VII">VII</option>
+            <option value="VIII">VIII</option>
+            <option value="IX">IX</option>
+            <option value="X">X</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterTipo">Tipo:</label>
+          <select id="filterTipo" onchange="filtrarAsignaturas()">
+            <option value="">Todos</option>
+            <option value="teoria">Teoría</option>
+            <option value="practica">Práctica</option>
+            <option value="laboratorio">Laboratorio</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterAsignacion">Asignación:</label>
+          <select id="filterAsignacion" onchange="filtrarAsignaturas()">
+            <option value="">Todas</option>
+            <option value="asignado">Con docente</option>
+            <option value="sin_asignar">Sin docente</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="searchAsignaturas">Buscar:</label>
+          <input type="text" id="searchAsignaturas" placeholder="Código, nombre..." onkeyup="buscarAsignaturas()">
+        </div>
+
+        <div class="filter-actions">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+          <button onclick="exportarAsignaturas()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de asignaturas -->
+    <section class="subjects-list">
+      <h2><i class="fas fa-list"></i> Asignaturas del Ciclo Actual</h2>
+      
+      <div class="table-container">
+        <table class="subjects-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Asignatura</th>
+              <th>Carrera</th>
+              <th>Sem/Año</th>
+              <th>Créditos</th>
+              <th>Tipo</th>
+              <th>Docente Asignado</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="listaAsignaturas">
+            <tr>
+              <td colspan="9" class="loading">Cargando asignaturas...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination" id="pagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Asignación de docentes -->
+    <section class="teacher-assignment">
+      <h2><i class="fas fa-user-plus"></i> Asignación de Docentes</h2>
+      
+      <div class="assignment-cards">
+        <div class="assignment-card unassigned-card">
+          <div class="card-header">
+            <h3><i class="fas fa-exclamation-triangle"></i> Asignaturas Sin Docente</h3>
+            <span class="count-badge" id="unassignedCount">7</span>
+          </div>
+          <div class="card-content">
+            <div class="unassigned-list" id="unassignedList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <button onclick="mostrarAsignacionMasiva()" class="btn btn-warning">
+              <i class="fas fa-users"></i> Asignación Masiva
+            </button>
+          </div>
+        </div>
+
+        <div class="assignment-card assigned-card">
+          <div class="card-header">
+            <h3><i class="fas fa-check-circle"></i> Últimas Asignaciones</h3>
+          </div>
+          <div class="card-content">
+            <div class="recent-assignments" id="recentAssignments">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <button onclick="verTodasAsignaciones()" class="btn btn-info">
+              <i class="fas fa-list"></i> Ver Todas
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acciones masivas -->
+    <section class="bulk-actions">
+      <h3>Acciones Masivas</h3>
+      <div class="bulk-controls">
+        <label class="checkbox-container">
+          <input type="checkbox" id="selectAllSubjects" onchange="seleccionarTodasAsignaturas()">
+          <span class="checkmark"></span>
+          Seleccionar todas
+        </label>
+
+        <div class="bulk-buttons">
+          <button onclick="activarSeleccionadas()" class="btn btn-success" disabled id="activateSubjectsBtn">
+            <i class="fas fa-check"></i> Activar
+          </button>
+          <button onclick="desactivarSeleccionadas()" class="btn btn-warning" disabled id="deactivateSubjectsBtn">
+            <i class="fas fa-ban"></i> Desactivar
+          </button>
+          <button onclick="eliminarSeleccionadas()" class="btn btn-danger" disabled id="deleteSubjectsBtn">
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+          <button onclick="asignarDocenteMasivo()" class="btn btn-primary" disabled id="assignTeacherBtn">
+            <i class="fas fa-user-plus"></i> Asignar Docente
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para editar asignatura -->
+  <div id="editSubjectModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Asignatura</h3>
+        <span class="close" onclick="cerrarModal('editSubjectModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editSubjectForm">
+          <input type="hidden" id="editSubjectId">
+          
+          <div class="form-group">
+            <label for="editCodigoAsignatura">Código</label>
+            <input type="text" id="editCodigoAsignatura" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="editNombreAsignatura">Nombre</label>
+            <input type="text" id="editNombreAsignatura" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editCreditosAsignatura">Créditos</label>
+              <input type="number" id="editCreditosAsignatura" min="1" max="8" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="editTipoAsignatura">Tipo</label>
+              <select id="editTipoAsignatura" required>
+                <option value="teoria">Teoría</option>
+                <option value="practica">Práctica</option>
+                <option value="laboratorio">Laboratorio</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarCambiosAsignatura()" class="btn btn-primary">Guardar Cambios</button>
+        <button onclick="cerrarModal('editSubjectModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para asignar docente -->
+  <div id="assignTeacherModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Asignar Docente a Asignatura</h3>
+        <span class="close" onclick="cerrarModal('assignTeacherModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="assignment-info">
+          <h4>Asignatura: <span id="assignmentSubjectName"></span></h4>
+          <p>Código: <span id="assignmentSubjectCode"></span></p>
+        </div>
+        
+        <form id="assignTeacherForm">
+          <input type="hidden" id="assignmentSubjectId">
+          
+          <div class="form-group">
+            <label for="selectDocente">Seleccionar Docente</label>
+            <select id="selectDocente" required>
+              <option value="">Seleccionar docente...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="observacionesAsignacion">Observaciones</label>
+            <textarea id="observacionesAsignacion" rows="3" placeholder="Observaciones opcionales..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarAsignacionDocente()" class="btn btn-primary">Asignar Docente</button>
+        <button onclick="cerrarModal('assignTeacherModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

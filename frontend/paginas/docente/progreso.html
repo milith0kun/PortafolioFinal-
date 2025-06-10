@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Progreso - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Progreso de portafolios - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="progreso, completitud, portafolios, seguimiento, docente, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/docente/progreso-calculator.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('docente')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar en progreso...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Mi Progreso</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Inicio</a></li>
+            <li><a href="explorador.html">Mis Portafolios</a></li>
+            <li><a href="subir.html">Subir Documentos</a></li>
+            <li><a href="observaciones.html">Observaciones</a></li>
+            <li><a href="progreso.html" class="active">Mi Progreso</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Mi Progreso</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Estado del progreso -->
+    <section class="progress-status-section">
+      <div class="status-banner docente-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado del Progreso</h3>
+            <p id="progressStatusMessage">Su progreso general es del 78%. Continue subiendo documentos para completar sus portafolios.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge" id="progressStatusBadge">78% Completado</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen general de progreso -->
+    <section class="progress-overview">
+      <div class="overview-header">
+        <h2><i class="fas fa-chart-pie"></i> Resumen General</h2>
+        <div class="overview-actions">
+          <button onclick="refrescarProgreso()" class="btn btn-secondary">
+            <i class="fas fa-sync-alt"></i> Actualizar
+          </button>
+          <button onclick="exportarProgreso()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar
+          </button>
+        </div>
+      </div>
+
+      <div class="overview-cards">
+        <div class="overview-card total-progress">
+          <div class="card-header">
+            <h3>Progreso Total</h3>
+            <div class="progress-ring" data-progress="78">
+              <svg width="80" height="80">
+                <circle cx="40" cy="40" r="35" class="progress-ring-circle"></circle>
+                <circle cx="40" cy="40" r="35" class="progress-ring-bar"></circle>
+              </svg>
+              <div class="progress-text">78%</div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="progress-breakdown">
+              <div class="breakdown-item">
+                <span class="label">Completados:</span>
+                <span class="value completed">156 documentos</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="label">Pendientes:</span>
+                <span class="value pending">44 documentos</span>
+              </div>
+              <div class="breakdown-item">
+                <span class="label">Total requeridos:</span>
+                <span class="value total">200 documentos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overview-card subjects-progress">
+          <div class="card-header">
+            <h3>Progreso por Asignatura</h3>
+          </div>
+          <div class="card-content">
+            <div class="subjects-list" id="subjectsProgressList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <button onclick="verDetalleAsignaturas()" class="btn btn-primary">Ver Detalle</button>
+          </div>
+        </div>
+
+        <div class="overview-card timeline-progress">
+          <div class="card-header">
+            <h3>Progreso Temporal</h3>
+          </div>
+          <div class="card-content">
+            <div class="timeline-chart" id="timelineChart">
+              <!-- Gráfico de progreso temporal -->
+            </div>
+            <div class="timeline-stats">
+              <div class="stat-item">
+                <span class="stat-label">Esta semana:</span>
+                <span class="stat-value">+12 documentos</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Este mes:</span>
+                <span class="stat-value">+45 documentos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overview-card goals-progress">
+          <div class="card-header">
+            <h3>Metas y Objetivos</h3>
+          </div>
+          <div class="card-content">
+            <div class="goals-list">
+              <div class="goal-item">
+                <div class="goal-info">
+                  <span class="goal-title">Meta de Finalización</span>
+                  <span class="goal-date">30 de Marzo, 2025</span>
+                </div>
+                <div class="goal-progress">
+                  <div class="goal-bar">
+                    <div class="goal-fill" style="width: 78%"></div>
+                  </div>
+                  <span class="goal-percentage">78%</span>
+                </div>
+              </div>
+              <div class="goal-item">
+                <div class="goal-info">
+                  <span class="goal-title">Documentos Semanales</span>
+                  <span class="goal-date">Meta: 15 por semana</span>
+                </div>
+                <div class="goal-progress">
+                  <div class="goal-bar">
+                    <div class="goal-fill" style="width: 80%"></div>
+                  </div>
+                  <span class="goal-percentage">12/15</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card-action">
+            <button onclick="configurarMetas()" class="btn btn-warning">Configurar Metas</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros de progreso -->
+    <section class="progress-filters">
+      <div class="filters-header">
+        <h2><i class="fas fa-filter"></i> Filtrar Progreso</h2>
+      </div>
+
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="filterAsignatura">Asignatura:</label>
+          <select id="filterAsignatura" onchange="filtrarProgreso()">
+            <option value="">Todas las asignaturas</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterEstado">Estado:</label>
+          <select id="filterEstado" onchange="filtrarProgreso()">
+            <option value="">Todos los estados</option>
+            <option value="completo">Completo (100%)</option>
+            <option value="alto">Alto progreso (80-99%)</option>
+            <option value="medio">Progreso medio (50-79%)</option>
+            <option value="bajo">Bajo progreso (0-49%)</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterPeriodo">Período:</label>
+          <select id="filterPeriodo" onchange="filtrarProgreso()">
+            <option value="actual">Ciclo actual</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes">Este mes</option>
+            <option value="trimestre">Este trimestre</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterCategoria">Categoría:</label>
+          <select id="filterCategoria" onchange="filtrarProgreso()">
+            <option value="">Todas las categorías</option>
+            <option value="presentacion">Presentación</option>
+            <option value="planificacion">Planificación</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="evaluacion">Evaluación</option>
+            <option value="mejora">Mejora Continua</option>
+          </select>
+        </div>
+
+        <div class="action-controls">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+          <button onclick="aplicarFiltros()" class="btn btn-primary">
+            <i class="fas fa-search"></i> Aplicar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progreso detallado por asignatura -->
+    <section class="detailed-progress">
+      <div class="detailed-header">
+        <h2><i class="fas fa-list-alt"></i> Progreso Detallado por Asignatura</h2>
+        <div class="view-controls">
+          <button class="view-btn active" data-view="cards" onclick="cambiarVistaProgreso('cards')">
+            <i class="fas fa-th-large"></i> Cards
+          </button>
+          <button class="view-btn" data-view="table" onclick="cambiarVistaProgreso('table')">
+            <i class="fas fa-table"></i> Tabla
+          </button>
+          <button class="view-btn" data-view="timeline" onclick="cambiarVistaProgreso('timeline')">
+            <i class="fas fa-stream"></i> Timeline
+          </button>
+        </div>
+      </div>
+
+      <!-- Vista en cards -->
+      <div class="progress-cards" id="progressCards">
+        <div class="cards-grid" id="progressCardsGrid">
+          <!-- Se cargará dinámicamente -->
+          <div class="loading-progress">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando progreso...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista en tabla -->
+      <div class="progress-table" id="progressTable" style="display: none;">
+        <div class="table-container">
+          <table class="progress-data-table">
+            <thead>
+              <tr>
+                <th>Asignatura</th>
+                <th>Progreso</th>
+                <th>Documentos</th>
+                <th>Completados</th>
+                <th>Pendientes</th>
+                <th>Con Observaciones</th>
+                <th>Última Actualización</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="progressTableBody">
+              <tr>
+                <td colspan="8" class="loading">Cargando datos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista timeline -->
+      <div class="progress-timeline" id="progressTimeline" style="display: none;">
+        <div class="timeline-container" id="progressTimelineContainer">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Análisis de progreso -->
+    <section class="progress-analysis">
+      <div class="analysis-header">
+        <h2><i class="fas fa-chart-bar"></i> Análisis de Progreso</h2>
+      </div>
+
+      <div class="analysis-grid">
+        <!-- Gráfico de completitud -->
+        <div class="analysis-card completion-chart">
+          <div class="card-header">
+            <h3>Completitud por Categoría</h3>
+          </div>
+          <div class="card-content">
+            <div class="chart-container" id="completionChart">
+              <!-- Gráfico de barras -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Tendencias temporales -->
+        <div class="analysis-card trends-chart">
+          <div class="card-header">
+            <h3>Tendencias de Progreso</h3>
+          </div>
+          <div class="card-content">
+            <div class="chart-container" id="trendsChart">
+              <!-- Gráfico de líneas -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparación con promedio -->
+        <div class="analysis-card comparison-chart">
+          <div class="card-header">
+            <h3>Comparación con Promedio</h3>
+          </div>
+          <div class="card-content">
+            <div class="comparison-data">
+              <div class="comparison-item">
+                <span class="comparison-label">Mi progreso:</span>
+                <div class="comparison-bar">
+                  <div class="comparison-fill my-progress" style="width: 78%"></div>
+                </div>
+                <span class="comparison-value">78%</span>
+              </div>
+              <div class="comparison-item">
+                <span class="comparison-label">Promedio institucional:</span>
+                <div class="comparison-bar">
+                  <div class="comparison-fill average-progress" style="width: 65%"></div>
+                </div>
+                <span class="comparison-value">65%</span>
+              </div>
+              <div class="comparison-item">
+                <span class="comparison-label">Mejor de la carrera:</span>
+                <div class="comparison-bar">
+                  <div class="comparison-fill best-progress" style="width: 95%"></div>
+                </div>
+                <span class="comparison-value">95%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas adicionales -->
+        <div class="analysis-card stats-summary">
+          <div class="card-header">
+            <h3>Estadísticas Adicionales</h3>
+          </div>
+          <div class="card-content">
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">24</span>
+                  <span class="stat-label">Días activos</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-upload"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">6.5</span>
+                  <span class="stat-label">Docs/semana</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">2.3h</span>
+                  <span class="stat-label">Tiempo promedio</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value">4.2</span>
+                  <span class="stat-label">Calidad promedio</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Documentos pendientes -->
+    <section class="pending-documents">
+      <div class="pending-header">
+        <h2><i class="fas fa-exclamation-triangle"></i> Documentos Pendientes</h2>
+        <div class="pending-actions">
+          <button onclick="priorizarPendientes()" class="btn btn-warning">
+            <i class="fas fa-sort"></i> Priorizar
+          </button>
+          <button onclick="subirPendientes()" class="btn btn-success">
+            <i class="fas fa-upload"></i> Subir Documentos
+          </button>
+        </div>
+      </div>
+
+      <div class="pending-list" id="pendingDocumentsList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Logros y reconocimientos -->
+    <section class="achievements">
+      <div class="achievements-header">
+        <h2><i class="fas fa-trophy"></i> Logros y Reconocimientos</h2>
+      </div>
+
+      <div class="achievements-grid">
+        <div class="achievement-item earned">
+          <div class="achievement-icon">
+            <i class="fas fa-medal"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Primera Subida</h3>
+            <p>Subió su primer documento al portafolio</p>
+            <span class="achievement-date">Obtenido el 15 Ene 2025</span>
+          </div>
+        </div>
+
+        <div class="achievement-item earned">
+          <div class="achievement-icon">
+            <i class="fas fa-fire"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Racha de Actividad</h3>
+            <p>7 días consecutivos subiendo documentos</p>
+            <span class="achievement-date">Obtenido el 22 Ene 2025</span>
+          </div>
+        </div>
+
+        <div class="achievement-item earned">
+          <div class="achievement-icon">
+            <i class="fas fa-star"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Progreso Destacado</h3>
+            <p>Superó el 75% de progreso general</p>
+            <span class="achievement-date">Obtenido el 5 Feb 2025</span>
+          </div>
+        </div>
+
+        <div class="achievement-item locked">
+          <div class="achievement-icon">
+            <i class="fas fa-crown"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Perfeccionista</h3>
+            <p>Complete el 100% de sus portafolios</p>
+            <span class="achievement-progress">78% completado</span>
+          </div>
+        </div>
+
+        <div class="achievement-item locked">
+          <div class="achievement-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Velocidad Luz</h3>
+            <p>Complete una asignatura en menos de una semana</p>
+            <span class="achievement-progress">Bloqueado</span>
+          </div>
+        </div>
+
+        <div class="achievement-item locked">
+          <div class="achievement-icon">
+            <i class="fas fa-gem"></i>
+          </div>
+          <div class="achievement-info">
+            <h3>Calidad Premium</h3>
+            <p>Obtenga 10 aprobaciones sin observaciones</p>
+            <span class="achievement-progress">6/10 logrados</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recomendaciones -->
+    <section class="recommendations">
+      <div class="recommendations-header">
+        <h2><i class="fas fa-lightbulb"></i> Recomendaciones Personalizadas</h2>
+      </div>
+
+      <div class="recommendations-list">
+        <div class="recommendation-item priority-high">
+          <div class="recommendation-icon">
+            <i class="fas fa-exclamation-circle"></i>
+          </div>
+          <div class="recommendation-content">
+            <h3>Prioridad Alta</h3>
+            <p>Su asignatura "Metodología de Desarrollo de Software" tiene el progreso más bajo (45%). Considere enfocar sus esfuerzos en completar esta asignatura primero.</p>
+            <div class="recommendation-actions">
+              <button onclick="irAsignatura('mds')" class="btn btn-primary btn-sm">Ver Asignatura</button>
+              <button onclick="subirDocumentos('mds')" class="btn btn-success btn-sm">Subir Documentos</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="recommendation-item priority-medium">
+          <div class="recommendation-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="recommendation-content">
+            <h3>Gestión de Tiempo</h3>
+            <p>Su ritmo actual le permitirá completar el 85% para la fecha límite. Considere incrementar a 8 documentos por semana para alcanzar el 100%.</p>
+            <div class="recommendation-actions">
+              <button onclick="verPlanificacion()" class="btn btn-info btn-sm">Ver Planificación</button>
+              <button onclick="configurarMetas()" class="btn btn-warning btn-sm">Ajustar Metas</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="recommendation-item priority-low">
+          <div class="recommendation-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="recommendation-content">
+            <h3>Optimización</h3>
+            <p>Su progreso está por encima del promedio. Considere ayudar a colegas o explorar funcionalidades avanzadas del sistema.</p>
+            <div class="recommendation-actions">
+              <button onclick="verTutoriales()" class="btn btn-secondary btn-sm">Ver Tutoriales</button>
+              <button onclick="compartirExperiencia()" class="btn btn-info btn-sm">Compartir Tips</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para configurar metas -->
+  <div id="goalsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Configurar Metas de Progreso</h3>
+        <span class="close" onclick="cerrarModal('goalsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="goalsForm">
+          <div class="form-group">
+            <label for="completionGoal">Meta de completitud general:</label>
+            <input type="range" id="completionGoal" min="0" max="100" value="100">
+            <span id="completionGoalValue">100%</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="weeklyGoal">Documentos por semana:</label>
+            <input type="number" id="weeklyGoal" min="1" max="50" value="15">
+          </div>
+          
+          <div class="form-group">
+            <label for="targetDate">Fecha objetivo de finalización:</label>
+            <input type="date" id="targetDate">
+          </div>
+          
+          <div class="form-group">
+            <label for="prioritySubject">Asignatura prioritaria:</label>
+            <select id="prioritySubject">
+              <option value="">Seleccionar asignatura...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="enableNotifications" checked>
+              <span class="checkmark"></span>
+              Recibir notificaciones de progreso
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarMetas()" class="btn btn-primary">Guardar Metas</button>
+        <button onclick="cerrarModal('goalsModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para detalle de asignatura -->
+  <div id="subjectDetailModal" class="modal modal-large" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="subjectDetailTitle">Detalle de Asignatura</h3>
+        <span class="close" onclick="cerrarModal('subjectDetailModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="subject-detail-content" id="subjectDetailContent">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="irAsignaturaCompleta()" class="btn btn-primary" id="goToSubjectBtn">Ir a Asignatura</button>
+        <button onclick="cerrarModal('subjectDetailModal')" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Centro de Ayuda - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Centro de ayuda y soporte - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="ayuda, soporte, tutorial, guía, documentación, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/compartidas/centro-ayuda.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="cargarAyuda()">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar en la ayuda..." id="helpSearch">
+          <button class="search-btn" onclick="buscarEnAyuda()"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-question-circle"></i></div>
+            <span class="user-name" id="userName">Ayuda</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Centro de Ayuda</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../../index.html">Inicio</a></li>
+            <li><a href="../autenticacion/login.html">Iniciar Sesión</a></li>
+            <li><a href="ayuda.html" class="active">Ayuda</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="../../index.html">← Inicio</a>
+    <span class="separator">/</span>
+    <span class="current">Centro de Ayuda</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Banner de bienvenida -->
+    <section class="help-banner">
+      <div class="banner-container">
+        <div class="banner-content">
+          <h1><i class="fas fa-life-ring"></i> ¿Cómo podemos ayudarte?</h1>
+          <p>Encuentra respuestas rápidas, tutoriales paso a paso y obtén soporte especializado para el Sistema de Portafolio Docente UNSAAC.</p>
+          
+          <!-- Búsqueda principal -->
+          <div class="help-search-main">
+            <div class="search-input-container">
+              <input type="text" id="mainHelpSearch" placeholder="Escribe tu pregunta o describe tu problema...">
+              <button onclick="buscarAyudaPrincipal()" class="search-btn-main">
+                <i class="fas fa-search"></i> Buscar
+              </button>
+            </div>
+            <div class="search-suggestions" id="searchSuggestions">
+              <!-- Se mostrarán sugerencias dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Accesos rápidos -->
+          <div class="quick-help-links">
+            <span class="quick-label">Búsquedas populares:</span>
+            <a href="#" onclick="buscarRapido('como subir documentos')">Cómo subir documentos</a>
+            <a href="#" onclick="buscarRapido('cambiar contraseña')">Cambiar contraseña</a>
+            <a href="#" onclick="buscarRapido('ver mis observaciones')">Ver mis observaciones</a>
+            <a href="#" onclick="buscarRapido('generar reportes')">Generar reportes</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categorías de ayuda -->
+    <section class="help-categories">
+      <div class="categories-header">
+        <h2>Categorías de Ayuda</h2>
+        <p>Explora la documentación por categorías según tu rol</p>
+      </div>
+
+      <div class="categories-grid">
+        <!-- Ayuda para Administradores -->
+        <div class="category-card admin-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <h3>Administradores</h3>
+            <span class="category-badge">15 artículos</span>
+          </div>
+          <div class="category-content">
+            <p>Gestión completa del sistema, configuración de ciclos y administración de usuarios.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarArticulo('admin-ciclos')">Gestión de Ciclos Académicos</a></li>
+              <li><a href="#" onclick="mostrarArticulo('admin-usuarios')">Administración de Usuarios</a></li>
+              <li><a href="#" onclick="mostrarArticulo('admin-reportes')">Generación de Reportes</a></li>
+              <li><a href="#" onclick="mostrarArticulo('admin-excel')">Carga Masiva de Datos</a></li>
+              <li><a href="#" onclick="mostrarArticulo('admin-sistema')">Configuración del Sistema</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('administrador')" class="btn btn-admin">
+              <i class="fas fa-arrow-right"></i> Ver Todos
+            </button>
+          </div>
+        </div>
+
+        <!-- Ayuda para Docentes -->
+        <div class="category-card docente-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3>Docentes</h3>
+            <span class="category-badge">22 artículos</span>
+          </div>
+          <div class="category-content">
+            <p>Gestión de portafolios, subida de documentos y seguimiento de progreso.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarArticulo('docente-portafolios')">Gestión de Portafolios</a></li>
+              <li><a href="#" onclick="mostrarArticulo('docente-documentos')">Subir Documentos</a></li>
+              <li><a href="#" onclick="mostrarArticulo('docente-observaciones')">Revisar Observaciones</a></li>
+              <li><a href="#" onclick="mostrarArticulo('docente-progreso')">Seguimiento de Progreso</a></li>
+              <li><a href="#" onclick="mostrarArticulo('docente-perfil')">Configurar Perfil</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('docente')" class="btn btn-docente">
+              <i class="fas fa-arrow-right"></i> Ver Todos
+            </button>
+          </div>
+        </div>
+
+        <!-- Ayuda para Verificadores -->
+        <div class="category-card verificador-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Verificadores</h3>
+            <span class="category-badge">18 artículos</span>
+          </div>
+          <div class="category-content">
+            <p>Proceso de verificación, revisión de documentos y gestión de observaciones.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarArticulo('verificador-cola')">Cola de Revisión</a></li>
+              <li><a href="#" onclick="mostrarArticulo('verificador-revision')">Revisar Documentos</a></li>
+              <li><a href="#" onclick="mostrarArticulo('verificador-observaciones')">Crear Observaciones</a></li>
+              <li><a href="#" onclick="mostrarArticulo('verificador-criterios')">Criterios de Verificación</a></li>
+              <li><a href="#" onclick="mostrarArticulo('verificador-estadisticas')">Estadísticas de Rendimiento</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('verificador')" class="btn btn-verificador">
+              <i class="fas fa-arrow-right"></i> Ver Todos
+            </button>
+          </div>
+        </div>
+
+        <!-- Ayuda General -->
+        <div class="category-card general-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-question-circle"></i>
+            </div>
+            <h3>General</h3>
+            <span class="category-badge">12 artículos</span>
+          </div>
+          <div class="category-content">
+            <p>Información general del sistema, primeros pasos y funcionalidades comunes.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarArticulo('general-inicio')">Primeros Pasos</a></li>
+              <li><a href="#" onclick="mostrarArticulo('general-navegacion')">Navegación del Sistema</a></li>
+              <li><a href="#" onclick="mostrarArticulo('general-perfil')">Gestión de Perfil</a></li>
+              <li><a href="#" onclick="mostrarArticulo('general-notificaciones')">Sistema de Notificaciones</a></li>
+              <li><a href="#" onclick="mostrarArticulo('general-seguridad')">Seguridad y Privacidad</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('general')" class="btn btn-secondary">
+              <i class="fas fa-arrow-right"></i> Ver Todos
+            </button>
+          </div>
+        </div>
+
+        <!-- Problemas Técnicos -->
+        <div class="category-card technical-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-tools"></i>
+            </div>
+            <h3>Problemas Técnicos</h3>
+            <span class="category-badge">8 artículos</span>
+          </div>
+          <div class="category-content">
+            <p>Solución de problemas comunes, errores del sistema y configuración.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarArticulo('tech-login')">Problemas de Acceso</a></li>
+              <li><a href="#" onclick="mostrarArticulo('tech-upload')">Errores de Subida</a></li>
+              <li><a href="#" onclick="mostrarArticulo('tech-navegador')">Compatibilidad de Navegadores</a></li>
+              <li><a href="#" onclick="mostrarArticulo('tech-rendimiento')">Problemas de Rendimiento</a></li>
+              <li><a href="#" onclick="mostrarArticulo('tech-archivos')">Formatos de Archivo</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('tecnico')" class="btn btn-warning">
+              <i class="fas fa-arrow-right"></i> Ver Todos
+            </button>
+          </div>
+        </div>
+
+        <!-- Videos Tutoriales -->
+        <div class="category-card tutorials-category">
+          <div class="category-header">
+            <div class="category-icon">
+              <i class="fas fa-play-circle"></i>
+            </div>
+            <h3>Video Tutoriales</h3>
+            <span class="category-badge">10 videos</span>
+          </div>
+          <div class="category-content">
+            <p>Tutoriales en video paso a paso para aprender las funcionalidades principales.</p>
+            <ul class="category-topics">
+              <li><a href="#" onclick="mostrarVideo('tutorial-inicio')">Introducción al Sistema</a></li>
+              <li><a href="#" onclick="mostrarVideo('tutorial-subida')">Cómo Subir Documentos</a></li>
+              <li><a href="#" onclick="mostrarVideo('tutorial-verificacion')">Proceso de Verificación</a></li>
+              <li><a href="#" onclick="mostrarVideo('tutorial-reportes')">Generar Reportes</a></li>
+              <li><a href="#" onclick="mostrarVideo('tutorial-observaciones')">Gestionar Observaciones</a></li>
+            </ul>
+          </div>
+          <div class="category-action">
+            <button onclick="verCategoria('videos')" class="btn btn-success">
+              <i class="fas fa-play"></i> Ver Videos
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Preguntas frecuentes -->
+    <section class="faq-section">
+      <div class="faq-header">
+        <h2><i class="fas fa-question"></i> Preguntas Frecuentes</h2>
+        <p>Respuestas a las preguntas más comunes de nuestros usuarios</p>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-categories-tabs">
+          <button class="faq-tab active" data-category="general" onclick="cambiarFAQCategoria('general')">
+            General
+          </button>
+          <button class="faq-tab" data-category="docentes" onclick="cambiarFAQCategoria('docentes')">
+            Docentes
+          </button>
+          <button class="faq-tab" data-category="verificadores" onclick="cambiarFAQCategoria('verificadores')">
+            Verificadores
+          </button>
+          <button class="faq-tab" data-category="administradores" onclick="cambiarFAQCategoria('administradores')">
+            Administradores
+          </button>
+        </div>
+
+        <!-- FAQ General -->
+        <div class="faq-content active" id="faq-general">
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo puedo recuperar mi contraseña?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para recuperar su contraseña:</p>
+                <ol>
+                  <li>Vaya a la página de inicio de sesión</li>
+                  <li>Haga clic en "¿Olvidó su contraseña?"</li>
+                  <li>Ingrese su correo institucional</li>
+                  <li>Revise su bandeja de entrada y siga las instrucciones del email</li>
+                  <li>El enlace de recuperación es válido por 30 minutos</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Qué navegadores son compatibles con el sistema?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>El sistema es compatible con:</p>
+                <ul>
+                  <li><strong>Google Chrome:</strong> Versión 90 o superior (Recomendado)</li>
+                  <li><strong>Mozilla Firefox:</strong> Versión 88 o superior</li>
+                  <li><strong>Microsoft Edge:</strong> Versión 90 o superior</li>
+                  <li><strong>Safari:</strong> Versión 14 o superior (macOS)</li>
+                </ul>
+                <p><em>Nota:</em> Se recomienda mantener el navegador actualizado para una mejor experiencia.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo puedo cambiar mi información personal?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para actualizar su información personal:</p>
+                <ol>
+                  <li>Inicie sesión en el sistema</li>
+                  <li>Vaya a su dashboard y busque la opción "Mi Perfil"</li>
+                  <li>Haga clic en "Editar Perfil"</li>
+                  <li>Modifique los campos necesarios</li>
+                  <li>Guarde los cambios</li>
+                </ol>
+                <p><strong>Importante:</strong> El correo institucional no puede ser modificado. Para cambios de correo, contacte al administrador.</p>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Qué formatos de archivo puedo subir?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Los formatos de archivo soportados son:</p>
+                <ul>
+                  <li><strong>Documentos:</strong> PDF, DOC, DOCX</li>
+                  <li><strong>Hojas de cálculo:</strong> XLS, XLSX</li>
+                  <li><strong>Presentaciones:</strong> PPT, PPTX</li>
+                  <li><strong>Imágenes:</strong> JPG, PNG</li>
+                  <li><strong>Texto:</strong> TXT</li>
+                </ul>
+                <p><strong>Tamaño máximo:</strong> 10 MB por archivo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Docentes -->
+        <div class="faq-content" id="faq-docentes" style="display: none;">
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo subo documentos a mi portafolio?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para subir documentos a su portafolio:</p>
+                <ol>
+                  <li>Vaya a "Subir Documentos" en el menú principal</li>
+                  <li>Seleccione la asignatura y carpeta de destino</li>
+                  <li>Arrastre el archivo o haga clic para seleccionarlo</li>
+                  <li>Complete la descripción y metadatos</li>
+                  <li>Haga clic en "Subir Documento"</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo puedo ver el progreso de mis portafolios?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para ver su progreso:</p>
+                <ol>
+                  <li>Vaya a "Mi Progreso" en el menú</li>
+                  <li>Visualice el porcentaje de completitud por asignatura</li>
+                  <li>Revise los documentos faltantes en color rojo</li>
+                  <li>Use los filtros para ver progreso específico</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Qué hago si recibo una observación?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Al recibir una observación:</p>
+                <ol>
+                  <li>Vaya a la sección "Observaciones"</li>
+                  <li>Lea cuidadosamente el comentario del verificador</li>
+                  <li>Si requiere respuesta, escriba una respuesta clara</li>
+                  <li>Si necesita corregir el documento, súbalo nuevamente</li>
+                  <li>Marque la observación como resuelta cuando corresponda</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Verificadores -->
+        <div class="faq-content" id="faq-verificadores" style="display: none;">
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo accedo a la cola de revisión?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para acceder a la cola de revisión:</p>
+                <ol>
+                  <li>Desde su dashboard, haga clic en "Cola de Revisión"</li>
+                  <li>Verá todos los documentos pendientes de verificación</li>
+                  <li>Use los filtros para organizar por prioridad o docente</li>
+                  <li>Haga clic en cualquier documento para comenzar la revisión</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cuáles son los criterios de verificación?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Los criterios principales de verificación incluyen:</p>
+                <ul>
+                  <li>Formato y estructura adecuada del documento</li>
+                  <li>Contenido completo y actualizado</li>
+                  <li>Cumplimiento de estándares institucionales</li>
+                  <li>Bibliografía y referencias apropiadas</li>
+                  <li>Calidad técnica y de presentación</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo creo una observación efectiva?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para crear observaciones efectivas:</p>
+                <ul>
+                  <li>Sea específico sobre el problema encontrado</li>
+                  <li>Proporcione sugerencias constructivas</li>
+                  <li>Use un tono profesional y respetuoso</li>
+                  <li>Indique claramente si requiere corrección</li>
+                  <li>Establezca la prioridad apropiada</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Administradores -->
+        <div class="faq-content" id="faq-administradores" style="display: none;">
+          <div class="faq-list">
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo configuro un nuevo ciclo académico?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para configurar un nuevo ciclo académico:</p>
+                <ol>
+                  <li>Vaya a "Gestión de Ciclos Académicos"</li>
+                  <li>Haga clic en "Crear Nuevo Ciclo"</li>
+                  <li>Complete la información del ciclo (nombre, fechas, descripción)</li>
+                  <li>Configure los módulos del sistema</li>
+                  <li>Cargue los datos académicos desde Excel</li>
+                  <li>Active el ciclo cuando esté listo</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo cargo datos masivos desde Excel?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para cargar datos desde Excel:</p>
+                <ol>
+                  <li>Descargue la plantilla correspondiente</li>
+                  <li>Complete los datos siguiendo el formato exacto</li>
+                  <li>Vaya a "Carga Excel" y seleccione el tipo de carga</li>
+                  <li>Suba el archivo y espere la validación</li>
+                  <li>Revise los resultados y corrija errores si es necesario</li>
+                </ol>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question" onclick="toggleFAQ(this)">
+                <h3>¿Cómo genero reportes del sistema?</h3>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                <p>Para generar reportes:</p>
+                <ol>
+                  <li>Vaya a la sección "Reportes"</li>
+                  <li>Seleccione el tipo de reporte deseado</li>
+                  <li>Configure los filtros y parámetros</li>
+                  <li>Elija el formato de salida (PDF, Excel, etc.)</li>
+                  <li>Haga clic en "Generar Reporte"</li>
+                  <li>Descargue el archivo generado</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto y soporte -->
+    <section class="support-section">
+      <div class="support-header">
+        <h2><i class="fas fa-headset"></i> ¿Necesitas más ayuda?</h2>
+        <p>Nuestro equipo de soporte está aquí para ayudarte</p>
+      </div>
+
+      <div class="support-options">
+        <div class="support-card email-support">
+          <div class="support-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="support-info">
+            <h3>Soporte por Email</h3>
+            <p>Envíanos un email con tu consulta y te responderemos en menos de 24 horas.</p>
+            <div class="support-details">
+              <strong>Email:</strong> portafolio@unsaac.edu.pe<br>
+              <strong>Tiempo de respuesta:</strong> 1-24 horas
+            </div>
+          </div>
+          <div class="support-action">
+            <a href="mailto:portafolio@unsaac.edu.pe" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Enviar Email
+            </a>
+          </div>
+        </div>
+
+        <div class="support-card phone-support">
+          <div class="support-icon">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="support-info">
+            <h3>Soporte Telefónico</h3>
+            <p>Llámanos para resolver tus dudas de forma inmediata con nuestros especialistas.</p>
+            <div class="support-details">
+              <strong>Teléfono:</strong> +51 84 232006<br>
+              <strong>Horario:</strong> Lun-Vie 8:00 AM - 5:00 PM
+            </div>
+          </div>
+          <div class="support-action">
+            <a href="tel:+51842320006" class="btn btn-success">
+              <i class="fas fa-phone-alt"></i> Llamar Ahora
+            </a>
+          </div>
+        </div>
+
+        <div class="support-card ticket-support">
+          <div class="support-icon">
+            <i class="fas fa-ticket-alt"></i>
+          </div>
+          <div class="support-info">
+            <h3>Crear Ticket</h3>
+            <p>Crea un ticket de soporte para un seguimiento detallado de tu consulta.</p>
+            <div class="support-details">
+              <strong>Seguimiento:</strong> En línea<br>
+              <strong>Prioridad:</strong> Según urgencia
+            </div>
+          </div>
+          <div class="support-action">
+            <button onclick="crearTicket()" class="btn btn-warning">
+              <i class="fas fa-plus"></i> Crear Ticket
+            </button>
+          </div>
+        </div>
+
+        <div class="support-card community-support">
+          <div class="support-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="support-info">
+            <h3>Comunidad</h3>
+            <p>Únete a nuestra comunidad de usuarios y comparte experiencias.</p>
+            <div class="support-details">
+              <strong>Foro:</strong> Disponible 24/7<br>
+              <strong>Usuarios activos:</strong> 500+
+            </div>
+          </div>
+          <div class="support-action">
+            <button onclick="irForo()" class="btn btn-info">
+              <i class="fas fa-comments"></i> Ir al Foro
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recursos adicionales -->
+    <section class="resources-section">
+      <div class="resources-header">
+        <h2><i class="fas fa-download"></i> Recursos y Descargas</h2>
+        <p>Materiales útiles para aprovechar al máximo el sistema</p>
+      </div>
+
+      <div class="resources-grid">
+        <div class="resource-item">
+          <div class="resource-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <div class="resource-info">
+            <h3>Manual de Usuario</h3>
+            <p>Guía completa del sistema en formato PDF</p>
+            <span class="resource-size">2.5 MB</span>
+          </div>
+          <div class="resource-action">
+            <button onclick="descargarRecurso('manual')" class="btn btn-primary">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+
+        <div class="resource-item">
+          <div class="resource-icon">
+            <i class="fas fa-file-excel"></i>
+          </div>
+          <div class="resource-info">
+            <h3>Plantillas Excel</h3>
+            <p>Plantillas para carga masiva de datos</p>
+            <span class="resource-size">150 KB</span>
+          </div>
+          <div class="resource-action">
+            <button onclick="descargarRecurso('plantillas')" class="btn btn-success">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+
+        <div class="resource-item">
+          <div class="resource-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="resource-info">
+            <h3>Videos Tutoriales</h3>
+            <p>Colección de videos explicativos</p>
+            <span class="resource-size">Streaming</span>
+          </div>
+          <div class="resource-action">
+            <button onclick="verTutoriales()" class="btn btn-warning">
+              <i class="fas fa-play"></i> Ver Videos
+            </button>
+          </div>
+        </div>
+
+        <div class="resource-item">
+          <div class="resource-icon">
+            <i class="fas fa-keyboard"></i>
+          </div>
+          <div class="resource-info">
+            <h3>Atajos de Teclado</h3>
+            <p>Lista de atajos para uso eficiente</p>
+            <span class="resource-size">50 KB</span>
+          </div>
+          <div class="resource-action">
+            <button onclick="verAtajos()" class="btn btn-info">
+              <i class="fas fa-eye"></i> Ver Lista
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estado del sistema -->
+    <section class="system-status-help">
+      <div class="status-header">
+        <h2><i class="fas fa-server"></i> Estado del Sistema</h2>
+      </div>
+
+      <div class="status-indicators">
+        <div class="status-item operational">
+          <div class="status-dot"></div>
+          <div class="status-info">
+            <h3>Servicios Principales</h3>
+            <span class="status-text">Operativo</span>
+          </div>
+        </div>
+
+        <div class="status-item operational">
+          <div class="status-dot"></div>
+          <div class="status-info">
+            <h3>Subida de Archivos</h3>
+            <span class="status-text">Operativo</span>
+          </div>
+        </div>
+
+        <div class="status-item operational">
+          <div class="status-dot"></div>
+          <div class="status-info">
+            <h3>Generación de Reportes</h3>
+            <span class="status-text">Operativo</span>
+          </div>
+        </div>
+
+        <div class="status-item operational">
+          <div class="status-dot"></div>
+          <div class="status-info">
+            <h3>Sistema de Notificaciones</h3>
+            <span class="status-text">Operativo</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="maintenance-info">
+        <p><strong>Próximo mantenimiento programado:</strong> Domingo 26 de Enero, 2:00 AM - 4:00 AM</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para artículo de ayuda -->
+  <div id="helpArticleModal" class="modal modal-large" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="articleTitle">Artículo de Ayuda</h3>
+        <span class="close" onclick="cerrarModal('helpArticleModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="article-content" id="articleContent">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="imprimirArticulo()" class="btn btn-secondary">
+          <i class="fas fa-print"></i> Imprimir
+        </button>
+        <button onclick="cerrarModal('helpArticleModal')" class="btn btn-primary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para crear ticket -->
+  <div id="ticketModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Crear Ticket de Soporte</h3>
+        <span class="close" onclick="cerrarModal('ticketModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="ticketForm">
+          <div class="form-group">
+            <label for="ticketSubject">Asunto</label>
+            <input type="text" id="ticketSubject" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="ticketCategory">Categoría</label>
+            <select id="ticketCategory" required>
+              <option value="">Seleccionar categoría</option>
+              <option value="tecnico">Problema Técnico</option>
+              <option value="cuenta">Problema de Cuenta</option>
+              <option value="funcionalidad">Funcionalidad</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="ticketPriority">Prioridad</label>
+            <select id="ticketPriority" required>
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+              <option value="urgente">Urgente</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="ticketDescription">Descripción del problema</label>
+            <textarea id="ticketDescription" rows="5" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="enviarTicket()" class="btn btn-primary">Crear Ticket</button>
+        <button onclick="cerrarModal('ticketModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="ayuda.html">Centro de Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+
+
+@import 'components/alerts.css';
+
+@import 'components/Login.css';
+
+/* Layout - Estructura de la página */
+@import 'layout/header.css';
+@import 'layout/footer.css';
+
+@import 'layout/responsive.css';
+

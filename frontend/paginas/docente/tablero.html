@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mi Portafolio Docente - Sistema UNSAAC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard Docente - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="docente, portafolio, documentos, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/docente/tablero.js" defer></script>
+  <script src="../../assets/js/paginas/docente/arbol-portafolio.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('docente')">
+
+  <!-- Encabezado -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar en portafolio...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Panel Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html" class="active">Inicio</a></li>
+            <li><a href="explorador.html">Mis Portafolios</a></li>
+            <li><a href="subir.html">Subir Documentos</a></li>
+            <li><a href="observaciones.html">Observaciones</a></li>
+            <li><a href="progreso.html">Mi Progreso</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Estado del sistema para docente -->
+    <section class="system-status-section">
+      <div class="status-banner docente-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado del Sistema</h3>
+            <p id="systemStatusMessage">El período de subida de documentos está activo. Puede subir y actualizar sus documentos.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge active" id="systemStatusBadge">Subidas Activas</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard del docente -->
+    <section class="dashboard-overview">
+      <div class="dashboard-cards">
+        <div class="dashboard-card progress-card">
+          <div class="card-header">
+            <h3><i class="fas fa-chart-pie"></i> Mi Progreso General</h3>
+          </div>
+          <div class="card-content">
+            <div class="progress-circle">
+              <div class="circle-progress" data-percentage="65">
+                <span class="percentage">65%</span>
+              </div>
+            </div>
+            <div class="progress-details">
+              <div class="progress-item">
+                <span class="label">Documentos subidos:</span>
+                <span class="value" id="uploadedDocs">12/18</span>
+              </div>
+              <div class="progress-item">
+                <span class="label">Aprobados:</span>
+                <span class="value approved" id="approvedDocs">8</span>
+              </div>
+              <div class="progress-item">
+                <span class="label">Pendientes:</span>
+                <span class="value pending" id="pendingDocs">4</span>
+              </div>
+              <div class="progress-item">
+                <span class="label">Con observaciones:</span>
+                <span class="value rejected" id="rejectedDocs">2</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="progreso.html" class="btn btn-primary">Ver Detalles</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card subjects-card">
+          <div class="card-header">
+            <h3><i class="fas fa-book"></i> Mis Asignaturas</h3>
+          </div>
+          <div class="card-content">
+            <div class="subjects-list" id="subjectsList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="explorador.html" class="btn btn-secondary">Ver Todas</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card notifications-card">
+          <div class="card-header">
+            <h3><i class="fas fa-bell"></i> Notificaciones Recientes</h3>
+          </div>
+          <div class="card-content">
+            <div class="notifications-list" id="notificationsList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="../compartidas/notificaciones.html" class="btn btn-info">Ver Todas</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card observations-card">
+          <div class="card-header">
+            <h3><i class="fas fa-comments"></i> Observaciones Recientes</h3>
+          </div>
+          <div class="card-content">
+            <div class="observations-list" id="observationsList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="observaciones.html" class="btn btn-warning">Ver Todas</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de portafolios -->
+    <section class="portafolio-section">
+      <h2>📁 Mis Cursos y Documentos</h2>
+      <div id="arbol-portafolio" class="drive-tree">
+        ⏳ Cargando portafolio...
+      </div>
+    </section>
+
+    <!-- Sección de subida de archivos -->
+    <section id="seccion-subida" class="upload-section" style="display:none;">
+      <h3>📤 Subir archivo a: <span id="carpeta-seleccionada" class="carpeta-activa"></span></h3>
+      <form id="formUpload" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="archivo">Archivo</label>
+          <input type="file" id="archivo" name="archivo" required>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" id="descripcion" name="descripcion" placeholder="Descripción del documento" required>
+        </div>
+
+        <!-- Campos ocultos necesarios -->
+        <input type="hidden" name="portafolio_id" id="inputPortafolioId">
+        <input type="hidden" name="semestre">
+        <input type="hidden" name="asignatura">
+        <input type="hidden" name="carpeta">
+
+        <button type="submit" class="btn btn-primary">Subir</button>
+      </form>
+    </section>
+
+    <!-- Sección de archivos subidos -->
+    <section id="archivos-subidos" class="archivos-section" style="display:none;">
+      <h3>📄 Archivos en: <span id="titulo-archivos" class="carpeta-activa"></span></h3>
+      <div id="lista-documentos" class="lista-archivos"></div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section class="quick-actions">
+      <h2>Acciones Rápidas</h2>
+      <div class="actions-grid">
+        <a href="subir.html" class="action-card upload-action">
+          <div class="action-icon">
+            <i class="fas fa-upload"></i>
+          </div>
+          <div class="action-content">
+            <h3>Subir Documento</h3>
+            <p>Agregar nuevo documento a mis portafolios</p>
+          </div>
+        </a>
+
+        <a href="observaciones.html" class="action-card observations-action">
+          <div class="action-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="action-content">
+            <h3>Ver Observaciones</h3>
+            <p>Revisar comentarios de verificadores</p>
+          </div>
+        </a>
+
+        <a href="progreso.html" class="action-card progress-action">
+          <div class="action-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="action-content">
+            <h3>Mi Progreso</h3>
+            <p>Ver estado de completitud por asignatura</p>
+          </div>
+        </a>
+
+        <a href="../compartidas/notificaciones.html" class="action-card notifications-action">
+          <div class="action-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div class="action-content">
+            <h3>Notificaciones</h3>
+            <p>Centro de mensajes y alertas</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

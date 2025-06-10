@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carga Académica Excel</title>
+  <script src="../js/auth.js"></script>
+  <script src="../js/config.js"></script>
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../pages/carga_excel.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <header class="main-header">
+    <div class="header-middle">
+      <div class="logo-container">
+        <span class="logo-title">Carga Académica</span>
+        <span class="logo-subtitle">Semestre 2025-1</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section class="upload-section">
+      <h2><i class="fas fa-file-excel"></i> Subir archivo Excel de carga académica</h2>
+      <form id="formCargaExcel" enctype="multipart/form-data">
+        <label for="archivoExcel" class="form-label">Seleccione un archivo Excel (.xlsx):</label>
+        <input type="file" id="archivoExcel" name="archivo" accept=".xlsx" required class="form-control">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-upload"></i> Subir archivo
+        </button>
+      </form>
+      <p id="resultado" class="mensaje"></p>
+      <div id="errores" class="error-list"></div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <p>&copy; 2025 Sistema de Portafolio Docente – UNSAAC</p>
+  </footer>
+
+  <script src="../js/carga_excel.js"></script>
+</body>
+</html>

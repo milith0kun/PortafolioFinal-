@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema de Portafolio Docente UNSAAC - Gestión y verificación de documentos académicos">
+  <meta name="keywords" content="portafolio docente, documentos académicos, verificación, UNSAAC, educación">
+  <meta name="author" content="UNSAAC">
+  <title>Sistema de Portafolio Docente - UNSAAC</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="assets/css/principal.css">
+  
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar documentos, usuarios...">
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <!-- Redes y usuario -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <div class="user-menu" id="userMenu">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+            <span class="user-name" id="userName">Entrar</span>
+            <div class="dropdown-menu" id="dropdownMenu">
+              <a href="paginas/autenticacion/login.html">Iniciar Sesión</a>
+              <a href="paginas/compartidas/ayuda.html">Ayuda</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Docente UNSAAC</span>
+          </div>
+        </div>
+
+        <!-- Estado del sistema -->
+        <div class="header-info">
+          <div class="cycle-info" id="cycleInfo">
+            <span class="cycle-label">Ciclo Actual:</span>
+            <span class="cycle-name" id="currentCycle">2025-I</span>
+            <span class="cycle-status" id="cycleStatus">Configuración</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html" class="active">Inicio</a></li>
+            <li><a href="paginas/compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="paginas/autenticacion/login.html">Acceder al Sistema</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Banner de bienvenida -->
+    <section class="welcome-banner">
+      <div class="banner-container">
+        <div class="banner-content">
+          <h1>Sistema de Portafolio Docente UNSAAC</h1>
+          <p>Plataforma integral para la gestión, organización y verificación de documentos académicos siguiendo el flujo de trabajo institucional.</p>
+          
+          <!-- Estado del ciclo académico -->
+          <div class="cycle-status-banner" id="cycleStatusBanner">
+            <div class="status-info">
+              <span class="status-icon"><i class="fas fa-calendar-alt"></i></span>
+              <div class="status-details">
+                <span class="status-title">Estado Actual del Sistema</span>
+                <span class="status-description" id="statusDescription">Sistema en configuración - Los administradores están configurando el ciclo académico</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="banner-actions">
+            <a href="paginas/autenticacion/login.html" class="btn btn-primary">
+              <i class="fas fa-sign-in-alt"></i> Acceder al Sistema
+            </a>
+            <a href="paginas/compartidas/ayuda.html" class="btn btn-secondary">
+              <i class="fas fa-question-circle"></i> Guía de Usuario
+            </a>
+          </div>
+        </div>
+
+        <!-- Cards de roles -->
+        <div class="banner-image">
+          <div class="feature-cards">
+            <div class="feature-card admin-card">
+              <div class="card-icon"><i class="fas fa-cogs"></i></div>
+              <h3>Administradores</h3>
+              <p>Configuran ciclos, asignan docentes y gestionan el sistema</p>
+              <div class="card-features">
+                <span class="feature-tag">Gestión de Ciclos</span>
+                <span class="feature-tag">Asignaciones</span>
+                <span class="feature-tag">Reportes</span>
+              </div>
+            </div>
+            
+            <div class="feature-card docente-card">
+              <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+              <h3>Docentes</h3>
+              <p>Suben documentos y gestionan sus portafolios académicos</p>
+              <div class="card-features">
+                <span class="feature-tag">Portafolios</span>
+                <span class="feature-tag">Documentos</span>
+                <span class="feature-tag">Progreso</span>
+              </div>
+            </div>
+            
+            <div class="feature-card verificador-card">
+              <div class="card-icon"><i class="fas fa-check-circle"></i></div>
+              <h3>Verificadores</h3>
+              <p>Revisan y aprueban documentos académicos</p>
+              <div class="card-features">
+                <span class="feature-tag">Revisión</span>
+                <span class="feature-tag">Observaciones</span>
+                <span class="feature-tag">Aprobación</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flujo del proceso académico -->
+    <section class="process-flow-section">
+      <div class="process-container">
+        <div class="section-header">
+          <h2>Flujo del Proceso Académico</h2>
+          <p>Conoce cómo funciona el sistema paso a paso</p>
+        </div>
+
+        <div class="process-timeline">
+          <div class="process-step" data-step="1">
+            <div class="step-icon admin-color">
+              <i class="fas fa-play-circle"></i>
+            </div>
+            <div class="step-content">
+              <h3>1. Configuración Inicial</h3>
+              <p><strong>Administradores</strong> crean el ciclo académico, definen asignaturas y asignan docentes a materias.</p>
+              <div class="step-actions">
+                <span class="action-item">Crear ciclo académico</span>
+                <span class="action-item">Asignar docentes a asignaturas</span>
+                <span class="action-item">Asignar verificadores</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step" data-step="2">
+            <div class="step-icon admin-color">
+              <i class="fas fa-unlock"></i>
+            </div>
+            <div class="step-content">
+              <h3>2. Apertura del Período</h3>
+              <p><strong>Administradores</strong> abren el período de subida de documentos para que los docentes puedan trabajar.</p>
+              <div class="step-actions">
+                <span class="action-item">Activar subida de documentos</span>
+                <span class="action-item">Notificar a docentes</span>
+                <span class="action-item">Habilitar portafolios</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step" data-step="3">
+            <div class="step-icon docente-color">
+              <i class="fas fa-upload"></i>
+            </div>
+            <div class="step-content">
+              <h3>3. Trabajo Docente</h3>
+              <p><strong>Docentes</strong> suben sus documentos académicos, completan portafolios y monitorean su progreso.</p>
+              <div class="step-actions">
+                <span class="action-item">Subir documentos</span>
+                <span class="action-item">Completar portafolios</span>
+                <span class="action-item">Ver progreso</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step" data-step="4">
+            <div class="step-icon admin-color">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="step-content">
+              <h3>4. Cierre de Subidas</h3>
+              <p><strong>Administradores</strong> cierran el período de subidas y activan la fase de verificación.</p>
+              <div class="step-actions">
+                <span class="action-item">Cerrar período de subidas</span>
+                <span class="action-item">Activar verificación</span>
+                <span class="action-item">Notificar verificadores</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step" data-step="5">
+            <div class="step-icon verificador-color">
+              <i class="fas fa-search"></i>
+            </div>
+            <div class="step-content">
+              <h3>5. Proceso de Verificación</h3>
+              <p><strong>Verificadores</strong> revisan documentos, crean observaciones y aprueban o rechazan contenido.</p>
+              <div class="step-actions">
+                <span class="action-item">Revisar documentos</span>
+                <span class="action-item">Crear observaciones</span>
+                <span class="action-item">Aprobar/rechazar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step" data-step="6">
+            <div class="step-icon admin-color">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="step-content">
+              <h3>6. Reportes y Cierre</h3>
+              <p><strong>Administradores</strong> generan reportes finales, analizan estadísticas y cierran el ciclo académico.</p>
+              <div class="step-actions">
+                <span class="action-item">Generar reportes</span>
+                <span class="action-item">Análisis estadístico</span>
+                <span class="action-item">Cerrar ciclo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acceso rápido por roles -->
+    <section class="quick-access-section">
+      <div class="quick-access-container">
+        <div class="section-header">
+          <h2>Acceso por Roles</h2>
+          <p>Seleccione su rol para conocer las funcionalidades disponibles</p>
+        </div>
+
+        <div class="access-cards">
+          <div class="access-card admin-card">
+            <div class="card-header">
+              <i class="fas fa-cogs"></i>
+              <h3>Administrador</h3>
+              <span class="role-badge admin-badge">Control Total</span>
+            </div>
+            <div class="card-content">
+              <h4>Responsabilidades:</h4>
+              <ul>
+                <li>Configurar ciclos académicos</li>
+                <li>Gestionar usuarios y roles</li>
+                <li>Asignar docentes a asignaturas</li>
+                <li>Controlar estados del sistema</li>
+                <li>Generar reportes ejecutivos</li>
+                <li>Cargar datos masivos (Excel)</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <a href="paginas/autenticacion/login.html" class="btn btn-admin">
+                <i class="fas fa-sign-in-alt"></i> Acceder como Administrador
+              </a>
+            </div>
+          </div>
+
+          <div class="access-card docente-card">
+            <div class="card-header">
+              <i class="fas fa-graduation-cap"></i>
+              <h3>Docente</h3>
+              <span class="role-badge docente-badge">Gestión de Portafolios</span>
+            </div>
+            <div class="card-content">
+              <h4>Responsabilidades:</h4>
+              <ul>
+                <li>Gestionar portafolios académicos</li>
+                <li>Subir documentos requeridos</li>
+                <li>Monitorear progreso de completitud</li>
+                <li>Revisar observaciones recibidas</li>
+                <li>Responder a verificadores</li>
+                <li>Generar reportes personales</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <a href="paginas/autenticacion/login.html" class="btn btn-docente">
+                <i class="fas fa-sign-in-alt"></i> Acceder como Docente
+              </a>
+            </div>
+          </div>
+
+          <div class="access-card verificador-card">
+            <div class="card-header">
+              <i class="fas fa-check-circle"></i>
+              <h3>Verificador</h3>
+              <span class="role-badge verificador-badge">Control de Calidad</span>
+            </div>
+            <div class="card-content">
+              <h4>Responsabilidades:</h4>
+              <ul>
+                <li>Revisar documentos académicos</li>
+                <li>Crear observaciones detalladas</li>
+                <li>Aprobar o rechazar contenido</li>
+                <li>Gestionar cola de revisión</li>
+                <li>Comunicarse con docentes</li>
+                <li>Generar estadísticas de verificación</li>
+              </ul>
+            </div>
+            <div class="card-footer">
+              <a href="paginas/autenticacion/login.html" class="btn btn-verificador">
+                <i class="fas fa-sign-in-alt"></i> Acceder como Verificador
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Sistema de Portafolio Docente</h4>
+          <p>Universidad Nacional de San Antonio Abad del Cusco</p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Enlaces Útiles</h4>
+          <ul class="footer-links">
+            <li><a href="paginas/autenticacion/login.html">Iniciar Sesión</a></li>
+            <li><a href="paginas/compartidas/ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="paginas/autenticacion/recuperar.html">Recuperar Contraseña</a></li>
+            <li><a href="mailto:portafolio@unsaac.edu.pe">Soporte Técnico</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Información Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#">Términos y Condiciones</a></li>
+            <li><a href="#">Política de Privacidad</a></li>
+            <li><a href="#">Política de Cookies</a></li>
+            <li><a href="#">Accesibilidad</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> portafolio@unsaac.edu.pe</p>
+            <p><i class="fas fa-phone"></i> +51 84 232006</p>
+            <p><i class="fas fa-map-marker-alt"></i> Av. de la Cultura 733, Cusco</p>
+            <p><i class="fas fa-clock"></i> Lun - Vie: 8:00 AM - 5:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+        <p>Desarrollado por el Área de Tecnologías de Información - UNSAAC | Versión 1.0</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Principal -->
+  <script src="assets/js/principal.js"></script>
+</body>
+</html>

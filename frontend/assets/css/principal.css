@@ -1,0 +1,78 @@
+@import "../css/componentes/footer.css";
+@import "../css/componentes/header.css";
+@import "../css/nucleo/diseño.main.index.css";
+@import "../css/componentes/Login.css";
+
+
+/* ==========================================
+   🎨 CSS PRINCIPAL - DISTRIBUIDOR
+   Sistema Portafolio Docente UNSAAC
+   
+   Este archivo organiza e importa todos los estilos
+   del sistema de manera ordenada y optimizada
+   ========================================== */
+
+/* ===== 1. RESET Y CONFIGURACIÓN BASE ===== */
+@import url('nucleo/reset.css');
+@import url('nucleo/variables.css');
+@import url('nucleo/tipografias.css');
+@import url('nucleo/diseño.css');
+
+/* ===== 2. COMPONENTES REUTILIZABLES ===== */
+@import url('componentes/header.css');
+@import url('componentes/barra-superior.css');
+@import url('componentes/barra-lateral.css');
+@import url('componentes/footer.css');
+@import url('componentes/botones.css');
+@import url('componentes/formularios.css');
+@import url('componentes/tablas.css');
+@import url('componentes/tarjetas.css');
+@import url('componentes/modales.css');
+@import url('componentes/notificaciones.css');
+@import url('componentes/migas-pan.css');
+@import url('componentes/cargando.css');
+
+/* ===== 3. PÁGINAS - AUTENTICACIÓN ===== */
+@import url('paginas/autenticacion/login.css');
+@import url('paginas/autenticacion/recuperar.css');
+@import url('paginas/autenticacion/selector-rol.css');
+
+/* ===== 4. PÁGINAS - ADMINISTRADOR ===== */
+@import url('paginas/administrador/tablero.css');
+@import url('paginas/administrador/usuarios.css');
+@import url('paginas/administrador/asignaturas.css');
+@import url('paginas/administrador/ciclos.css');
+@import url('paginas/administrador/configuracion.css');
+@import url('paginas/administrador/reportes.css');
+@import url('paginas/administrador/carga-excel.css');
+
+/* ===== 5. PÁGINAS - DOCENTE ===== */
+@import url('paginas/docente/tablero.css');
+@import url('paginas/docente/portafolios.css');
+@import url('paginas/docente/explorador.css');
+@import url('paginas/docente/subir-archivos.css');
+@import url('paginas/docente/progreso.css');
+@import url('paginas/docente/observaciones.css');
+
+/* ===== 6. PÁGINAS - VERIFICADOR ===== */
+@import url('paginas/verificador/tablero.css');
+@import url('paginas/verificador/cola-revision.css');
+@import url('paginas/verificador/revisar.css');
+@import url('paginas/verificador/crear-observacion.css');
+@import url('paginas/verificador/estadisticas.css');
+
+/* ===== 7. PÁGINAS - COMPARTIDAS ===== */
+@import url('paginas/compartidas/perfil.css');
+@import url('paginas/compartidas/cambiar-clave.css');
+@import url('paginas/compartidas/centro-notificaciones.css');
+@import url('paginas/compartidas/paginas-error.css');
+
+/* ===== 8. TEMAS ===== */
+@import url('temas/tema-unsaac.css');
+@import url('temas/tema-claro.css');
+@import url('temas/tema-oscuro.css');
+
+/* ===== 9. RESPONSIVE ===== */
+@import url('responsive/tablet.css');
+@import url('responsive/movil.css');
+@import url('responsive/escritorio.css');

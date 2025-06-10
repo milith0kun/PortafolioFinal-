@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{PAGE_DESCRIPTION}} - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="{{PAGE_KEYWORDS}}, portafolio docente, UNSAAC, gestión académica">
+  <meta name="author" content="UNSAAC">
+  <title>{{PAGE_TITLE}} - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="{{CSS_PATH}}/principal.css">
+  
+  <!-- CSS Específicos de Página -->
+  {{SPECIFIC_CSS}}
+
+  <!-- JavaScript Core -->
+  <script src="{{JS_PATH}}/nucleo/configuracion.js"></script>
+  <script src="{{JS_PATH}}/nucleo/autenticacion.js"></script>
+  <script src="{{JS_PATH}}/nucleo/aplicacion.js" defer></script>
+  
+  <!-- JavaScript Específicos de Página -->
+  {{SPECIFIC_JS}}
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Meta adicionales -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#2c3e50">
+  <link rel="icon" type="image/png" href="{{ASSETS_PATH}}/imagenes/iconos/favicon.png">
+</head>
+
+<body {{BODY_ATTRIBUTES}}>
+  <!-- Preloader -->
+  <div id="preloader" class="preloader" style="display: none;">
+    <div class="preloader-content">
+      <div class="spinner"></div>
+      <p>Cargando...</p>
+    </div>
+  </div>
+
+  <!-- Header principal -->
+  <header class="main-header" id="mainHeader">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="{{SEARCH_PLACEHOLDER}}" id="globalSearch">
+          <button class="search-btn" onclick="realizarBusquedaGlobal()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <!-- Redes sociales institucionales -->
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon" title="Facebook UNSAAC">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon" title="Twitter UNSAAC">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon" title="Instagram UNSAAC">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon" title="YouTube UNSAAC">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+
+          <!-- Notificaciones -->
+          <div class="notifications-menu" id="notificationsMenu">
+            <button class="notifications-btn" onclick="toggleNotifications()">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+            </button>
+            <div class="notifications-dropdown" id="notificationsDropdown" style="display: none;">
+              <div class="notifications-header">
+                <h4>Notificaciones</h4>
+                <button onclick="marcarTodasComoLeidas()" class="mark-read-btn">
+                  <i class="fas fa-check-double"></i>
+                </button>
+              </div>
+              <div class="notifications-list" id="notificationsList">
+                <div class="no-notifications">
+                  <i class="fas fa-bell-slash"></i>
+                  <p>No hay notificaciones nuevas</p>
+                </div>
+              </div>
+              <div class="notifications-footer">
+                <a href="{{BASE_PATH}}/compartidas/notificaciones.html">Ver todas las notificaciones</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Menú de usuario -->
+          <div class="user-menu" id="userMenu">
+            <div class="user-avatar">
+              <img id="userAvatarImg" src="{{ASSETS_PATH}}/imagenes/avatares/default-avatar.png" alt="Avatar">
+            </div>
+            <div class="user-info">
+              <span class="user-name" id="userName">{{USER_NAME}}</span>
+              <span class="user-role" id="userRole">{{USER_ROLE}}</span>
+            </div>
+            <button class="user-menu-toggle" onclick="toggleUserMenu()">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            
+            <div class="user-dropdown" id="userDropdown" style="display: none;">
+              <!-- Cambio de rol (si aplica) -->
+              <div class="role-switcher" id="roleSwitcher" style="display: none;">
+                <h5>Cambiar Rol</h5>
+                <div class="role-options" id="roleOptions">
+                  <!-- Se carga dinámicamente -->
+                </div>
+              </div>
+              
+              <!-- Enlaces del menú -->
+              <div class="menu-section">
+                <a href="{{BASE_PATH}}/compartidas/perfil.html" class="menu-item">
+                  <i class="fas fa-user"></i> Mi Perfil
+                </a>
+                <a href="{{BASE_PATH}}/compartidas/cambiar-clave.html" class="menu-item">
+                  <i class="fas fa-key"></i> Cambiar Contraseña
+                </a>
+                <a href="{{BASE_PATH}}/compartidas/notificaciones.html" class="menu-item">
+                  <i class="fas fa-bell"></i> Notificaciones
+                </a>
+              </div>
+              
+              <div class="menu-separator"></div>
+              
+              <div class="menu-section">
+                <a href="{{BASE_PATH}}/compartidas/ayuda.html" class="menu-item">
+                  <i class="fas fa-question-circle"></i> Ayuda
+                </a>
+                <button onclick="cerrarSesion()" class="menu-item logout-btn">
+                  <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="{{ASSETS_PATH}}/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC" onclick="irAlInicio()">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">{{PAGE_SECTION}}</span>
+          </div>
+        </div>
+
+        <!-- Información adicional del header -->
+        <div class="header-info">
+          {{HEADER_INFO}}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav" id="mainNav">
+          <ul class="nav-list">
+            {{NAVIGATION_ITEMS}}
+          </ul>
+        </nav>
+
+        <!-- Breadcrumb integrado (opcional) -->
+        <nav class="breadcrumb-nav" id="breadcrumbNav" style="display: none;">
+          {{BREADCRUMB_ITEMS}}
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb independiente -->
+  <nav class="breadcrumb" id="breadcrumb" style="{{BREADCRUMB_DISPLAY}}">
+    {{BREADCRUMB_CONTENT}}
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="main-content" id="mainContent">
+    <!-- Mensajes del sistema -->
+    <div class="system-messages" id="systemMessages">
+      <!-- Se cargan dinámicamente -->
+    </div>
+
+    <!-- Alertas importantes -->
+    <div class="important-alerts" id="importantAlerts" style="display: none;">
+      <!-- Se cargan dinámicamente -->
+    </div>
+
+    <!-- Contenido específico de la página -->
+    {{PAGE_CONTENT}}
+  </main>
+
+  <!-- Sidebar lateral (opcional) -->
+  <aside class="sidebar" id="sidebar" style="{{SIDEBAR_DISPLAY}}">
+    {{SIDEBAR_CONTENT}}
+  </aside>
+
+  <!-- Footer -->
+  <footer class="main-footer" id="mainFooter">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>Sistema de Portafolio Docente</h4>
+          <p>Universidad Nacional de San Antonio Abad del Cusco</p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" title="Facebook UNSAAC">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" title="Twitter UNSAAC">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" title="Instagram UNSAAC">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" title="YouTube UNSAAC">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Enlaces Útiles</h4>
+          <ul class="footer-links">
+            <li><a href="{{BASE_PATH}}/index.html">Inicio</a></li>
+            <li><a href="{{BASE_PATH}}/compartidas/ayuda.html">Centro de Ayuda</a></li>
+            <li><a href="mailto:portafolio@unsaac.edu.pe">Soporte Técnico</a></li>
+            <li><a href="{{BASE_PATH}}/compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Información Legal</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="mostrarTerminos()">Términos y Condiciones</a></li>
+            <li><a href="#" onclick="mostrarPrivacidad()">Política de Privacidad</a></li>
+            <li><a href="#" onclick="mostrarCookies()">Política de Cookies</a></li>
+            <li><a href="#" onclick="mostrarAccesibilidad()">Accesibilidad</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> portafolio@unsaac.edu.pe</p>
+            <p><i class="fas fa-phone"></i> +51 84 232006</p>
+            <p><i class="fas fa-map-marker-alt"></i> Av. de la Cultura 733, Cusco</p>
+            <p><i class="fas fa-clock"></i> Lun - Vie: 8:00 AM - 5:00 PM</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+          <p>Desarrollado por el Área de Tecnologías de Información - UNSAAC | Versión 1.0.0</p>
+        </div>
+        
+        <div class="footer-bottom-actions">
+          <button onclick="cambiarTema()" class="theme-toggle" title="Cambiar tema">
+            <i class="fas fa-moon" id="themeIcon"></i>
+          </button>
+          <button onclick="scrollToTop()" class="scroll-top" title="Ir arriba" id="scrollTopBtn" style="display: none;">
+            <i class="fas fa-chevron-up"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modales del sistema -->
+  
+  <!-- Modal de confirmación genérico -->
+  <div id="confirmModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="confirmTitle">Confirmar Acción</h3>
+        <span class="close" onclick="cerrarModal('confirmModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="confirm-icon" id="confirmIcon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <p id="confirmMessage">¿Está seguro de que desea realizar esta acción?</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="confirmarAccion()" class="btn btn-primary" id="confirmBtn">Confirmar</button>
+        <button onclick="cerrarModal('confirmModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de alerta genérico -->
+  <div id="alertModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="alertTitle">Información</h3>
+        <span class="close" onclick="cerrarModal('alertModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="alert-icon" id="alertIcon">
+          <i class="fas fa-info-circle"></i>
+        </div>
+        <p id="alertMessage">Mensaje de información</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="cerrarModal('alertModal')" class="btn btn-primary">Entendido</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay para modales -->
+  <div id="modalOverlay" class="modal-overlay" style="display: none;" onclick="cerrarTodosLosModales()"></div>
+
+  <!-- Toast notifications -->
+  <div id="toastContainer" class="toast-container">
+    <!-- Se generan dinámicamente -->
+  </div>
+
+  <!-- JavaScript Principal del Sistema -->
+  <script src="{{JS_PATH}}/principal.js"></script>
+
+  <!-- JavaScript específicos adicionales -->
+  {{ADDITIONAL_JS}}
+
+  <!-- Scripts inline para variables del template -->
+  <script>
+    // Variables globales del template
+    window.TEMPLATE_CONFIG = {
+      basePath: '{{BASE_PATH}}',
+      assetsPath: '{{ASSETS_PATH}}',
+      currentPage: '{{CURRENT_PAGE}}',
+      userRole: '{{USER_ROLE}}',
+      apiEndpoint: '{{API_ENDPOINT}}',
+      theme: '{{CURRENT_THEME}}' || 'light'
+    };
+
+    // Inicialización del template
+    document.addEventListener('DOMContentLoaded', function() {
+      inicializarTemplate();
+      cargarNotificaciones();
+      verificarEstadoSesion();
+      aplicarTemaGuardado();
+      inicializarComponentesComunes();
+    });
+
+    // Funciones básicas del template
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('mobile-open');
+    }
+
+    function irAlInicio() {
+      window.location.href = TEMPLATE_CONFIG.basePath + '/index.html';
+    }
+
+    // Mostrar/ocultar botón de scroll to top
+    window.addEventListener('scroll', function() {
+      const scrollTopBtn = document.getElementById('scrollTopBtn');
+      if (window.pageYOffset > 300) {
+        scrollTopBtn.style.display = 'block';
+      } else {
+        scrollTopBtn.style.display = 'none';
+      }
+    });
+
+    // Funciones de placeholders para ser sobrescritas
+    function inicializarTemplate() {
+      // Implementar en JavaScript específico de página
+    }
+
+    function cargarNotificaciones() {
+      // Implementar carga de notificaciones
+    }
+
+    function verificarEstadoSesion() {
+      // Implementar verificación de sesión
+    }
+
+    function aplicarTemaGuardado() {
+      // Implementar gestión de temas
+    }
+
+    function inicializarComponentesComunes() {
+      // Implementar inicialización de componentes
+    }
+  </script>
+
+  <!-- Scripts inline adicionales específicos de página -->
+  {{INLINE_SCRIPTS}}
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Centro de Notificaciones - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Centro de notificaciones - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="notificaciones, alertas, mensajes, comunicaciones, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/compartidas/notificaciones-manager.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion()">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar notificaciones...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-bell"></i></div>
+            <span class="user-name" id="userName">Usuario</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Centro de Notificaciones</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav" id="mainNav">
+          <ul class="nav-list">
+            <!-- Se cargará dinámicamente según el rol -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="#" onclick="volverDashboard()">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Centro de Notificaciones</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Resumen de notificaciones -->
+    <section class="notifications-summary">
+      <div class="summary-header">
+        <h2><i class="fas fa-bell"></i> Resumen de Notificaciones</h2>
+        <div class="summary-actions">
+          <button onclick="marcarTodasLeidas()" class="btn btn-secondary">
+            <i class="fas fa-check-double"></i> Marcar Todas Leídas
+          </button>
+          <button onclick="configurarNotificaciones()" class="btn btn-primary">
+            <i class="fas fa-cog"></i> Configurar
+          </button>
+        </div>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card total-notifications">
+          <div class="card-icon">
+            <i class="fas fa-envelope"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Notificaciones</h3>
+            <span class="card-value" id="totalNotifications">47</span>
+            <span class="card-label">Recibidas</span>
+          </div>
+        </div>
+
+        <div class="summary-card unread-notifications">
+          <div class="card-icon">
+            <i class="fas fa-envelope-open"></i>
+          </div>
+          <div class="card-info">
+            <h3>No Leídas</h3>
+            <span class="card-value" id="unreadNotifications">12</span>
+            <span class="card-label">Pendientes</span>
+          </div>
+        </div>
+
+        <div class="summary-card urgent-notifications">
+          <div class="card-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Urgentes</h3>
+            <span class="card-value" id="urgentNotifications">3</span>
+            <span class="card-label">Requieren atención</span>
+          </div>
+        </div>
+
+        <div class="summary-card today-notifications">
+          <div class="card-icon">
+            <i class="fas fa-calendar-day"></i>
+          </div>
+          <div class="card-info">
+            <h3>Hoy</h3>
+            <span class="card-value" id="todayNotifications">8</span>
+            <span class="card-label">Nuevas</span>
+          </div>
+        </div>
+
+        <div class="summary-card archived-notifications">
+          <div class="card-icon">
+            <i class="fas fa-archive"></i>
+          </div>
+          <div class="card-info">
+            <h3>Archivadas</h3>
+            <span class="card-value" id="archivedNotifications">15</span>
+            <span class="card-label">Guardadas</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros y controles -->
+    <section class="notifications-controls">
+      <div class="controls-header">
+        <h2><i class="fas fa-filter"></i> Filtrar Notificaciones</h2>
+      </div>
+
+      <div class="controls-row">
+        <div class="filter-group">
+          <label for="filterTipo">Tipo:</label>
+          <select id="filterTipo" onchange="filtrarNotificaciones()">
+            <option value="">Todos los tipos</option>
+            <option value="sistema">Sistema</option>
+            <option value="documento">Documento</option>
+            <option value="observacion">Observación</option>
+            <option value="ciclo">Ciclo Académico</option>
+            <option value="asignacion">Asignación</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterEstado">Estado:</label>
+          <select id="filterEstado" onchange="filtrarNotificaciones()">
+            <option value="">Todos los estados</option>
+            <option value="no_leida">No leídas</option>
+            <option value="leida">Leídas</option>
+            <option value="archivada">Archivadas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterPrioridad">Prioridad:</label>
+          <select id="filterPrioridad" onchange="filtrarNotificaciones()">
+            <option value="">Todas las prioridades</option>
+            <option value="urgente">Urgente</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterFecha">Fecha:</label>
+          <select id="filterFecha" onchange="filtrarNotificaciones()">
+            <option value="">Todas las fechas</option>
+            <option value="hoy">Hoy</option>
+            <option value="ayer">Ayer</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes">Este mes</option>
+            <option value="antiguas">Más antiguas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="searchNotifications">Buscar:</label>
+          <input type="text" id="searchNotifications" placeholder="Buscar en contenido..." onkeyup="buscarNotificaciones()">
+        </div>
+
+        <div class="action-controls">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+          <button onclick="refrescarNotificaciones()" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Refrescar
+          </button>
+          <button onclick="exportarNotificaciones()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar
+          </button>
+        </div>
+      </div>
+
+      <!-- Ordenamiento -->
+      <div class="sort-controls">
+        <label>Ordenar por:</label>
+        <div class="sort-buttons">
+          <button class="sort-btn active" data-sort="fecha" onclick="ordenarNotificaciones('fecha')">
+            <i class="fas fa-calendar"></i> Fecha
+          </button>
+          <button class="sort-btn" data-sort="prioridad" onclick="ordenarNotificaciones('prioridad')">
+            <i class="fas fa-exclamation"></i> Prioridad
+          </button>
+          <button class="sort-btn" data-sort="tipo" onclick="ordenarNotificaciones('tipo')">
+            <i class="fas fa-tag"></i> Tipo
+          </button>
+          <button class="sort-btn" data-sort="estado" onclick="ordenarNotificaciones('estado')">
+            <i class="fas fa-flag"></i> Estado
+          </button>
+        </div>
+        
+        <div class="sort-direction">
+          <button class="direction-btn active" data-direction="desc" onclick="cambiarDireccion('desc')">
+            <i class="fas fa-sort-amount-down"></i> Nuevas primero
+          </button>
+          <button class="direction-btn" data-direction="asc" onclick="cambiarDireccion('asc')">
+            <i class="fas fa-sort-amount-up"></i> Antiguas primero
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de notificaciones -->
+    <section class="notifications-list">
+      <div class="list-header">
+        <h2><i class="fas fa-list"></i> Mis Notificaciones</h2>
+        <div class="list-info">
+          <span class="list-count">Mostrando <span id="showingCount">20</span> de <span id="totalCount">47</span> notificaciones</span>
+        </div>
+      </div>
+
+      <!-- Controles de vista -->
+      <div class="view-controls">
+        <div class="view-buttons">
+          <button class="view-btn active" data-view="cards" onclick="cambiarVistaNotificaciones('cards')">
+            <i class="fas fa-th-large"></i> Cards
+          </button>
+          <button class="view-btn" data-view="list" onclick="cambiarVistaNotificaciones('list')">
+            <i class="fas fa-list"></i> Lista
+          </button>
+          <button class="view-btn" data-view="compact" onclick="cambiarVistaNotificaciones('compact')">
+            <i class="fas fa-compress"></i> Compacta
+          </button>
+        </div>
+
+        <div class="bulk-actions">
+          <label class="checkbox-container">
+            <input type="checkbox" id="selectAllNotifications" onchange="seleccionarTodasNotificaciones()">
+            <span class="checkmark"></span>
+            Seleccionar todas
+          </label>
+          
+          <div class="bulk-buttons">
+            <button onclick="marcarLeidasSeleccionadas()" class="btn btn-sm btn-secondary" disabled id="markReadSelectedBtn">
+              <i class="fas fa-eye"></i> Marcar Leídas
+            </button>
+            <button onclick="archivarSeleccionadas()" class="btn btn-sm btn-warning" disabled id="archiveSelectedBtn">
+              <i class="fas fa-archive"></i> Archivar
+            </button>
+            <button onclick="eliminarSeleccionadas()" class="btn btn-sm btn-danger" disabled id="deleteSelectedBtn">
+              <i class="fas fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista en cards (por defecto) -->
+      <div class="notifications-cards" id="notificationsCards">
+        <div class="cards-container" id="cardsContainer">
+          <!-- Se cargará dinámicamente -->
+          <div class="loading-notifications">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando notificaciones...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista en lista -->
+      <div class="notifications-list-view" id="notificationsListView" style="display: none;">
+        <div class="table-container">
+          <table class="notifications-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAllTable"></th>
+                <th>Estado</th>
+                <th>Tipo</th>
+                <th>Título</th>
+                <th>Mensaje</th>
+                <th>Fecha</th>
+                <th>Prioridad</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="notificationsTableBody">
+              <tr>
+                <td colspan="8" class="loading">Cargando notificaciones...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista compacta -->
+      <div class="notifications-compact" id="notificationsCompact" style="display: none;">
+        <div class="compact-container" id="compactContainer">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination-container">
+        <div class="pagination-info">
+          <span>Notificaciones por página:</span>
+          <select id="itemsPerPage" onchange="cambiarItemsPorPagina()">
+            <option value="10">10</option>
+            <option value="20" selected>20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+        
+        <div class="pagination" id="pagination">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Notificaciones urgentes -->
+    <section class="urgent-notifications" id="urgentNotifications" style="display: none;">
+      <div class="urgent-header">
+        <h2><i class="fas fa-exclamation-triangle"></i> Notificaciones Urgentes</h2>
+        <button onclick="ocultarUrgentes()" class="close-urgent">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="urgent-list" id="urgentList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Panel de detalle de notificación -->
+    <section class="notification-detail-panel" id="notificationDetailPanel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-info-circle"></i> Detalle de Notificación</h3>
+        <button onclick="cerrarDetalle()" class="close-panel">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="panel-content" id="notificationDetailContent">
+        <!-- Se cargará dinámicamente -->
+      </div>
+      
+      <div class="panel-actions">
+        <button onclick="marcarComoLeida()" class="btn btn-secondary" id="markAsReadBtn">
+          <i class="fas fa-eye"></i> Marcar como Leída
+        </button>
+        <button onclick="archivarNotificacion()" class="btn btn-warning" id="archiveBtn">
+          <i class="fas fa-archive"></i> Archivar
+        </button>
+        <button onclick="irAEnlace()" class="btn btn-primary" id="goToLinkBtn" style="display: none;">
+          <i class="fas fa-external-link-alt"></i> Ir al Enlace
+        </button>
+        <button onclick="eliminarNotificacion()" class="btn btn-danger" id="deleteBtn">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+      </div>
+    </section>
+
+    <!-- Configuración de notificaciones -->
+    <section class="notifications-settings" id="notificationsSettings" style="display: none;">
+      <div class="settings-header">
+        <h2><i class="fas fa-cog"></i> Configuración de Notificaciones</h2>
+        <button onclick="cerrarConfiguracion()" class="close-settings">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <div class="settings-content">
+        <form id="notificationSettingsForm">
+          <!-- Configuración por tipo de notificación -->
+          <div class="settings-group">
+            <h3>Tipos de Notificaciones</h3>
+            
+            <div class="notification-types">
+              <div class="type-setting">
+                <div class="type-info">
+                  <h4><i class="fas fa-cog"></i> Notificaciones del Sistema</h4>
+                  <p>Actualizaciones, mantenimiento y cambios del sistema</p>
+                </div>
+                <div class="type-controls">
+                  <label class="switch">
+                    <input type="checkbox" id="enableSistema" checked>
+                    <span class="slider"></span>
+                  </label>
+                  <select id="prioritySistema">
+                    <option value="todas">Todas</option>
+                    <option value="alta">Solo alta prioridad</option>
+                    <option value="urgente">Solo urgentes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="type-setting">
+                <div class="type-info">
+                  <h4><i class="fas fa-file-alt"></i> Notificaciones de Documentos</h4>
+                  <p>Estados de documentos, aprobaciones y rechazos</p>
+                </div>
+                <div class="type-controls">
+                  <label class="switch">
+                    <input type="checkbox" id="enableDocumento" checked>
+                    <span class="slider"></span>
+                  </label>
+                  <select id="priorityDocumento">
+                    <option value="todas">Todas</option>
+                    <option value="alta">Solo alta prioridad</option>
+                    <option value="urgente">Solo urgentes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="type-setting">
+                <div class="type-info">
+                  <h4><i class="fas fa-comments"></i> Notificaciones de Observaciones</h4>
+                  <p>Nuevas observaciones y respuestas</p>
+                </div>
+                <div class="type-controls">
+                  <label class="switch">
+                    <input type="checkbox" id="enableObservacion" checked>
+                    <span class="slider"></span>
+                  </label>
+                  <select id="priorityObservacion">
+                    <option value="todas">Todas</option>
+                    <option value="alta">Solo alta prioridad</option>
+                    <option value="urgente">Solo urgentes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="type-setting">
+                <div class="type-info">
+                  <h4><i class="fas fa-calendar-alt"></i> Notificaciones de Ciclo</h4>
+                  <p>Cambios de ciclo académico y períodos</p>
+                </div>
+                <div class="type-controls">
+                  <label class="switch">
+                    <input type="checkbox" id="enableCiclo" checked>
+                    <span class="slider"></span>
+                  </label>
+                  <select id="priorityCiclo">
+                    <option value="todas">Todas</option>
+                    <option value="alta">Solo alta prioridad</option>
+                    <option value="urgente">Solo urgentes</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="type-setting">
+                <div class="type-info">
+                  <h4><i class="fas fa-user-plus"></i> Notificaciones de Asignación</h4>
+                  <p>Asignaciones de docentes y verificadores</p>
+                </div>
+                <div class="type-controls">
+                  <label class="switch">
+                    <input type="checkbox" id="enableAsignacion" checked>
+                    <span class="slider"></span>
+                  </label>
+                  <select id="priorityAsignacion">
+                    <option value="todas">Todas</option>
+                    <option value="alta">Solo alta prioridad</option>
+                    <option value="urgente">Solo urgentes</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuración de frecuencia -->
+          <div class="settings-group">
+            <h3>Frecuencia de Notificaciones</h3>
+            
+            <div class="frequency-options">
+              <label class="radio-container">
+                <input type="radio" name="frequency" value="inmediata" checked>
+                <span class="radiomark"></span>
+                Inmediata (En tiempo real)
+              </label>
+              
+              <label class="radio-container">
+                <input type="radio" name="frequency" value="cada_hora">
+                <span class="radiomark"></span>
+                Cada hora
+              </label>
+              
+              <label class="radio-container">
+                <input type="radio" name="frequency" value="diaria">
+                <span class="radiomark"></span>
+                Resumen diario
+              </label>
+              
+              <label class="radio-container">
+                <input type="radio" name="frequency" value="semanal">
+                <span class="radiomark"></span>
+                Resumen semanal
+              </label>
+            </div>
+          </div>
+
+          <!-- Configuración de retención -->
+          <div class="settings-group">
+            <h3>Retención de Notificaciones</h3>
+            
+            <div class="retention-settings">
+              <div class="retention-option">
+                <label for="autoArchive">Auto-archivar después de:</label>
+                <select id="autoArchive">
+                  <option value="never">Nunca</option>
+                  <option value="7">7 días</option>
+                  <option value="15">15 días</option>
+                  <option value="30" selected>30 días</option>
+                  <option value="60">60 días</option>
+                  <option value="90">90 días</option>
+                </select>
+              </div>
+              
+              <div class="retention-option">
+                <label for="autoDelete">Auto-eliminar después de:</label>
+                <select id="autoDelete">
+                  <option value="never">Nunca</option>
+                  <option value="90">90 días</option>
+                  <option value="180" selected>180 días</option>
+                  <option value="365">1 año</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Configuración de sonido -->
+          <div class="settings-group">
+            <h3>Alertas Sonoras</h3>
+            
+            <div class="sound-settings">
+              <label class="checkbox-container">
+                <input type="checkbox" id="enableSound" checked>
+                <span class="checkmark"></span>
+                Habilitar sonidos de notificación
+              </label>
+              
+              <div class="sound-options" id="soundOptions">
+                <label for="soundType">Tipo de sonido:</label>
+                <select id="soundType">
+                  <option value="default">Predeterminado</option>
+                  <option value="subtle">Sutil</option>
+                  <option value="notification">Notificación</option>
+                  <option value="alert">Alerta</option>
+                </select>
+                
+                <label for="soundVolume">Volumen:</label>
+                <input type="range" id="soundVolume" min="0" max="100" value="50">
+                <span id="volumeValue">50%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Acciones de configuración -->
+          <div class="settings-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-save"></i> Guardar Configuración
+            </button>
+            <button type="button" onclick="restaurarDefaults()" class="btn btn-secondary">
+              <i class="fas fa-undo"></i> Restaurar Predeterminados
+            </button>
+            <button type="button" onclick="cerrarConfiguracion()" class="btn btn-outline">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Estadísticas de notificaciones -->
+    <section class="notifications-stats">
+      <h2><i class="fas fa-chart-bar"></i> Estadísticas de Notificaciones</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card notifications-per-day">
+          <div class="stat-header">
+            <i class="fas fa-calendar-day"></i>
+            <h3>Promedio Diario</h3>
+          </div>
+          <div class="stat-value" id="notificationsPerDay">5.2</div>
+          <div class="stat-change neutral">notificaciones/día</div>
+        </div>
+
+        <div class="stat-card response-time">
+          <div class="stat-header">
+            <i class="fas fa-clock"></i>
+            <h3>Tiempo de Lectura</h3>
+          </div>
+          <div class="stat-value" id="readingTime">2.5h</div>
+          <div class="stat-change positive">Promedio</div>
+        </div>
+
+        <div class="stat-card engagement-rate">
+          <div class="stat-header">
+            <i class="fas fa-mouse-pointer"></i>
+            <h3>Tasa de Interacción</h3>
+          </div>
+          <div class="stat-value" id="engagementRate">78%</div>
+          <div class="stat-change positive">+5% vs mes anterior</div>
+        </div>
+
+        <div class="stat-card archive-rate">
+          <div class="stat-header">
+            <i class="fas fa-archive"></i>
+            <h3>Tasa de Archivo</h3>
+          </div>
+          <div class="stat-value" id="archiveRate">32%</div>
+          <div class="stat-change neutral">Normal</div>
+        </div>
+      </div>
+
+      <!-- Gráfico de tendencias -->
+      <div class="trends-chart">
+        <h3>Tendencias de Notificaciones (Últimas 4 semanas)</h3>
+        <div class="chart-container" id="notificationsTrendsChart">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de confirmación -->
+  <div id="confirmModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="confirmTitle">Confirmar Acción</h3>
+        <span class="close" onclick="cerrarModal('confirmModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p id="confirmMessage">¿Está seguro de realizar esta acción?</p>
+      </div>
+      <div class="modal-footer">
+        <button onclick="confirmarAccion()" class="btn btn-primary" id="confirmBtn">Confirmar</button>
+        <button onclick="cerrarModal('confirmModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html> 

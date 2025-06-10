@@ -1,0 +1,822 @@
+<!-- ============================================ -->
+<!-- PLANTILLA BASE PARA MODALES DEL SISTEMA -->
+<!-- Sistema de Portafolio Docente UNSAAC -->
+<!-- ============================================ -->
+
+<!-- Modal base genérico -->
+<div id="{{MODAL_ID}}" class="modal {{MODAL_CLASS}}" style="display: none;" data-modal-type="{{MODAL_TYPE}}">
+   <div class="modal-content {{MODAL_SIZE}}">
+     <!-- Header del modal -->
+     <div class="modal-header {{HEADER_CLASS}}">
+       <div class="modal-title-section">
+         <div class="modal-icon" style="{{ICON_DISPLAY}}">
+           <i class="{{MODAL_ICON}}"></i>
+         </div>
+         <h3 class="modal-title">{{MODAL_TITLE}}</h3>
+         <p class="modal-subtitle" style="{{SUBTITLE_DISPLAY}}">{{MODAL_SUBTITLE}}</p>
+       </div>
+       
+       <div class="modal-controls">
+         <button class="modal-help" onclick="mostrarAyudaModal('{{MODAL_ID}}')" style="{{HELP_DISPLAY}}" title="Ayuda">
+           <i class="fas fa-question-circle"></i>
+         </button>
+         <button class="modal-minimize" onclick="minimizarModal('{{MODAL_ID}}')" style="{{MINIMIZE_DISPLAY}}" title="Minimizar">
+           <i class="fas fa-window-minimize"></i>
+         </button>
+         <button class="modal-maximize" onclick="maximizarModal('{{MODAL_ID}}')" style="{{MAXIMIZE_DISPLAY}}" title="Maximizar">
+           <i class="fas fa-window-maximize"></i>
+         </button>
+         <span class="modal-close" onclick="cerrarModal('{{MODAL_ID}}')" title="Cerrar">
+           <i class="fas fa-times"></i>
+         </span>
+       </div>
+     </div>
+ 
+     <!-- Progress bar para modales de proceso -->
+     <div class="modal-progress" style="{{PROGRESS_DISPLAY}}">
+       <div class="progress-bar">
+         <div class="progress-fill" id="{{MODAL_ID}}_progress" style="width: 0%"></div>
+       </div>
+       <span class="progress-text" id="{{MODAL_ID}}_progress_text">0%</span>
+     </div>
+ 
+     <!-- Body del modal -->
+     <div class="modal-body {{BODY_CLASS}}">
+       <!-- Loading state -->
+       <div class="modal-loading" id="{{MODAL_ID}}_loading" style="{{LOADING_DISPLAY}}">
+         <div class="loading-spinner">
+           <i class="fas fa-spinner fa-spin"></i>
+         </div>
+         <p class="loading-text">{{LOADING_TEXT}}</p>
+       </div>
+ 
+       <!-- Error state -->
+       <div class="modal-error" id="{{MODAL_ID}}_error" style="display: none;">
+         <div class="error-icon">
+           <i class="fas fa-exclamation-triangle"></i>
+         </div>
+         <h4 class="error-title">Error al cargar contenido</h4>
+         <p class="error-message" id="{{MODAL_ID}}_error_message"></p>
+         <button onclick="reintentarCargaModal('{{MODAL_ID}}')" class="btn btn-primary btn-sm">
+           <i class="fas fa-redo"></i> Reintentar
+         </button>
+       </div>
+ 
+       <!-- Contenido principal del modal -->
+       <div class="modal-main-content" id="{{MODAL_ID}}_content">
+         {{MODAL_CONTENT}}
+       </div>
+ 
+       <!-- Tabs dentro del modal (opcional) -->
+       <div class="modal-tabs" style="{{TABS_DISPLAY}}">
+         <div class="tab-headers">
+           {{TAB_HEADERS}}
+         </div>
+         <div class="tab-contents">
+           {{TAB_CONTENTS}}
+         </div>
+       </div>
+ 
+       <!-- Sección de adjuntos/archivos -->
+       <div class="modal-attachments" style="{{ATTACHMENTS_DISPLAY}}">
+         <h5><i class="fas fa-paperclip"></i> Archivos Adjuntos</h5>
+         <div class="attachments-list" id="{{MODAL_ID}}_attachments">
+           {{ATTACHMENTS_CONTENT}}
+         </div>
+       </div>
+ 
+       <!-- Sección de comentarios/notas -->
+       <div class="modal-comments" style="{{COMMENTS_DISPLAY}}">
+         <h5><i class="fas fa-comments"></i> Comentarios</h5>
+         <div class="comments-list" id="{{MODAL_ID}}_comments">
+           {{COMMENTS_CONTENT}}
+         </div>
+         <div class="add-comment" style="{{ADD_COMMENT_DISPLAY}}">
+           <textarea placeholder="Agregar un comentario..." id="{{MODAL_ID}}_new_comment"></textarea>
+           <button onclick="agregarComentario('{{MODAL_ID}}')" class="btn btn-sm btn-primary">
+             <i class="fas fa-paper-plane"></i> Enviar
+           </button>
+         </div>
+       </div>
+     </div>
+ 
+     <!-- Footer del modal -->
+     <div class="modal-footer {{FOOTER_CLASS}}">
+       <!-- Información adicional en el footer -->
+       <div class="modal-footer-info" style="{{FOOTER_INFO_DISPLAY}}">
+         {{FOOTER_INFO}}
+       </div>
+ 
+       <!-- Acciones principales del modal -->
+       <div class="modal-actions">
+         <!-- Acciones secundarias (izquierda) -->
+         <div class="secondary-actions">
+           {{SECONDARY_ACTIONS}}
+         </div>
+ 
+         <!-- Acciones principales (derecha) -->
+         <div class="primary-actions">
+           {{PRIMARY_ACTIONS}}
+         </div>
+       </div>
+ 
+       <!-- Barra de estado del modal -->
+       <div class="modal-status-bar" style="{{STATUS_BAR_DISPLAY}}">
+         <div class="status-info">
+           <span class="status-label" id="{{MODAL_ID}}_status">{{STATUS_TEXT}}</span>
+         </div>
+         <div class="status-timestamp">
+           <i class="fas fa-clock"></i>
+           <span id="{{MODAL_ID}}_timestamp">{{TIMESTAMP}}</span>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+ 
+ <!-- ============================================ -->
+ <!-- MODALES ESPECÍFICOS PREDEFINIDOS -->
+ <!-- ============================================ -->
+ 
+ <!-- Modal de confirmación -->
+ <template id="confirmModalTemplate">
+   <div id="confirmModal" class="modal modal-confirm" style="display: none;">
+     <div class="modal-content modal-small">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-question-circle text-warning"></i>
+           </div>
+           <h3 class="modal-title">Confirmar Acción</h3>
+         </div>
+         <span class="modal-close" onclick="cerrarModal('confirmModal')">
+           <i class="fas fa-times"></i>
+         </span>
+       </div>
+       <div class="modal-body">
+         <div class="confirm-message">
+           <p id="confirmMessage">¿Está seguro de que desea realizar esta acción?</p>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="primary-actions">
+             <button onclick="confirmarAccion()" class="btn btn-danger" id="confirmBtn">
+               <i class="fas fa-check"></i> Confirmar
+             </button>
+             <button onclick="cerrarModal('confirmModal')" class="btn btn-secondary">
+               <i class="fas fa-times"></i> Cancelar
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Modal de alerta/información -->
+ <template id="alertModalTemplate">
+   <div id="alertModal" class="modal modal-alert" style="display: none;">
+     <div class="modal-content modal-small">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-info-circle text-info" id="alertIcon"></i>
+           </div>
+           <h3 class="modal-title" id="alertTitle">Información</h3>
+         </div>
+         <span class="modal-close" onclick="cerrarModal('alertModal')">
+           <i class="fas fa-times"></i>
+         </span>
+       </div>
+       <div class="modal-body">
+         <div class="alert-message">
+           <p id="alertMessage">Mensaje de información</p>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="primary-actions">
+             <button onclick="cerrarModal('alertModal')" class="btn btn-primary">
+               <i class="fas fa-check"></i> Entendido
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Modal de formulario genérico -->
+ <template id="formModalTemplate">
+   <div id="formModal" class="modal modal-form" style="display: none;">
+     <div class="modal-content modal-medium">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-edit text-primary" id="formIcon"></i>
+           </div>
+           <h3 class="modal-title" id="formTitle">Formulario</h3>
+           <p class="modal-subtitle" id="formSubtitle"></p>
+         </div>
+         <span class="modal-close" onclick="cerrarModal('formModal')">
+           <i class="fas fa-times"></i>
+         </span>
+       </div>
+       <div class="modal-body">
+         <form id="modalForm" class="modal-form-content">
+           <!-- El contenido del formulario se carga dinámicamente -->
+           <div id="formFields"></div>
+         </form>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="secondary-actions">
+             <button type="button" onclick="resetearFormularioModal()" class="btn btn-outline">
+               <i class="fas fa-undo"></i> Resetear
+             </button>
+           </div>
+           <div class="primary-actions">
+             <button type="submit" form="modalForm" class="btn btn-success" id="saveFormBtn">
+               <i class="fas fa-save"></i> Guardar
+             </button>
+             <button onclick="cerrarModal('formModal')" class="btn btn-secondary">
+               <i class="fas fa-times"></i> Cancelar
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Modal de vista de archivo/documento -->
+ <template id="fileViewModalTemplate">
+   <div id="fileViewModal" class="modal modal-file-view" style="display: none;">
+     <div class="modal-content modal-large">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-file-alt text-info" id="fileIcon"></i>
+           </div>
+           <h3 class="modal-title" id="fileName">Visualizar Archivo</h3>
+           <p class="modal-subtitle" id="fileInfo"></p>
+         </div>
+         <div class="modal-controls">
+           <button onclick="descargarArchivo()" class="modal-download" title="Descargar">
+             <i class="fas fa-download"></i>
+           </button>
+           <button onclick="imprimirArchivo()" class="modal-print" title="Imprimir">
+             <i class="fas fa-print"></i>
+           </button>
+           <button onclick="compartirArchivo()" class="modal-share" title="Compartir">
+             <i class="fas fa-share"></i>
+           </button>
+           <span class="modal-close" onclick="cerrarModal('fileViewModal')">
+             <i class="fas fa-times"></i>
+           </span>
+         </div>
+       </div>
+       <div class="modal-body">
+         <div class="file-viewer" id="fileViewer">
+           <!-- El contenido del archivo se carga aquí -->
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="secondary-actions">
+             <span class="file-meta" id="fileMeta"></span>
+           </div>
+           <div class="primary-actions">
+             <button onclick="cerrarModal('fileViewModal')" class="btn btn-secondary">
+               <i class="fas fa-times"></i> Cerrar
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Modal de progreso/loading para operaciones largas -->
+ <template id="progressModalTemplate">
+   <div id="progressModal" class="modal modal-progress" style="display: none;" data-backdrop="static">
+     <div class="modal-content modal-small">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-cog fa-spin text-primary"></i>
+           </div>
+           <h3 class="modal-title" id="progressTitle">Procesando...</h3>
+         </div>
+       </div>
+       <div class="modal-progress">
+         <div class="progress-bar">
+           <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+         </div>
+         <span class="progress-text" id="progressText">0%</span>
+       </div>
+       <div class="modal-body">
+         <div class="progress-info">
+           <p id="progressMessage">Iniciando proceso...</p>
+           <div class="progress-details" id="progressDetails" style="display: none;">
+             <small id="progressDetailText"></small>
+           </div>
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="primary-actions">
+             <button onclick="cancelarProceso()" class="btn btn-outline" id="cancelProcessBtn" style="display: none;">
+               <i class="fas fa-stop"></i> Cancelar
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Modal de selección múltiple -->
+ <template id="multiSelectModalTemplate">
+   <div id="multiSelectModal" class="modal modal-multi-select" style="display: none;">
+     <div class="modal-content modal-medium">
+       <div class="modal-header">
+         <div class="modal-title-section">
+           <div class="modal-icon">
+             <i class="fas fa-list-check text-primary"></i>
+           </div>
+           <h3 class="modal-title" id="selectTitle">Seleccionar Elementos</h3>
+           <p class="modal-subtitle" id="selectSubtitle"></p>
+         </div>
+         <span class="modal-close" onclick="cerrarModal('multiSelectModal')">
+           <i class="fas fa-times"></i>
+         </span>
+       </div>
+       <div class="modal-body">
+         <div class="select-controls">
+           <div class="search-box">
+             <input type="text" id="selectSearch" placeholder="Buscar..." onkeyup="filtrarSeleccion()">
+           </div>
+           <div class="bulk-actions">
+             <button onclick="seleccionarTodos()" class="btn btn-sm btn-outline">Todos</button>
+             <button onclick="deseleccionarTodos()" class="btn btn-sm btn-outline">Ninguno</button>
+           </div>
+         </div>
+         <div class="select-list" id="selectList">
+           <!-- Lista de elementos para seleccionar -->
+         </div>
+         <div class="selected-count">
+           <span id="selectedCount">0</span> elementos seleccionados
+         </div>
+       </div>
+       <div class="modal-footer">
+         <div class="modal-actions">
+           <div class="primary-actions">
+             <button onclick="confirmarSeleccion()" class="btn btn-primary" id="confirmSelectionBtn">
+               <i class="fas fa-check"></i> Confirmar Selección
+             </button>
+             <button onclick="cerrarModal('multiSelectModal')" class="btn btn-secondary">
+               <i class="fas fa-times"></i> Cancelar
+             </button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
+ 
+ <!-- Overlay para modales -->
+ <div id="modalOverlay" class="modal-overlay" style="display: none;"></div>
+ 
+ <!-- Container para modales minimizados -->
+ <div id="minimizedModals" class="minimized-modals-container">
+   <!-- Los modales minimizados aparecen aquí -->
+ </div>
+ 
+ <!-- ============================================ -->
+ <!-- ESTILOS CSS ESPECÍFICOS PARA MODALES -->
+ <!-- ============================================ -->
+ <style>
+ /* Estilos base para modales - Complementan principal.css */
+ .modal {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   z-index: 1000;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   animation: modalFadeIn 0.3s ease-out;
+ }
+ 
+ .modal-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: rgba(0, 0, 0, 0.5);
+   z-index: 999;
+   animation: overlayFadeIn 0.3s ease-out;
+ }
+ 
+ .modal-content {
+   background: var(--background-color, #fff);
+   border-radius: 8px;
+   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+   max-height: 90vh;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
+   animation: modalSlideIn 0.3s ease-out;
+ }
+ 
+ .modal-small { max-width: 400px; width: 90%; }
+ .modal-medium { max-width: 600px; width: 90%; }
+ .modal-large { max-width: 900px; width: 95%; }
+ .modal-extra-large { max-width: 1200px; width: 98%; }
+ 
+ .modal-header {
+   padding: 1rem 1.5rem;
+   border-bottom: 1px solid var(--border-color, #ddd);
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   background: var(--header-background, #f8f9fa);
+ }
+ 
+ .modal-title-section {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+ }
+ 
+ .modal-icon {
+   font-size: 1.2rem;
+ }
+ 
+ .modal-title {
+   margin: 0;
+   font-size: 1.25rem;
+   font-weight: 600;
+ }
+ 
+ .modal-subtitle {
+   margin: 0;
+   font-size: 0.875rem;
+   color: var(--text-muted, #666);
+ }
+ 
+ .modal-controls {
+   display: flex;
+   align-items: center;
+   gap: 0.5rem;
+ }
+ 
+ .modal-controls button,
+ .modal-controls span {
+   background: none;
+   border: none;
+   padding: 0.5rem;
+   cursor: pointer;
+   border-radius: 4px;
+   transition: background-color 0.2s;
+ }
+ 
+ .modal-controls button:hover,
+ .modal-controls span:hover {
+   background: rgba(0, 0, 0, 0.1);
+ }
+ 
+ .modal-body {
+   padding: 1.5rem;
+   overflow-y: auto;
+   flex: 1;
+ }
+ 
+ .modal-footer {
+   padding: 1rem 1.5rem;
+   border-top: 1px solid var(--border-color, #ddd);
+   background: var(--footer-background, #f8f9fa);
+ }
+ 
+ .modal-actions {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   gap: 1rem;
+ }
+ 
+ .primary-actions,
+ .secondary-actions {
+   display: flex;
+   gap: 0.5rem;
+ }
+ 
+ /* Animaciones */
+ @keyframes modalFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+ }
+ 
+ @keyframes overlayFadeIn {
+   from { opacity: 0; }
+   to { opacity: 1; }
+ }
+ 
+ @keyframes modalSlideIn {
+   from { 
+     opacity: 0;
+     transform: translateY(-50px) scale(0.95);
+   }
+   to { 
+     opacity: 1;
+     transform: translateY(0) scale(1);
+   }
+ }
+ 
+ /* Estados especiales */
+ .modal-loading,
+ .modal-error {
+   text-align: center;
+   padding: 2rem;
+ }
+ 
+ .modal-progress {
+   padding: 0 1.5rem;
+ }
+ 
+ .progress-bar {
+   width: 100%;
+   height: 4px;
+   background: var(--background-secondary, #e9ecef);
+   border-radius: 2px;
+   overflow: hidden;
+ }
+ 
+ .progress-fill {
+   height: 100%;
+   background: var(--primary-color, #007bff);
+   transition: width 0.3s ease;
+ }
+ 
+ /* Responsive */
+ @media (max-width: 768px) {
+   .modal-content {
+     width: 95%;
+     max-height: 95vh;
+   }
+   
+   .modal-header,
+   .modal-body,
+   .modal-footer {
+     padding: 1rem;
+   }
+   
+   .modal-actions {
+     flex-direction: column;
+     gap: 0.5rem;
+   }
+   
+   .primary-actions,
+   .secondary-actions {
+     width: 100%;
+     justify-content: center;
+   }
+ }
+ </style>
+ 
+ <!-- ============================================ -->
+ <!-- JAVASCRIPT PARA GESTIÓN DE MODALES -->
+ <!-- ============================================ -->
+ <script>
+ // Sistema de gestión de modales
+ class ModalManager {
+   constructor() {
+     this.activeModals = new Set();
+     this.minimizedModals = new Map();
+     this.modalStack = [];
+     this.init();
+   }
+ 
+   init() {
+     this.createOverlay();
+     this.bindEvents();
+   }
+ 
+   createOverlay() {
+     if (!document.getElementById('modalOverlay')) {
+       const overlay = document.createElement('div');
+       overlay.id = 'modalOverlay';
+       overlay.className = 'modal-overlay';
+       overlay.style.display = 'none';
+       document.body.appendChild(overlay);
+     }
+   }
+ 
+   bindEvents() {
+     // Cerrar modales con ESC
+     document.addEventListener('keydown', (e) => {
+       if (e.key === 'Escape' && this.modalStack.length > 0) {
+         const topModal = this.modalStack[this.modalStack.length - 1];
+         this.closeModal(topModal);
+       }
+     });
+ 
+     // Prevenir scroll del body cuando hay modales abiertos
+     document.addEventListener('modal:opened', () => {
+       if (this.activeModals.size > 0) {
+         document.body.style.overflow = 'hidden';
+       }
+     });
+ 
+     document.addEventListener('modal:closed', () => {
+       if (this.activeModals.size === 0) {
+         document.body.style.overflow = '';
+       }
+     });
+   }
+ 
+   openModal(modalId, options = {}) {
+     const modal = document.getElementById(modalId);
+     if (!modal) return false;
+ 
+     this.activeModals.add(modalId);
+     this.modalStack.push(modalId);
+ 
+     modal.style.display = 'flex';
+     document.getElementById('modalOverlay').style.display = 'block';
+ 
+     // Configurar opciones
+     if (options.backdrop === 'static') {
+       modal.setAttribute('data-backdrop', 'static');
+     }
+ 
+     if (options.size) {
+       const content = modal.querySelector('.modal-content');
+       content.className = content.className.replace(/modal-(small|medium|large|extra-large)/, '');
+       content.classList.add(`modal-${options.size}`);
+     }
+ 
+     // Trigger evento
+     document.dispatchEvent(new CustomEvent('modal:opened', { detail: { modalId, options } }));
+ 
+     return true;
+   }
+ 
+   closeModal(modalId) {
+     const modal = document.getElementById(modalId);
+     if (!modal) return false;
+ 
+     // Verificar si el modal permite cerrarse
+     if (modal.getAttribute('data-backdrop') === 'static') {
+       return false;
+     }
+ 
+     this.activeModals.delete(modalId);
+     this.modalStack = this.modalStack.filter(id => id !== modalId);
+ 
+     modal.style.display = 'none';
+ 
+     // Ocultar overlay si no hay más modales
+     if (this.activeModals.size === 0) {
+       document.getElementById('modalOverlay').style.display = 'none';
+     }
+ 
+     // Trigger evento
+     document.dispatchEvent(new CustomEvent('modal:closed', { detail: { modalId } }));
+ 
+     return true;
+   }
+ 
+   minimizeModal(modalId) {
+     const modal = document.getElementById(modalId);
+     if (!modal) return false;
+ 
+     // Implementar lógica de minimización
+     // Por ahora, simplemente ocultar
+     modal.style.display = 'none';
+     this.minimizedModals.set(modalId, modal);
+ 
+     return true;
+   }
+ 
+   maximizeModal(modalId) {
+     const modal = document.getElementById(modalId);
+     if (!modal) return false;
+ 
+     const content = modal.querySelector('.modal-content');
+     content.classList.toggle('modal-maximized');
+ 
+     return true;
+   }
+ 
+   showConfirm(title, message, options = {}) {
+     return new Promise((resolve) => {
+       const modal = document.getElementById('confirmModal') || this.createConfirmModal();
+       
+       document.getElementById('confirmTitle').textContent = title;
+       document.getElementById('confirmMessage').textContent = message;
+       
+       const confirmBtn = document.getElementById('confirmBtn');
+       confirmBtn.textContent = options.confirmText || 'Confirmar';
+       confirmBtn.className = `btn ${options.confirmClass || 'btn-danger'}`;
+       
+       // Configurar callbacks
+       window.confirmarAccion = () => {
+         this.closeModal('confirmModal');
+         resolve(true);
+       };
+       
+       window.cerrarModal = (modalId) => {
+         if (modalId === 'confirmModal') {
+           this.closeModal('confirmModal');
+           resolve(false);
+         }
+       };
+       
+       this.openModal('confirmModal');
+     });
+   }
+ 
+   showAlert(title, message, type = 'info') {
+     const modal = document.getElementById('alertModal') || this.createAlertModal();
+     
+     document.getElementById('alertTitle').textContent = title;
+     document.getElementById('alertMessage').textContent = message;
+     
+     const icon = document.getElementById('alertIcon');
+     const iconClasses = {
+       'info': 'fas fa-info-circle text-info',
+       'success': 'fas fa-check-circle text-success',
+       'warning': 'fas fa-exclamation-triangle text-warning',
+       'error': 'fas fa-times-circle text-danger'
+     };
+     
+     icon.className = iconClasses[type] || iconClasses.info;
+     
+     this.openModal('alertModal');
+   }
+ 
+   createConfirmModal() {
+     const template = document.getElementById('confirmModalTemplate');
+     if (template) {
+       const modal = template.content.cloneNode(true);
+       document.body.appendChild(modal);
+       return document.getElementById('confirmModal');
+     }
+     return null;
+   }
+ 
+   createAlertModal() {
+     const template = document.getElementById('alertModalTemplate');
+     if (template) {
+       const modal = template.content.cloneNode(true);
+       document.body.appendChild(modal);
+       return document.getElementById('alertModal');
+     }
+     return null;
+   }
+ }
+ 
+ // Instancia global del gestor de modales
+ window.modalManager = new ModalManager();
+ 
+ // Funciones globales para compatibilidad
+ function abrirModal(modalId, options) {
+   return window.modalManager.openModal(modalId, options);
+ }
+ 
+ function cerrarModal(modalId) {
+   return window.modalManager.closeModal(modalId);
+ }
+ 
+ function minimizarModal(modalId) {
+   return window.modalManager.minimizeModal(modalId);
+ }
+ 
+ function maximizarModal(modalId) {
+   return window.modalManager.maximizeModal(modalId);
+ }
+ 
+ function mostrarConfirmacion(title, message, options) {
+   return window.modalManager.showConfirm(title, message, options);
+ }
+ 
+ function mostrarAlerta(title, message, type) {
+   return window.modalManager.showAlert(title, message, type);
+ }
+ 
+ // Cerrar modales al hacer clic en el overlay
+ document.addEventListener('click', (e) => {
+   if (e.target.id === 'modalOverlay') {
+     const topModal = window.modalManager.modalStack[window.modalManager.modalStack.length - 1];
+     if (topModal) {
+       cerrarModal(topModal);
+     }
+   }
+ });
+ </script>

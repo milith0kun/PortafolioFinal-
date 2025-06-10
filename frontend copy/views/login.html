@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sistema de Portafolio Docente - Gestión y verificación de documentos académicos">
+  <meta name="keywords" content="portafolio docente, documentos académicos, verificación, educación">
+  <meta name="author" content="Tu Nombre">
+  <title>Sistema de Portafolio Docente</title>
+
+  <!-- Enlace al archivo CSS principal -->
+  <link rel="stylesheet" href="../css/main.css">
+  <!-- Enlace a JS de configuración de API -->
+<script src="../js/config.js" defer></script>
+<script src="../js/auth.js" defer></script>
+
+
+  <!-- Enlace a Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar...">
+        </div>
+
+        <!-- Redes y usuario -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+            <span class="user-name">Entrar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img"></div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html" class="active">Inicio</a></li>
+            <li><a href="pages/documentos.html">Documentos</a></li>
+            <li><a href="pages/verificacion.html">Verificación</a></li>
+            <li><a href="pages/reportes.html">Reportes</a></li>
+            <li><a href="pages/ayuda.html">Ayuda</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido de login -->
+  <div class="login-container">
+    <div class="login-form-container">
+      <div class="login-header">
+        <div class="login-logo"></div>
+        <h1>Sistema de Portafolio Docente</h1>
+      </div>
+
+      <form id="loginForm" class="login-form" onsubmit="loginUsuario(event)">
+        <div class="form-group">
+          <label for="correo">Correo institucional</label>
+          <input type="email" id="correo" name="correo" placeholder="usuario@unsaac.edu.pe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña" required>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+          <a href="recuperar.html" class="forgot-password">¿Olvidó su contraseña?</a>
+        </div>
+        <p id="mensaje" class="error"></p>
+      </form>
+
+      <div class="login-footer">
+        <p>Sistema de Gestión de Portafolio Docente &copy; 2025</p>
+      </div>
+    </div>
+
+    <div class="login-info">
+      <div class="info-content">
+        <h2>Bienvenido al Sistema de Portafolio Docente</h2>
+        <p>Esta plataforma le permite gestionar, organizar y verificar documentos académicos de manera eficiente.</p>
+
+        <div class="feature-list">
+          <div class="feature-item">
+            <i class="fas fa-file-alt"></i>
+            <h3>Gestión de Documentos</h3>
+            <p>Suba, organice y administre sus documentos académicos.</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-check-circle"></i>
+            <h3>Verificación</h3>
+            <p>Proceso de verificación transparente y eficiente.</p>
+          </div>
+
+          <div class="feature-item">
+            <i class="fas fa-chart-bar"></i>
+            <h3>Reportes</h3>
+            <p>Genere informes detallados sobre su actividad académica.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+  
+</body>
+</html>

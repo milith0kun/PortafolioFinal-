@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear Observación - Panel de Verificación</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Crear observación - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="observación, verificación, retroalimentación, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/verificador/creador-observaciones.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('verificador')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar documentos...">
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          
+          <div class="user-menu">
+            <div class="user-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <span class="user-name">Verificador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Crear Observación</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="cola-revision.html">Cola de Revisión</a></li>
+            <li><a href="revisar.html">Revisar Documentos</a></li>
+            <li><a href="crear-observacion.html" class="active">Crear Observación</a></li>
+            <li><a href="estadisticas.html">Estadísticas</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Crear Observación</span>
+  </nav>
+
+  <main>
+    <!-- Información del documento seleccionado -->
+    <section class="document-info-section">
+      <div class="document-card" id="documentInfo">
+        <div class="document-header">
+          <div class="document-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <div class="document-details">
+            <h3 id="documentTitle">Seleccione un documento para crear observación</h3>
+            <div class="document-meta">
+              <span class="meta-item" id="docenteName">
+                <i class="fas fa-user"></i> Docente no seleccionado
+              </span>
+              <span class="meta-item" id="asignatureName">
+                <i class="fas fa-book"></i> Asignatura no especificada
+              </span>
+              <span class="meta-item" id="uploadDate">
+                <i class="fas fa-calendar"></i> Sin fecha
+              </span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="document-actions">
+          <button onclick="seleccionarDocumento()" class="btn btn-primary">
+            <i class="fas fa-search"></i> Seleccionar Documento
+          </button>
+          <button onclick="verDocumento()" class="btn btn-info" id="viewDocumentBtn" disabled>
+            <i class="fas fa-eye"></i> Ver Documento
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Formulario de observación -->
+    <section class="observation-form-section">
+      <div class="form-container">
+        <div class="form-header">
+          <h2><i class="fas fa-comment-medical"></i> Nueva Observación</h2>
+          <p>Complete los detalles de la observación para el documento seleccionado</p>
+        </div>
+
+        <form id="observationForm" onsubmit="crearObservacion(event)" class="observation-form">
+          <input type="hidden" id="documentId" name="documentId">
+          
+          <!-- Tipo y prioridad de observación -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tipoObservacion">Tipo de Observación</label>
+              <select id="tipoObservacion" name="tipoObservacion" required onchange="actualizarFormulario()">
+                <option value="">Seleccionar tipo...</option>
+                <option value="general">General</option>
+                <option value="correccion">Corrección Requerida</option>
+                <option value="aprobacion">Aprobación</option>
+                <option value="rechazo">Rechazo</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="prioridadObservacion">Prioridad</label>
+              <select id="prioridadObservacion" name="prioridadObservacion" required>
+                <option value="">Seleccionar prioridad...</option>
+                <option value="baja">Baja</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
+                <option value="critica">Crítica</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Visibilidad y respuesta requerida -->
+          <div class="form-row">
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="esPublica" name="esPublica" checked>
+                <span class="checkmark"></span>
+                Observación pública (visible para el docente)
+              </label>
+            </div>
+            
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="requiereRespuesta" name="requiereRespuesta">
+                <span class="checkmark"></span>
+                Requiere respuesta del docente
+              </label>
+            </div>
+          </div>
+
+          <!-- Contenido principal de la observación -->
+          <div class="form-group">
+            <label for="contenidoObservacion">Contenido de la Observación</label>
+            <div class="editor-container">
+              <div class="editor-toolbar">
+                <button type="button" onclick="formatText('bold')" class="editor-btn" title="Negrita">
+                  <i class="fas fa-bold"></i>
+                </button>
+                <button type="button" onclick="formatText('italic')" class="editor-btn" title="Cursiva">
+                  <i class="fas fa-italic"></i>
+                </button>
+                <button type="button" onclick="formatText('underline')" class="editor-btn" title="Subrayado">
+                  <i class="fas fa-underline"></i>
+                </button>
+                <div class="editor-separator"></div>
+                <button type="button" onclick="insertList('ul')" class="editor-btn" title="Lista con viñetas">
+                  <i class="fas fa-list-ul"></i>
+                </button>
+                <button type="button" onclick="insertList('ol')" class="editor-btn" title="Lista numerada">
+                  <i class="fas fa-list-ol"></i>
+                </button>
+                <div class="editor-separator"></div>
+                <button type="button" onclick="insertTemplate()" class="editor-btn" title="Plantillas">
+                  <i class="fas fa-file-text"></i>
+                </button>
+              </div>
+              <textarea id="contenidoObservacion" name="contenidoObservacion" 
+                        placeholder="Escriba su observación aquí. Sea específico y constructivo en sus comentarios..."
+                        required rows="8"></textarea>
+            </div>
+            <div class="character-count">
+              <span id="charCount">0</span> / 2000 caracteres
+            </div>
+          </div>
+
+          <!-- Sección de sugerencias (para correcciones) -->
+          <div class="form-group" id="suggestionsSection" style="display: none;">
+            <label for="sugerencias">Sugerencias de Mejora</label>
+            <textarea id="sugerencias" name="sugerencias" 
+                      placeholder="Proporcione sugerencias específicas para mejorar el documento..."
+                      rows="4"></textarea>
+          </div>
+
+          <!-- Fecha límite para respuesta -->
+          <div class="form-group" id="deadlineSection" style="display: none;">
+            <label for="fechaLimite">Fecha Límite para Respuesta</label>
+            <input type="date" id="fechaLimite" name="fechaLimite" min="">
+          </div>
+
+          <!-- Archivos adjuntos -->
+          <div class="form-group">
+            <label for="adjuntos">Archivos Adjuntos (opcional)</label>
+            <div class="file-upload-area" onclick="seleccionarAdjuntos()">
+              <i class="fas fa-paperclip"></i>
+              <span>Arrastrar archivos aquí o hacer clic para seleccionar</span>
+              <small>PDF, DOC, DOCX, JPG, PNG (máximo 5MB por archivo)</small>
+            </div>
+            <input type="file" id="adjuntos" name="adjuntos" multiple 
+                   accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;">
+            <div class="uploaded-files" id="uploadedFiles"></div>
+          </div>
+
+          <!-- Plantillas predefinidas -->
+          <div class="templates-section">
+            <h3><i class="fas fa-clipboard-list"></i> Plantillas de Observación</h3>
+            <div class="templates-grid">
+              <button type="button" onclick="usarPlantilla('formato')" class="template-btn">
+                <i class="fas fa-align-left"></i>
+                <span>Problema de Formato</span>
+              </button>
+              <button type="button" onclick="usarPlantilla('contenido')" class="template-btn">
+                <i class="fas fa-file-alt"></i>
+                <span>Contenido Incompleto</span>
+              </button>
+              <button type="button" onclick="usarPlantilla('calidad')" class="template-btn">
+                <i class="fas fa-star"></i>
+                <span>Calidad del Documento</span>
+              </button>
+              <button type="button" onclick="usarPlantilla('aprobacion')" class="template-btn">
+                <i class="fas fa-check-circle"></i>
+                <span>Aprobación</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Acciones del formulario -->
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Enviar Observación
+            </button>
+            <button type="button" onclick="guardarBorrador()" class="btn btn-secondary">
+              <i class="fas fa-save"></i> Guardar Borrador
+            </button>
+            <button type="button" onclick="previsualizarObservacion()" class="btn btn-info">
+              <i class="fas fa-eye"></i> Previsualizar
+            </button>
+            <button type="reset" class="btn btn-outline">
+              <i class="fas fa-undo"></i> Limpiar Formulario
+            </button>
+          </div>
+
+          <p id="mensaje" class="mensaje"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Observaciones previas del documento -->
+    <section class="previous-observations">
+      <h2><i class="fas fa-history"></i> Observaciones Previas</h2>
+      <div class="observations-list" id="previousObservations">
+        <div class="no-observations">
+          <i class="fas fa-info-circle"></i>
+          <p>No hay observaciones previas para este documento</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de ayuda -->
+    <aside class="help-panel">
+      <h3><i class="fas fa-question-circle"></i> Guía para Observaciones Efectivas</h3>
+      
+      <div class="help-content">
+        <div class="help-item">
+          <h4>Sea Específico</h4>
+          <p>Identifique claramente qué aspectos del documento necesitan atención.</p>
+        </div>
+        
+        <div class="help-item">
+          <h4>Sea Constructivo</h4>
+          <p>Proporcione sugerencias concretas para la mejora del documento.</p>
+        </div>
+        
+        <div class="help-item">
+          <h4>Use un Tono Profesional</h4>
+          <p>Mantenga un lenguaje respetuoso y profesional en todas las observaciones.</p>
+        </div>
+        
+        <div class="help-item">
+          <h4>Priorice Correctamente</h4>
+          <p>Use las prioridades para ayudar al docente a entender la urgencia.</p>
+        </div>
+      </div>
+      
+      <div class="help-actions">
+        <button onclick="verGuiaCompleta()" class="btn btn-outline btn-sm">
+          <i class="fas fa-book"></i> Ver Guía Completa
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal para seleccionar documento -->
+  <div id="selectDocumentModal" class="modal" style="display: none;">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Seleccionar Documento para Observación</h3>
+        <span class="close" onclick="cerrarModal('selectDocumentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="documents-filter">
+          <div class="filter-row">
+            <div class="filter-group">
+              <label for="filterDocente">Docente:</label>
+              <select id="filterDocente" onchange="filtrarDocumentos()">
+                <option value="">Todos los docentes</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label for="filterEstado">Estado:</label>
+              <select id="filterEstado" onchange="filtrarDocumentos()">
+                <option value="">Todos los estados</option>
+                <option value="pendiente">Pendiente</option>
+                <option value="en_revision">En Revisión</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <input type="text" id="searchDocument" placeholder="Buscar documento..." onkeyup="buscarDocumentos()">
+            </div>
+          </div>
+        </div>
+        
+        <div class="documents-list">
+          <table class="documents-table">
+            <thead>
+              <tr>
+                <th>Documento</th>
+                <th>Docente</th>
+                <th>Asignatura</th>
+                <th>Estado</th>
+                <th>Fecha Subida</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="documentsTableBody">
+              <tr>
+                <td colspan="6" class="loading">Cargando documentos...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="cerrarModal('selectDocumentModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de previsualización -->
+  <div id="previewModal" class="modal" style="display: none;">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Previsualización de Observación</h3>
+        <span class="close" onclick="cerrarModal('previewModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="preview-content" id="previewContent">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="enviarDesdePreview()" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i> Enviar Observación
+        </button>
+        <button onclick="cerrarModal('previewModal')" class="btn btn-secondary">Volver a Editar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

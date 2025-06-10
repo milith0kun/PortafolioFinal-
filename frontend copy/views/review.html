@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Revisión de Documentos</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/main.css" type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" type="text/css">
+  <link rel="stylesheet" href="../pages/review.css" type="text/css">
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/review.js" defer></script>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+            <span class="user-name">Entrar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img"></div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="active">Inicio</a></li>
+            <li><a href="documentos.html">Documentos</a></li>
+            <li><a href="verificacion.html">Verificación</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="ayuda.html">Ayuda</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <h1>Documentos para Revisión</h1>
+
+    <!-- Árbol dinámico de verificación -->
+    <div id="arbol-verificacion" class="lista-documentos">
+      <p>⏳ Cargando docentes y portafolios...</p>
+    </div>
+
+    <!-- Acciones de verificación -->
+    <section id="verificacion-acciones" class="acciones">
+      <h2>Acciones de Verificación</h2>
+      <div class="verificacion-controles">
+        <button onclick="verificarSeleccionados('aprobado')" aria-label="Aprobar documentos seleccionados">✅ Aprobar Seleccionados</button>
+        <button onclick="verificarSeleccionados('rechazado')" aria-label="Rechazar documentos seleccionados">❌ Rechazar Seleccionados</button>
+      </div>
+      <div id="resultado-verificacion" style="margin-top: 10px; font-weight: bold;"></div>
+    </section>
+
+    <!-- Observaciones -->
+    <section id="documento-observaciones" class="observaciones">
+      <h2>Observaciones del Documento</h2>
+      <textarea id="observacion" rows="4" placeholder="Escribe aquí una observación...&#10;Ejemplo: El documento no está firmado correctamente."></textarea>
+      <button onclick="enviarObservacion()" aria-label="Enviar observación del documento">📝 Enviar Observación</button>
+      <div id="resultado-observacion" style="margin-top: 10px; font-weight: bold;"></div>
+    </section>
+
+    <button class="cerrar-sesion" onclick="cerrarSesion()" aria-label="Cerrar sesión del sistema">🚪 Cerrar sesión</button>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

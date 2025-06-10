@@ -1,0 +1,55 @@
+.
+|-- asignaturas
+|   |-- asignaciones.controlador.js
+|   |-- gestion.controlador.js
+|   |-- reportes.controlador.js
+|-- autenticacion
+|   |-- login.controlador.js
+|   |-- recuperacion.controlador.js
+|   |-- sesion.controlador.js
+|-- carga-excel
+|   |-- estructura.base.exce.js
+|   |-- procesamiento.controlador.js
+|   |-- subida.controlador.js
+|   |-- validacion.controlador.js
+|-- ciclos-academicos
+|   |-- configuracion.controlador.js
+|   |-- estados.controlador.js
+|   |-- gestion.controlador.js
+|-- documentos
+|   |-- descarga.controlador.js
+|   |-- gestion.controlador.js
+|   |-- subida.controlador.js
+|-- estructura_completa.txt
+|-- notificaciones
+|   |-- configuracion.controlador.js
+|   |-- envio.controlador.js
+|   |-- gestion.controlador.js
+|-- observaciones
+|   |-- gestion.controlador.js
+|   |-- reportes.controlador.js
+|   |-- respuestas.controlador.js
+|-- portafolios
+|   |-- estructura.controlador.js
+|   |-- navegacion.controlador.js
+|   |-- progreso.controlador.js
+|-- reportes
+|   |-- docentes.controlador.js
+|   |-- exportacion.controlador.js
+|   |-- generales.controlador.js
+|-- roles
+|   |-- asignacion.controlador.js
+|   |-- cambio.controlador.js
+|   |-- permisos.controlador.js
+|-- tableros
+|   |-- administrador.controlador.js
+|   |-- docente.controlador.js
+|   |-- verificador.controlador.js
+|-- usuarios
+|   |-- actividad.controlador.js
+|   |-- gestion.controlador.js
+|   |-- perfiles.controlador.js
+|-- verificacion
+|   |-- asignaciones.controlador.js
+|   |-- estadisticas.controlador.js
+|   |-- revision.controlador.js

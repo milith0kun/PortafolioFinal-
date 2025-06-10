@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Observaciones - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Observaciones recibidas - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="observaciones, comentarios, verificación, docente, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/docente/observaciones-viewer.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('docente')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar observaciones...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Mis Observaciones</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Inicio</a></li>
+            <li><a href="explorador.html">Mis Portafolios</a></li>
+            <li><a href="subir.html">Subir Documentos</a></li>
+            <li><a href="observaciones.html" class="active">Observaciones</a></li>
+            <li><a href="progreso.html">Mi Progreso</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Mis Observaciones</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Estado de observaciones -->
+    <section class="observations-status-section">
+      <div class="status-banner docente-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado de Observaciones</h3>
+            <p id="observationsStatusMessage">Tiene observaciones pendientes de revisión. Manténgase al día con los comentarios de verificadores.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge" id="observationsStatusBadge">5 Pendientes</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de observaciones -->
+    <section class="observations-summary">
+      <div class="summary-cards">
+        <div class="summary-card total-observations">
+          <div class="card-icon">
+            <i class="fas fa-comment-alt"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Observaciones</h3>
+            <span class="card-value" id="totalObservations">28</span>
+            <span class="card-label">Recibidas</span>
+          </div>
+        </div>
+
+        <div class="summary-card pending-observations">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-info">
+            <h3>Pendientes</h3>
+            <span class="card-value" id="pendingObservations">5</span>
+            <span class="card-label">Por revisar</span>
+          </div>
+        </div>
+
+        <div class="summary-card require-response">
+          <div class="card-icon">
+            <i class="fas fa-reply"></i>
+          </div>
+          <div class="card-info">
+            <h3>Requieren Respuesta</h3>
+            <span class="card-value" id="responseRequired">3</span>
+            <span class="card-label">Urgentes</span>
+          </div>
+        </div>
+
+        <div class="summary-card resolved-observations">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Resueltas</h3>
+            <span class="card-value" id="resolvedObservations">20</span>
+            <span class="card-label">Completadas</span>
+          </div>
+        </div>
+
+        <div class="summary-card response-time">
+          <div class="card-icon">
+            <i class="fas fa-stopwatch"></i>
+          </div>
+          <div class="card-info">
+            <h3>Tiempo Promedio</h3>
+            <span class="card-value" id="averageResponseTime">2.3d</span>
+            <span class="card-label">Respuesta</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros y controles -->
+    <section class="observations-controls">
+      <div class="controls-header">
+        <h2><i class="fas fa-filter"></i> Filtrar Observaciones</h2>
+      </div>
+
+      <div class="controls-row">
+        <div class="filter-group">
+          <label for="filterAsignatura">Asignatura:</label>
+          <select id="filterAsignatura" onchange="filtrarObservaciones()">
+            <option value="">Todas las asignaturas</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterEstado">Estado:</label>
+          <select id="filterEstado" onchange="filtrarObservaciones()">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="respondida">Respondidas</option>
+            <option value="resuelta">Resueltas</option>
+            <option value="cerrada">Cerradas</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterTipo">Tipo:</label>
+          <select id="filterTipo" onchange="filtrarObservaciones()">
+            <option value="">Todos los tipos</option>
+            <option value="general">General</option>
+            <option value="correccion">Corrección</option>
+            <option value="mejora">Mejora</option>
+            <option value="felicitacion">Felicitación</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterPrioridad">Prioridad:</label>
+          <select id="filterPrioridad" onchange="filtrarObservaciones()">
+            <option value="">Todas las prioridades</option>
+            <option value="critica">Crítica</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterVerificador">Verificador:</label>
+          <select id="filterVerificador" onchange="filtrarObservaciones()">
+            <option value="">Todos los verificadores</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="searchObservations">Buscar:</label>
+          <input type="text" id="searchObservations" placeholder="Buscar en contenido..." onkeyup="buscarObservaciones()">
+        </div>
+
+        <div class="action-controls">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+          <button onclick="refrescarObservaciones()" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Refrescar
+          </button>
+          <button onclick="marcarTodasLeidas()" class="btn btn-secondary">
+            <i class="fas fa-eye"></i> Marcar Leídas
+          </button>
+        </div>
+      </div>
+
+      <!-- Ordenamiento -->
+      <div class="sort-controls">
+        <label>Ordenar por:</label>
+        <div class="sort-buttons">
+          <button class="sort-btn active" data-sort="fecha" onclick="ordenarObservaciones('fecha')">
+            <i class="fas fa-calendar"></i> Fecha
+          </button>
+          <button class="sort-btn" data-sort="prioridad" onclick="ordenarObservaciones('prioridad')">
+            <i class="fas fa-exclamation"></i> Prioridad
+          </button>
+          <button class="sort-btn" data-sort="estado" onclick="ordenarObservaciones('estado')">
+            <i class="fas fa-flag"></i> Estado
+          </button>
+          <button class="sort-btn" data-sort="verificador" onclick="ordenarObservaciones('verificador')">
+            <i class="fas fa-user"></i> Verificador
+          </button>
+        </div>
+        
+        <div class="sort-direction">
+          <button class="direction-btn active" data-direction="desc" onclick="cambiarDireccion('desc')">
+            <i class="fas fa-sort-amount-down"></i> Nuevas primero
+          </button>
+          <button class="direction-btn" data-direction="asc" onclick="cambiarDireccion('asc')">
+            <i class="fas fa-sort-amount-up"></i> Antiguas primero
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de observaciones -->
+    <section class="observations-list">
+      <div class="list-header">
+        <h2><i class="fas fa-list"></i> Mis Observaciones</h2>
+        <div class="list-info">
+          <span class="list-count">Mostrando <span id="showingCount">15</span> de <span id="totalCount">28</span> observaciones</span>
+        </div>
+      </div>
+
+      <!-- Controles de vista -->
+      <div class="view-controls">
+        <div class="view-buttons">
+          <button class="view-btn active" data-view="cards" onclick="cambiarVistaObservaciones('cards')">
+            <i class="fas fa-th-large"></i> Cards
+          </button>
+          <button class="view-btn" data-view="list" onclick="cambiarVistaObservaciones('list')">
+            <i class="fas fa-list"></i> Lista
+          </button>
+          <button class="view-btn" data-view="timeline" onclick="cambiarVistaObservaciones('timeline')">
+            <i class="fas fa-stream"></i> Timeline
+          </button>
+        </div>
+
+        <div class="bulk-actions">
+          <label class="checkbox-container">
+            <input type="checkbox" id="selectAllObs" onchange="seleccionarTodasObs()">
+            <span class="checkmark"></span>
+            Seleccionar todas
+          </label>
+          
+          <div class="bulk-buttons">
+            <button onclick="marcarLeidasSeleccionadas()" class="btn btn-sm btn-secondary" disabled id="markReadBtn">
+              <i class="fas fa-eye"></i> Marcar Leídas
+            </button>
+            <button onclick="responderSeleccionadas()" class="btn btn-sm btn-primary" disabled id="respondSelectedBtn">
+              <i class="fas fa-reply"></i> Responder
+            </button>
+            <button onclick="archivarSeleccionadas()" class="btn btn-sm btn-warning" disabled id="archiveSelectedBtn">
+              <i class="fas fa-archive"></i> Archivar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista en cards (por defecto) -->
+      <div class="observations-cards" id="observationsCards">
+        <div class="cards-container" id="cardsContainer">
+          <!-- Se cargará dinámicamente -->
+          <div class="loading-observations">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Cargando observaciones...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vista en lista -->
+      <div class="observations-list-view" id="observationsListView" style="display: none;">
+        <div class="list-container" id="listContainer">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Vista timeline -->
+      <div class="observations-timeline" id="observationsTimeline" style="display: none;">
+        <div class="timeline-container" id="timelineContainer">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination-container">
+        <div class="pagination-info">
+          <span>Observaciones por página:</span>
+          <select id="itemsPerPage" onchange="cambiarItemsPorPagina()">
+            <option value="10">10</option>
+            <option value="15" selected>15</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+          </select>
+        </div>
+        
+        <div class="pagination" id="pagination">
+          <!-- Se generará dinámicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de conversación -->
+    <section class="conversation-panel" id="conversationPanel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-comments"></i> Conversación</h3>
+        <div class="panel-actions">
+          <button onclick="minimizarConversacion()" class="panel-action-btn">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button onclick="cerrarConversacion()" class="panel-action-btn">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="panel-content">
+        <!-- Información de la observación -->
+        <div class="observation-info" id="observationInfo">
+          <!-- Se cargará dinámicamente -->
+        </div>
+
+        <!-- Historial de conversación -->
+        <div class="conversation-history" id="conversationHistory">
+          <!-- Se cargará dinámicamente -->
+        </div>
+
+        <!-- Formulario de respuesta -->
+        <div class="response-form" id="responseForm">
+          <div class="form-header">
+            <h4>Responder a la observación</h4>
+          </div>
+          
+          <form id="responseFormElement">
+            <input type="hidden" id="observationId">
+            
+            <div class="form-group">
+              <label for="responseType">Tipo de respuesta:</label>
+              <select id="responseType">
+                <option value="respuesta">Respuesta general</option>
+                <option value="aclaracion">Aclaración</option>
+                <option value="solucion">Solución implementada</option>
+                <option value="consulta">Consulta adicional</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="responseContent">Contenido de la respuesta:</label>
+              <textarea id="responseContent" rows="4" placeholder="Escriba su respuesta..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="attachFile">
+                <span class="checkmark"></span>
+                Adjuntar archivo (opcional)
+              </label>
+              <input type="file" id="attachmentFile" style="display: none;" accept=".pdf,.doc,.docx,.jpg,.png">
+            </div>
+            
+            <div class="form-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="markAsResolved">
+                <span class="checkmark"></span>
+                Marcar observación como resuelta
+              </label>
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i> Enviar Respuesta
+              </button>
+              <button type="button" onclick="cancelarRespuesta()" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas de observaciones -->
+    <section class="observations-stats">
+      <h2><i class="fas fa-chart-bar"></i> Estadísticas de Observaciones</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card response-rate">
+          <div class="stat-header">
+            <i class="fas fa-reply"></i>
+            <h3>Tasa de Respuesta</h3>
+          </div>
+          <div class="stat-value" id="responseRate">85%</div>
+          <div class="stat-change positive">+5% vs mes anterior</div>
+        </div>
+
+        <div class="stat-card avg-response-time">
+          <div class="stat-header">
+            <i class="fas fa-clock"></i>
+            <h3>Tiempo Promedio de Respuesta</h3>
+          </div>
+          <div class="stat-value" id="avgResponseTime">2.3d</div>
+          <div class="stat-change neutral">Meta: 2d</div>
+        </div>
+
+        <div class="stat-card resolution-rate">
+          <div class="stat-header">
+            <i class="fas fa-check-circle"></i>
+            <h3>Tasa de Resolución</h3>
+          </div>
+          <div class="stat-value" id="resolutionRate">71%</div>
+          <div class="stat-change positive">+8% vs mes anterior</div>
+        </div>
+
+        <div class="stat-card satisfaction-score">
+          <div class="stat-header">
+            <i class="fas fa-star"></i>
+            <h3>Satisfacción Verificadores</h3>
+          </div>
+          <div class="stat-value" id="satisfactionScore">4.2/5</div>
+          <div class="stat-change positive">Excelente</div>
+        </div>
+      </div>
+
+      <!-- Gráfico de tendencias -->
+      <div class="trends-chart">
+        <h3>Tendencias de Observaciones (Últimos 6 meses)</h3>
+        <div class="chart-container" id="trendsChart">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section class="quick-actions-observations">
+      <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+      
+      <div class="actions-grid">
+        <div class="action-card pending-action">
+          <div class="action-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="action-content">
+            <h3>Observaciones Pendientes</h3>
+            <p>Revisar observaciones que requieren atención</p>
+            <span class="action-count" id="pendingActionCount">5 pendientes</span>
+          </div>
+          <div class="action-button">
+            <button onclick="mostrarPendientes()" class="btn btn-warning">Ver Pendientes</button>
+          </div>
+        </div>
+
+        <div class="action-card response-action">
+          <div class="action-icon">
+            <i class="fas fa-reply"></i>
+          </div>
+          <div class="action-content">
+            <h3>Respuestas Requeridas</h3>
+            <p>Observaciones que necesitan su respuesta</p>
+            <span class="action-count" id="responseActionCount">3 urgentes</span>
+          </div>
+          <div class="action-button">
+            <button onclick="mostrarRequierenRespuesta()" class="btn btn-danger">Responder</button>
+          </div>
+        </div>
+
+        <div class="action-card resolved-action">
+          <div class="action-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="action-content">
+            <h3>Marcar Resueltas</h3>
+            <p>Observaciones que han sido solucionadas</p>
+            <span class="action-count" id="resolvedActionCount">Gestionar</span>
+          </div>
+          <div class="action-button">
+            <button onclick="mostrarParaResolver()" class="btn btn-success">Gestionar</button>
+          </div>
+        </div>
+
+        <div class="action-card export-action">
+          <div class="action-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <div class="action-content">
+            <h3>Exportar Observaciones</h3>
+            <p>Descargar reporte de observaciones</p>
+            <span class="action-count">PDF / Excel</span>
+          </div>
+          <div class="action-button">
+            <button onclick="exportarObservaciones()" class="btn btn-info">Exportar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para respuesta rápida -->
+  <div id="quickResponseModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Respuesta Rápida</h3>
+        <span class="close" onclick="cerrarModal('quickResponseModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="observation-summary" id="quickObservationSummary">
+          <!-- Resumen de la observación -->
+        </div>
+        
+        <form id="quickResponseForm">
+          <input type="hidden" id="quickObservationId">
+          
+          <div class="form-group">
+            <label for="quickResponseContent">Respuesta:</label>
+            <textarea id="quickResponseContent" rows="4" placeholder="Escriba su respuesta..." required></textarea>
+          </div>
+          
+          <div class="quick-response-options">
+            <label class="checkbox-container">
+              <input type="checkbox" id="quickMarkResolved">
+              <span class="checkmark"></span>
+              Marcar como resuelta
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="enviarRespuestaRapida()" class="btn btn-primary">Enviar Respuesta</button>
+        <button onclick="cerrarModal('quickResponseModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para vista previa de archivo -->
+  <div id="filePreviewModal" class="modal modal-large" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="previewFileName">Vista Previa de Archivo</h3>
+        <span class="close" onclick="cerrarModal('filePreviewModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="preview-container" id="filePreviewContainer">
+          <!-- Vista previa del archivo -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="descargarArchivoObservacion()" class="btn btn-primary" id="downloadFileBtn">
+          <i class="fas fa-download"></i> Descargar
+        </button>
+        <button onclick="cerrarModal('filePreviewModal')" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

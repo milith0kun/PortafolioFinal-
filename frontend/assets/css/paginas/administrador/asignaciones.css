@@ -1,0 +1,397 @@
+/* ========================================
+   📍 Navegación Breadcrumb
+   ======================================== */
+   .breadcrumb {
+      padding: 1rem 1.5rem;
+      background-color: #f0f0f5;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #444;
+    }
+    
+    .breadcrumb a {
+      color: #000072;
+      text-decoration: none;
+      margin-right: 0.3rem;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    .breadcrumb .separator {
+      margin: 0 0.5rem;
+      color: #888;
+    }
+    
+    .breadcrumb .current {
+      color: #666;
+    }
+    
+    /* ========================================
+       📆 Estado del Ciclo Académico
+       ======================================== */
+    .cycle-status-section {
+      padding: 1.5rem;
+      background-color: #fdfdfd;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .status-card {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background: #fff;
+      border-left: 5px solid #daa520;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .status-info h3 {
+      font-size: 1.2rem;
+      color: #000072;
+      margin-bottom: 0.6rem;
+    }
+    
+    .cycle-details span {
+      display: block;
+      font-size: 0.95rem;
+      color: #444;
+      margin: 0.2rem 0;
+    }
+    
+    .cycle-name {
+      font-weight: 600;
+      color: #000;
+    }
+    
+    .cycle-status {
+      font-weight: 600;
+      color: #daa520;
+    }
+    
+    /* ========================================
+       📊 Estadísticas
+       ======================================== */
+    .assignments-stats {
+      padding: 2rem 1.5rem;
+      background-color: #f8f9fc;
+    }
+    
+    .stats-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: space-around;
+    }
+    
+    .stat-card {
+      flex: 1 1 200px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .stat-icon {
+      font-size: 1.8rem;
+      color: #000072;
+    }
+    
+    .stat-info h3 {
+      font-size: 1rem;
+      margin: 0;
+      color: #000072;
+    }
+    
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #222;
+    }
+    
+    /* ========================================
+       📝 Nueva Asignación
+       ======================================== */
+    .new-assignment {
+      padding: 2.5rem 1.5rem;
+    }
+    
+    .new-assignment h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #000072;
+    }
+    
+    .assignment-form {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .form-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .form-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+    
+    textarea,
+    select,
+    input[type="text"] {
+      padding: 0.7rem 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    /* ========================================
+       🔍 Filtros de Asignaciones
+       ======================================== */
+    .assignments-filters {
+      background-color: #f9f9f9;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid #eee;
+    }
+    
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-end;
+    }
+    
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .filter-group label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+      color: #444;
+    }
+    
+    .filter-actions {
+      display: flex;
+      gap: 1rem;
+      margin-left: auto;
+    }
+    
+    /* ========================================
+       📋 Lista de Asignaciones
+       ======================================== */
+    .assignments-list {
+      padding: 2.5rem 1.5rem;
+    }
+    
+    .assignments-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .assignments-table thead {
+      background-color: #000072;
+      color: white;
+      text-align: left;
+    }
+    
+    .assignments-table th,
+    .assignments-table td {
+      padding: 0.9rem 1rem;
+      font-size: 0.95rem;
+    }
+    
+    .assignments-table tbody tr:nth-child(even) {
+      background-color: #f8f9fc;
+    }
+    
+    .loading {
+      text-align: center;
+      color: #666;
+      font-style: italic;
+    }
+    
+    /* ========================================
+       ☑️ Acciones Masivas
+       ======================================== */
+    .bulk-actions {
+      padding: 2rem 1.5rem;
+      border-top: 1px solid #eee;
+      background-color: #fafafa;
+    }
+    
+    .bulk-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 2rem;
+    }
+    
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .bulk-buttons button {
+      margin-right: 0.5rem;
+    }
+    
+    /* ========================================
+       🛠️ Herramientas de Gestión
+       ======================================== */
+    .assignment-tools {
+      padding: 3rem 1.5rem;
+      background-color: #ffffff;
+    }
+    
+    .tools-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .tool-card {
+      background-color: #f6f8ff;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .tool-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .tool-icon {
+      font-size: 2rem;
+      color: #000072;
+      margin-bottom: 1rem;
+    }
+    
+    .tool-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tool-card p {
+      font-size: 0.9rem;
+      color: #444;
+      margin-bottom: 1rem;
+    }
+    
+    /* ========================================
+       💬 Modal de Edición
+       ======================================== */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+    
+    .modal-content {
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 600px;
+      position: relative;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.4rem;
+      color: #000072;
+    }
+    
+    .modal-header .close {
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #000;
+    }
+    
+    .modal-body .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    /* ========================================
+       📱 Responsive
+       ======================================== */
+    @media (max-width: 768px) {
+      .form-row,
+      .filters-row,
+      .bulk-controls {
+        flex-direction: column;
+      }
+    
+      .filter-actions {
+        margin-left: 0;
+      }
+    
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    
+      .tools-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{DASHBOARD_DESCRIPTION}} - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="{{DASHBOARD_KEYWORDS}}, dashboard, panel, UNSAAC">
+  <meta name="author" content="UNSAAC">
+  <title>{{DASHBOARD_TITLE}} - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="{{CSS_PATH}}/principal.css">
+  
+  <!-- CSS Específicos del Dashboard -->
+  <link rel="stylesheet" href="{{CSS_PATH}}/paginas/{{ROLE_FOLDER}}/tablero.css">
+  {{DASHBOARD_SPECIFIC_CSS}}
+
+  <!-- JavaScript Core -->
+  <script src="{{JS_PATH}}/nucleo/configuracion.js"></script>
+  <script src="{{JS_PATH}}/nucleo/autenticacion.js"></script>
+  <script src="{{JS_PATH}}/nucleo/aplicacion.js" defer></script>
+  
+  <!-- JavaScript Específicos del Dashboard -->
+  <script src="{{JS_PATH}}/paginas/{{ROLE_FOLDER}}/tablero.js" defer></script>
+  {{DASHBOARD_SPECIFIC_JS}}
+
+  <!-- Librerías de gráficos -->
+  <script src="{{JS_PATH}}/librerias/chart.min.js"></script>
+  {{CHART_LIBRARIES}}
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Meta adicionales -->
+  <meta name="theme-color" content="#2c3e50">
+  <link rel="icon" type="image/png" href="{{ASSETS_PATH}}/imagenes/iconos/favicon.png">
+</head>
+
+<body class="dashboard-body" {{DASHBOARD_BODY_ATTRIBUTES}}>
+  <!-- Preloader del dashboard -->
+  <div id="dashboardLoader" class="dashboard-loader">
+    <div class="loader-content">
+      <div class="loader-icon">
+        <i class="{{ROLE_ICON}}"></i>
+      </div>
+      <div class="loader-spinner"></div>
+      <p class="loader-text">Cargando panel de {{ROLE_NAME}}...</p>
+    </div>
+  </div>
+
+  <!-- Header principal -->
+  <header class="main-header dashboard-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda inteligente del dashboard -->
+        <div class="search-container dashboard-search">
+          <input type="text" class="search-input" placeholder="{{SEARCH_PLACEHOLDER}}" id="dashboardSearch">
+          <div class="search-suggestions" id="searchSuggestions" style="display: none;">
+            <!-- Sugerencias de búsqueda dinámicas -->
+          </div>
+          <button class="search-btn" onclick="realizarBusquedaDashboard()">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <!-- Redes sociales institucionales -->
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon" title="Facebook UNSAAC">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon" title="Twitter UNSAAC">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon" title="Instagram UNSAAC">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon" title="YouTube UNSAAC">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+
+          <!-- Notificaciones con contador -->
+          <div class="notifications-menu" id="notificationsMenu">
+            <button class="notifications-btn" onclick="toggleNotifications()">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge" id="notificationBadge">0</span>
+            </button>
+            <div class="notifications-dropdown" id="notificationsDropdown">
+              <div class="notifications-header">
+                <h4>Notificaciones</h4>
+                <div class="notification-actions">
+                  <button onclick="marcarTodasComoLeidas()" title="Marcar todas como leídas">
+                    <i class="fas fa-check-double"></i>
+                  </button>
+                  <button onclick="configurarNotificaciones()" title="Configurar">
+                    <i class="fas fa-cog"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="notifications-list" id="notificationsList">
+                <!-- Se cargan dinámicamente -->
+              </div>
+              <div class="notifications-footer">
+                <a href="{{BASE_PATH}}/compartidas/notificaciones.html">Ver todas las notificaciones</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accesos rápidos -->
+          <div class="quick-actions" id="quickActions">
+            <button class="quick-action-btn" onclick="toggleQuickActions()" title="Acciones rápidas">
+              <i class="fas fa-bolt"></i>
+            </button>
+            <div class="quick-actions-dropdown" id="quickActionsDropdown">
+              <div class="quick-actions-header">
+                <h4>Acciones Rápidas</h4>
+              </div>
+              <div class="quick-actions-list">
+                {{QUICK_ACTIONS_LIST}}
+              </div>
+            </div>
+          </div>
+
+          <!-- Menú de usuario con avatar -->
+          <div class="user-menu" id="userMenu">
+            <div class="user-avatar">
+              <img id="userAvatarImg" src="{{USER_AVATAR}}" alt="Avatar">
+              <div class="user-status {{USER_STATUS_CLASS}}"></div>
+            </div>
+            <div class="user-info">
+              <span class="user-name" id="userName">{{USER_NAME}}</span>
+              <span class="user-role" id="userRole">{{USER_ROLE_DISPLAY}}</span>
+            </div>
+            <button class="user-menu-toggle" onclick="toggleUserMenu()">
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            
+            <div class="user-dropdown" id="userDropdown">
+              <!-- Cambio de rol -->
+              <div class="role-switcher" id="roleSwitcher" style="{{ROLE_SWITCHER_DISPLAY}}">
+                <h5><i class="fas fa-exchange-alt"></i> Cambiar Rol</h5>
+                <div class="role-options" id="roleOptions">
+                  {{AVAILABLE_ROLES}}
+                </div>
+              </div>
+              
+              <!-- Enlaces del menú -->
+              <div class="menu-section">
+                <a href="{{BASE_PATH}}/compartidas/perfil.html" class="menu-item">
+                  <i class="fas fa-user"></i> Mi Perfil
+                </a>
+                <a href="{{BASE_PATH}}/compartidas/cambiar-clave.html" class="menu-item">
+                  <i class="fas fa-key"></i> Cambiar Contraseña
+                </a>
+                <a href="{{BASE_PATH}}/compartidas/notificaciones.html" class="menu-item">
+                  <i class="fas fa-bell"></i> Notificaciones
+                  <span class="menu-badge" id="notificationMenuBadge">0</span>
+                </a>
+              </div>
+              
+              <div class="menu-separator"></div>
+              
+              <div class="menu-section">
+                <a href="{{BASE_PATH}}/compartidas/ayuda.html" class="menu-item">
+                  <i class="fas fa-question-circle"></i> Ayuda
+                </a>
+                <button onclick="exportarDatosDashboard()" class="menu-item">
+                  <i class="fas fa-download"></i> Exportar Datos
+                </button>
+                <button onclick="cerrarSesion()" class="menu-item logout-btn">
+                  <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo y título -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="{{ASSETS_PATH}}/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC" onclick="irAlInicio()">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">{{DASHBOARD_SUBTITLE}}</span>
+          </div>
+        </div>
+
+        <!-- Información del dashboard -->
+        <div class="header-info">
+          <div class="dashboard-info">
+            <div class="info-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span class="info-label">Ciclo Actual:</span>
+              <span class="info-value" id="currentCycle">{{CURRENT_CYCLE}}</span>
+            </div>
+            <div class="info-item" style="{{LAST_LOGIN_DISPLAY}}">
+              <i class="fas fa-clock"></i>
+              <span class="info-label">Último acceso:</span>
+              <span class="info-value" id="lastLogin">{{LAST_LOGIN}}</span>
+            </div>
+            <div class="info-item" style="{{SYSTEM_STATUS_DISPLAY}}">
+              <i class="fas fa-circle system-status-{{SYSTEM_STATUS_CLASS}}"></i>
+              <span class="info-label">Estado:</span>
+              <span class="info-value" id="systemStatus">{{SYSTEM_STATUS}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav dashboard-nav" id="mainNav">
+          <ul class="nav-list">
+            {{NAVIGATION_ITEMS}}
+          </ul>
+        </nav>
+
+        <!-- Filtros globales del dashboard -->
+        <div class="dashboard-filters" id="dashboardFilters" style="{{FILTERS_DISPLAY}}">
+          {{DASHBOARD_FILTERS}}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb dashboard-breadcrumb" style="{{BREADCRUMB_DISPLAY}}">
+    {{BREADCRUMB_CONTENT}}
+  </nav>
+
+  <!-- Contenido principal del dashboard -->
+  <main class="dashboard-main" id="dashboardMain">
+    <!-- Mensajes del sistema -->
+    <div class="system-messages" id="systemMessages">
+      {{SYSTEM_MESSAGES}}
+    </div>
+
+    <!-- Alertas importantes del dashboard -->
+    <div class="dashboard-alerts" id="dashboardAlerts" style="{{ALERTS_DISPLAY}}">
+      {{DASHBOARD_ALERTS}}
+    </div>
+
+    <!-- Control del estado del sistema (solo admin) -->
+    <section class="system-control-section" style="{{SYSTEM_CONTROL_DISPLAY}}">
+      {{SYSTEM_CONTROL_CONTENT}}
+    </section>
+
+    <!-- Métricas principales -->
+    <section class="dashboard-metrics">
+      <div class="metrics-header">
+        <h2><i class="{{METRICS_ICON}}"></i> {{METRICS_TITLE}}</h2>
+        <div class="metrics-actions">
+          <button onclick="actualizarMetricas()" class="btn btn-sm btn-outline" title="Actualizar">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button onclick="configurarMetricas()" class="btn btn-sm btn-outline" title="Configurar">
+            <i class="fas fa-cog"></i>
+          </button>
+          <button onclick="exportarMetricas()" class="btn btn-sm btn-success" title="Exportar">
+            <i class="fas fa-download"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="metrics-grid" id="metricsGrid">
+        {{METRICS_CARDS}}
+      </div>
+    </section>
+
+    <!-- Contenido específico del dashboard por rol -->
+    <div class="dashboard-content">
+      {{ROLE_SPECIFIC_CONTENT}}
+    </div>
+
+    <!-- Widgets personalizables -->
+    <section class="dashboard-widgets" style="{{WIDGETS_DISPLAY}}">
+      <div class="widgets-header">
+        <h2><i class="fas fa-th"></i> Widgets</h2>
+        <div class="widgets-actions">
+          <button onclick="añadirWidget()" class="btn btn-sm btn-primary">
+            <i class="fas fa-plus"></i> Añadir Widget
+          </button>
+          <button onclick="organizarWidgets()" class="btn btn-sm btn-outline">
+            <i class="fas fa-grip-horizontal"></i> Organizar
+          </button>
+        </div>
+      </div>
+      
+      <div class="widgets-grid" id="widgetsGrid">
+        {{DASHBOARD_WIDGETS}}
+      </div>
+    </section>
+
+    <!-- Actividad reciente -->
+    <section class="recent-activity" style="{{ACTIVITY_DISPLAY}}">
+      <div class="activity-header">
+        <h2><i class="fas fa-history"></i> Actividad Reciente</h2>
+        <div class="activity-filters">
+          <select id="activityFilter" onchange="filtrarActividad()">
+            <option value="all">Toda la actividad</option>
+            <option value="today">Hoy</option>
+            <option value="week">Esta semana</option>
+            <option value="month">Este mes</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="activity-timeline" id="activityTimeline">
+        {{RECENT_ACTIVITY}}
+      </div>
+      
+      <div class="activity-actions">
+        <button onclick="verActividadCompleta()" class="btn btn-outline">
+          <i class="fas fa-list"></i> Ver Actividad Completa
+        </button>
+      </div>
+    </section>
+
+    <!-- Acciones rápidas del dashboard -->
+    <section class="dashboard-quick-actions">
+      <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+      <div class="quick-actions-grid">
+        {{DASHBOARD_QUICK_ACTIONS}}
+      </div>
+    </section>
+  </main>
+
+  <!-- Sidebar del dashboard (opcional) -->
+  <aside class="dashboard-sidebar" id="dashboardSidebar" style="{{SIDEBAR_DISPLAY}}">
+    <div class="sidebar-header">
+      <h3>{{SIDEBAR_TITLE}}</h3>
+      <button onclick="toggleSidebar()" class="sidebar-toggle">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="sidebar-content">
+      {{SIDEBAR_CONTENT}}
+    </div>
+  </aside>
+
+  <!-- Panel de configuración del dashboard -->
+  <div class="dashboard-settings-panel" id="settingsPanel" style="display: none;">
+    <div class="settings-header">
+      <h3><i class="fas fa-cog"></i> Configuración del Dashboard</h3>
+      <button onclick="cerrarConfiguracion()" class="settings-close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="settings-content">
+      <div class="settings-section">
+        <h4>Apariencia</h4>
+        <div class="setting-item">
+          <label for="dashboardTheme">Tema:</label>
+          <select id="dashboardTheme" onchange="cambiarTemaDashboard()">
+            <option value="light">Claro</option>
+            <option value="dark">Oscuro</option>
+            <option value="auto">Automático</option>
+          </select>
+        </div>
+        <div class="setting-item">
+          <label for="dashboardDensity">Densidad:</label>
+          <select id="dashboardDensity" onchange="cambiarDensidadDashboard()">
+            <option value="comfortable">Cómoda</option>
+            <option value="compact">Compacta</option>
+            <option value="spacious">Espaciosa</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h4>Widgets</h4>
+        <div class="widgets-settings" id="widgetsSettings">
+          <!-- Configuración de widgets -->
+        </div>
+      </div>
+      
+      <div class="settings-section">
+        <h4>Notificaciones</h4>
+        <div class="notification-settings">
+          <label class="setting-checkbox">
+            <input type="checkbox" id="enableDesktopNotifications">
+            <span>Notificaciones de escritorio</span>
+          </label>
+          <label class="setting-checkbox">
+            <input type="checkbox" id="enableSoundNotifications">
+            <span>Sonidos de notificación</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="settings-footer">
+      <button onclick="guardarConfiguracionDashboard()" class="btn btn-primary">
+        <i class="fas fa-save"></i> Guardar Configuración
+      </button>
+      <button onclick="restaurarConfiguracionPorDefecto()" class="btn btn-outline">
+        <i class="fas fa-undo"></i> Restaurar Por Defecto
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer del dashboard -->
+  <footer class="dashboard-footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+          <p>Sistema de Portafolio Docente - Panel de {{ROLE_NAME}} | Versión 1.0.0</p>
+        </div>
+        
+        <div class="footer-stats">
+          <span class="stat-item">
+            <i class="fas fa-users"></i>
+            <span id="onlineUsers">{{ONLINE_USERS}}</span> en línea
+          </span>
+          <span class="stat-item">
+            <i class="fas fa-server"></i>
+            <span id="serverStatus" class="status-{{SERVER_STATUS_CLASS}}">{{SERVER_STATUS}}</span>
+          </span>
+          <span class="stat-item">
+            <i class="fas fa-clock"></i>
+            <span id="currentTime">{{CURRENT_TIME}}</span>
+          </span>
+        </div>
+        
+        <div class="footer-actions">
+          <button onclick="abrirConfiguracion()" class="footer-btn" title="Configuración">
+            <i class="fas fa-cog"></i>
+          </button>
+          <button onclick="cambiarTema()" class="footer-btn theme-toggle" title="Cambiar tema">
+            <i class="fas fa-moon" id="themeIcon"></i>
+          </button>
+          <button onclick="scrollToTop()" class="footer-btn scroll-top" title="Ir arriba" id="scrollTopBtn" style="display: none;">
+            <i class="fas fa-chevron-up"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modales específicos del dashboard -->
+  {{DASHBOARD_MODALS}}
+
+  <!-- Toast notifications -->
+  <div id="dashboardToastContainer" class="toast-container">
+    <!-- Se generan dinámicamente -->
+  </div>
+
+  <!-- JavaScript Principal del Dashboard -->
+  <script src="{{JS_PATH}}/principal.js"></script>
+
+  <!-- Scripts inline del dashboard -->
+  <script>
+    // Variables globales del dashboard
+    window.DASHBOARD_CONFIG = {
+      basePath: '{{BASE_PATH}}',
+      assetsPath: '{{ASSETS_PATH}}',
+      role: '{{USER_ROLE}}',
+      userId: '{{USER_ID}}',
+      currentCycle: '{{CURRENT_CYCLE}}',
+      apiEndpoint: '{{API_ENDPOINT}}',
+      refreshInterval: {{REFRESH_INTERVAL}} || 30000,
+      enableRealtime: {{ENABLE_REALTIME}} || false,
+      theme: localStorage.getItem('dashboardTheme') || 'light'
+    };
+
+    // Inicialización del dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+      inicializarDashboard();
+      cargarDatosDashboard();
+      configurarActualizacionAutomatica();
+      aplicarConfiguracionGuardada();
+      inicializarComponentesDashboard();
+      configurarEventListeners();
+    });
+
+    // Funciones principales del dashboard
+    function inicializarDashboard() {
+      // Ocultar loader después de cargar
+      setTimeout(() => {
+        document.getElementById('dashboardLoader').style.display = 'none';
+        document.body.classList.add('dashboard-loaded');
+      }, 1500);
+      
+      // Aplicar tema guardado
+      aplicarTemaGuardado();
+      
+      // Configurar reloj en tiempo real
+      actualizarReloj();
+      setInterval(actualizarReloj, 1000);
+    }
+
+    function cargarDatosDashboard() {
+      // Cargar métricas
+      cargarMetricas();
+      
+      // Cargar notificaciones
+      cargarNotificaciones();
+      
+      // Cargar actividad reciente
+      cargarActividadReciente();
+      
+      // Cargar contenido específico del rol
+      cargarContenidoEspecifico();
+    }
+
+    function configurarActualizacionAutomatica() {
+      if (DASHBOARD_CONFIG.refreshInterval > 0) {
+        setInterval(() => {
+          actualizarDatosDashboard();
+        }, DASHBOARD_CONFIG.refreshInterval);
+      }
+    }
+
+    function aplicarConfiguracionGuardada() {
+      // Aplicar configuraciones guardadas del usuario
+      const config = JSON.parse(localStorage.getItem('dashboardConfig') || '{}');
+      
+      if (config.theme) {
+        document.body.setAttribute('data-theme', config.theme);
+      }
+      
+      if (config.density) {
+        document.body.setAttribute('data-density', config.density);
+      }
+      
+      if (config.widgets) {
+        configurarWidgets(config.widgets);
+      }
+    }
+
+    function inicializarComponentesDashboard() {
+      // Inicializar gráficos
+      inicializarGraficos();
+      
+      // Configurar drag and drop para widgets
+      configurarDragAndDrop();
+      
+      // Inicializar tooltips
+      inicializarTooltips();
+      
+      // Configurar búsqueda inteligente
+      configurarBusquedaInteligente();
+    }
+
+    function configurarEventListeners() {
+      // Evento de cambio de ventana (para pausar/reanudar actualizaciones)
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          pausarActualizaciones();
+        } else {
+          reanudarActualizaciones();
+        }
+      });
+
+      // Evento de scroll para mostrar/ocultar botón de scroll to top
+      window.addEventListener('scroll', function() {
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.style.display = 'block';
+        } else {
+          scrollTopBtn.style.display = 'none';
+        }
+      });
+
+      // Eventos de redimensionamiento para gráficos responsivos
+      window.addEventListener('resize', function() {
+        redimensionarGraficos();
+      });
+    }
+
+    // Funciones de utilidad
+    function actualizarReloj() {
+      const ahora = new Date();
+      const timeString = ahora.toLocaleTimeString('es-PE', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      const timeElement = document.getElementById('currentTime');
+      if (timeElement) {
+        timeElement.textContent = timeString;
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    function toggleMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('mobile-open');
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('dashboardSidebar');
+      sidebar.classList.toggle('sidebar-collapsed');
+    }
+
+    function abrirConfiguracion() {
+      document.getElementById('settingsPanel').style.display = 'block';
+    }
+
+    function cerrarConfiguracion() {
+      document.getElementById('settingsPanel').style.display = 'none';
+    }
+
+    function cambiarTema() {
+      const currentTheme = document.body.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('dashboardTheme', newTheme);
+      
+      const themeIcon = document.getElementById('themeIcon');
+      themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      
+      // Actualizar gráficos con el nuevo tema
+      actualizarTemasGraficos(newTheme);
+    }
+
+    function aplicarTemaGuardado() {
+      const savedTheme = localStorage.getItem('dashboardTheme') || DASHBOARD_CONFIG.theme;
+      document.body.setAttribute('data-theme', savedTheme);
+      
+      const themeIcon = document.getElementById('themeIcon');
+      if (themeIcon) {
+        themeIcon.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
+
+    // Funciones placeholder para ser implementadas en scripts específicos
+    function cargarMetricas() {
+      // Implementar en el JavaScript específico del rol
+    }
+
+    function cargarNotificaciones() {
+      // Implementar carga de notificaciones
+    }
+
+    function cargarActividadReciente() {
+      // Implementar carga de actividad
+    }
+
+    function cargarContenidoEspecifico() {
+      // Implementar contenido específico del rol
+    }
+
+    function actualizarDatosDashboard() {
+      // Implementar actualización de datos
+    }
+
+    function inicializarGraficos() {
+      // Implementar inicialización de gráficos
+    }
+
+    function configurarDragAndDrop() {
+      // Implementar drag and drop para widgets
+    }
+
+    function inicializarTooltips() {
+      // Implementar tooltips
+    }
+
+    function configurarBusquedaInteligente() {
+      // Implementar búsqueda inteligente
+    }
+
+    function pausarActualizaciones() {
+      // Pausar actualizaciones cuando la ventana no está visible
+    }
+
+    function reanudarActualizaciones() {
+      // Reanudar actualizaciones cuando la ventana vuelve a estar visible
+    }
+
+    function redimensionarGraficos() {
+      // Redimensionar gráficos cuando cambia el tamaño de ventana
+    }
+
+    function actualizarTemasGraficos(theme) {
+      // Actualizar tema de los gráficos
+    }
+  </script>
+
+  <!-- Scripts adicionales específicos -->
+  {{DASHBOARD_INLINE_SCRIPTS}}
+</body>
+</html>

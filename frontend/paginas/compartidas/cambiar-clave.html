@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cambiar contraseña - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="cambiar contraseña, seguridad, cuenta, UNSAAC">
+  <meta name="author" content="UNSAAC">
+  <title>Cambiar Contraseña - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+  
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/compartidas/cambiar-clave.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion()">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar...">
+        </div>
+
+        <!-- Redes y usuario -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+            <span class="user-name" id="userName">Usuario</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Seguridad de Cuenta</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="main-nav">
+          <ul class="nav-list" id="mainNavigation">
+            <!-- Se cargará dinámicamente según el rol -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="#" onclick="volverDashboard()" id="backToDashboard">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <a href="perfil.html">Mi Perfil</a>
+    <span class="separator">/</span>
+    <span class="current">Cambiar Contraseña</span>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="change-password-container">
+      <div class="page-header">
+        <div class="header-icon">
+          <i class="fas fa-key"></i>
+        </div>
+        <h1>Cambiar Contraseña</h1>
+        <p class="page-description">
+          Actualice su contraseña para mantener su cuenta segura
+        </p>
+      </div>
+
+      <div class="content-grid">
+        <!-- Formulario de cambio de contraseña -->
+        <div class="form-section">
+          <div class="section-card">
+            <div class="card-header">
+              <h2><i class="fas fa-shield-alt"></i> Nueva Contraseña</h2>
+              <p>Complete el formulario para actualizar su contraseña</p>
+            </div>
+
+            <form id="changePasswordForm" class="change-password-form" onsubmit="cambiarContrasena(event)">
+              <div class="form-group">
+                <label for="contrasenaActual">Contraseña Actual</label>
+                <div class="password-input-container">
+                  <input type="password" id="contrasenaActual" name="contrasenaActual" 
+                         placeholder="Ingrese su contraseña actual" 
+                         required>
+                  <button type="button" class="toggle-password" onclick="togglePasswordVisibility('contrasenaActual')">
+                    <i class="fas fa-eye" id="toggleIconCurrent"></i>
+                  </button>
+                </div>
+                <button type="button" class="forgot-current" onclick="abrirRecuperacion()">
+                  ¿Olvidó su contraseña actual?
+                </button>
+              </div>
+
+              <div class="form-group">
+                <label for="nuevaContrasena">Nueva Contraseña</label>
+                <div class="password-input-container">
+                  <input type="password" id="nuevaContrasena" name="nuevaContrasena" 
+                         placeholder="Ingrese su nueva contraseña" 
+                         required minlength="8">
+                  <button type="button" class="toggle-password" onclick="togglePasswordVisibility('nuevaContrasena')">
+                    <i class="fas fa-eye" id="toggleIconNew"></i>
+                  </button>
+                </div>
+                <div class="password-requirements">
+                  <p><i class="fas fa-info-circle"></i> La contraseña debe cumplir:</p>
+                  <ul>
+                    <li id="req-length"><i class="fas fa-times"></i> Mínimo 8 caracteres</li>
+                    <li id="req-uppercase"><i class="fas fa-times"></i> Al menos una mayúscula</li>
+                    <li id="req-lowercase"><i class="fas fa-times"></i> Al menos una minúscula</li>
+                    <li id="req-number"><i class="fas fa-times"></i> Al menos un número</li>
+                    <li id="req-special"><i class="fas fa-times"></i> Al menos un carácter especial</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="confirmarContrasena">Confirmar Nueva Contraseña</label>
+                <div class="password-input-container">
+                  <input type="password" id="confirmarContrasena" name="confirmarContrasena" 
+                         placeholder="Confirme su nueva contraseña" 
+                         required>
+                  <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmarContrasena')">
+                    <i class="fas fa-eye" id="toggleIconConfirm"></i>
+                  </button>
+                </div>
+                <div class="password-match" id="passwordMatch" style="display: none;">
+                  <p><i class="fas fa-times"></i> Las contraseñas no coinciden</p>
+                </div>
+              </div>
+
+              <div class="password-strength">
+                <label>Fortaleza de la contraseña:</label>
+                <div class="strength-bar">
+                  <div class="strength-fill" id="strengthBar"></div>
+                </div>
+                <span class="strength-text" id="strengthText">Débil</span>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                  <i class="fas fa-save"></i> Actualizar Contraseña
+                </button>
+                <button type="reset" class="btn btn-secondary">
+                  <i class="fas fa-undo"></i> Limpiar Formulario
+                </button>
+                <a href="perfil.html" class="btn btn-outline">
+                  <i class="fas fa-arrow-left"></i> Volver al Perfil
+                </a>
+              </div>
+
+              <p id="mensaje" class="mensaje"></p>
+            </form>
+          </div>
+        </div>
+
+        <!-- Información de seguridad -->
+        <div class="info-section">
+          <div class="security-info">
+            <h3><i class="fas fa-shield-alt"></i> Consejos de Seguridad</h3>
+            
+            <div class="security-tips">
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="fas fa-lock"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Contraseña Fuerte</h4>
+                  <p>Use una combinación de letras mayúsculas, minúsculas, números y símbolos especiales.</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="fas fa-user-secret"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Mantenga la Privacidad</h4>
+                  <p>No comparta su contraseña con otras personas y evite escribirla en lugares visibles.</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="fas fa-clock"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Actualización Regular</h4>
+                  <p>Cambie su contraseña cada 3-6 meses para mantener su cuenta segura.</p>
+                </div>
+              </div>
+
+              <div class="tip-item">
+                <div class="tip-icon">
+                  <i class="fas fa-ban"></i>
+                </div>
+                <div class="tip-content">
+                  <h4>Evite Información Personal</h4>
+                  <p>No use fechas de nacimiento, nombres o información personal fácil de adivinar.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historial de cambios -->
+          <div class="password-history">
+            <h3><i class="fas fa-history"></i> Historial de Seguridad</h3>
+            <div class="history-info">
+              <div class="history-item">
+                <div class="history-icon">
+                  <i class="fas fa-key"></i>
+                </div>
+                <div class="history-details">
+                  <span class="history-action">Última actualización de contraseña</span>
+                  <span class="history-date" id="lastPasswordChange">Hace 45 días</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div class="history-icon">
+                  <i class="fas fa-sign-in-alt"></i>
+                </div>
+                <div class="history-details">
+                  <span class="history-action">Último inicio de sesión</span>
+                  <span class="history-date" id="lastLogin">Hoy a las 14:30</span>
+                </div>
+              </div>
+
+              <div class="history-item">
+                <div class="history-icon">
+                  <i class="fas fa-laptop"></i>
+                </div>
+                <div class="history-details">
+                  <span class="history-action">Dispositivo utilizado</span>
+                  <span class="history-date" id="lastDevice">Chrome en Windows</span>
+                </div>
+              </div>
+            </div>
+
+            <button onclick="verHistorialCompleto()" class="btn btn-outline btn-sm">
+              <i class="fas fa-list"></i> Ver Historial Completo
+            </button>
+          </div>
+
+          <!-- Configuración adicional -->
+          <div class="additional-security">
+            <h3><i class="fas fa-cog"></i> Configuración Adicional</h3>
+            
+            <div class="security-options">
+              <div class="option-item">
+                <div class="option-info">
+                  <h4>Notificaciones de Seguridad</h4>
+                  <p>Recibir alertas por email sobre cambios en la cuenta</p>
+                </div>
+                <div class="option-control">
+                  <label class="switch">
+                    <input type="checkbox" id="securityNotifications" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="option-item">
+                <div class="option-info">
+                  <h4>Cerrar Otras Sesiones</h4>
+                  <p>Cerrar todas las sesiones activas en otros dispositivos</p>
+                </div>
+                <div class="option-control">
+                  <button onclick="cerrarOtrasSesiones()" class="btn btn-warning btn-sm">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesiones
+                  </button>
+                </div>
+              </div>
+
+              <div class="option-item">
+                <div class="option-info">
+                  <h4>Revisión de Actividad</h4>
+                  <p>Ver un registro detallado de la actividad de su cuenta</p>
+                </div>
+                <div class="option-control">
+                  <button onclick="verActividadCuenta()" class="btn btn-info btn-sm">
+                    <i class="fas fa-chart-line"></i> Ver Actividad
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal de confirmación para cerrar otras sesiones -->
+  <div id="closeSessionsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cerrar Otras Sesiones</h3>
+        <span class="close" onclick="cerrarModal('closeSessionsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="warning-message">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Está a punto de cerrar todas las sesiones activas en otros dispositivos. Tendrá que volver a iniciar sesión en esos dispositivos.</p>
+        </div>
+        <div class="sessions-list" id="activeSessions">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="confirmarCerrarSesiones()" class="btn btn-danger">
+          <i class="fas fa-sign-out-alt"></i> Cerrar Todas las Sesiones
+        </button>
+        <button onclick="cerrarModal('closeSessionsModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+
+</body>
+</html>

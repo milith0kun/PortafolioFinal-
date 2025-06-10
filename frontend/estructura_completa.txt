@@ -1,0 +1,225 @@
+.
+|-- assets
+|   |-- css
+|   |   |-- componentes
+|   |   |   |-- barra-lateral.css
+|   |   |   |-- barra-superior.css
+|   |   |   |-- botones.css
+|   |   |   |-- cargando.css
+|   |   |   |-- footer.css
+|   |   |   |-- formularios.css
+|   |   |   |-- header.css
+|   |   |   |-- Login.css
+|   |   |   |-- migas-pan.css
+|   |   |   |-- modales.css
+|   |   |   |-- notificaciones.css
+|   |   |   |-- tablas.css
+|   |   |   |-- tarjetas.css
+|   |   |-- nucleo
+|   |   |   |-- diseño.css
+|   |   |   |-- reset.css
+|   |   |   |-- tipografias.css
+|   |   |   |-- variables.css
+|   |   |-- paginas
+|   |   |   |-- administrador
+|   |   |   |   |-- asignaturas.css
+|   |   |   |   |-- carga-excel.css
+|   |   |   |   |-- ciclos.css
+|   |   |   |   |-- configuracion.css
+|   |   |   |   |-- reportes.css
+|   |   |   |   |-- tablero.css
+|   |   |   |   |-- usuarios.css
+|   |   |   |-- autenticacion
+|   |   |   |   |-- login.css
+|   |   |   |   |-- recuperar.css
+|   |   |   |   |-- selector-rol.css
+|   |   |   |-- compartidas
+|   |   |   |   |-- cambiar-clave.css
+|   |   |   |   |-- centro-notificaciones.css
+|   |   |   |   |-- paginas-error.css
+|   |   |   |   |-- perfil.css
+|   |   |   |-- docente
+|   |   |   |   |-- explorador.css
+|   |   |   |   |-- observaciones.css
+|   |   |   |   |-- portafolios.css
+|   |   |   |   |-- progreso.css
+|   |   |   |   |-- subir-archivos.css
+|   |   |   |   |-- tablero.css
+|   |   |   |-- verificador
+|   |   |   |   |-- cola-revision.css
+|   |   |   |   |-- crear-observacion.css
+|   |   |   |   |-- estadisticas.css
+|   |   |   |   |-- revisar.css
+|   |   |   |   |-- tablero.css
+|   |   |-- principal.css
+|   |   |-- principal.min.css
+|   |   |-- responsive
+|   |   |   |-- escritorio.css
+|   |   |   |-- movil.css
+|   |   |   |-- tablet.css
+|   |   |-- temas
+|   |   |   |-- tema-claro.css
+|   |   |   |-- tema-oscuro.css
+|   |   |   |-- tema-unsaac.css
+|   |-- fuentes
+|   |   |-- inter.woff2
+|   |   |-- roboto.woff2
+|   |-- imagenes
+|   |   |-- avatares
+|   |   |   |-- .gitkeep
+|   |   |-- fondos
+|   |   |   |-- .gitkeep
+|   |   |-- iconos
+|   |   |   |-- .gitkeep
+|   |   |   |-- logo.png
+|   |   |   |-- logoInstitucional.png
+|   |   |-- logos
+|   |   |   |-- logo-unsaac.png
+|   |   |   |-- logo-unsaac2.png
+|   |-- js
+|   |   |-- componentes
+|   |   |   |-- barra-superior.js
+|   |   |   |-- centro-notificaciones.js
+|   |   |   |-- manejador-tablas.js
+|   |   |   |-- navegacion-lateral.js
+|   |   |   |-- navegacion-migas.js
+|   |   |   |-- rastreador-progreso.js
+|   |   |   |-- sistema-modales.js
+|   |   |   |-- subidor-archivos.js
+|   |   |   |-- validador-formularios.js
+|   |   |-- librerias
+|   |   |   |-- bootstrap.bundle.min.js
+|   |   |   |-- chart.min.js
+|   |   |   |-- datatables.min.js
+|   |   |   |-- jquery.min.js
+|   |   |   |-- sweetalert2.min.js
+|   |   |-- nucleo
+|   |   |   |-- api.js
+|   |   |   |-- aplicacion.js
+|   |   |   |-- autenticacion.js
+|   |   |   |-- configuracion.js
+|   |   |   |-- enrutador.js
+|   |   |   |-- utilidades.js
+|   |   |-- paginas
+|   |   |   |-- administrador
+|   |   |   |   |-- asignacion-roles.js
+|   |   |   |   |-- asignaciones.js
+|   |   |   |   |-- configuracion-sistema.js
+|   |   |   |   |-- crud-asignaturas.js
+|   |   |   |   |-- crud-usuarios.js
+|   |   |   |   |-- generador-reportes.js
+|   |   |   |   |-- gestion-ciclos.js
+|   |   |   |   |-- manejador-excel.js
+|   |   |   |   |-- tablero.js
+|   |   |   |-- autenticacion
+|   |   |   |   |-- manejador-login.js
+|   |   |   |   |-- recuperar-clave.js
+|   |   |   |   |-- selector-rol.js
+|   |   |   |-- compartidas
+|   |   |   |   |-- cambiar-clave.js
+|   |   |   |   |-- editor-perfil.js
+|   |   |   |   |-- gestor-notificaciones.js
+|   |   |   |   |-- manejador-errores.js
+|   |   |   |-- docente
+|   |   |   |   |-- arbol-portafolio.js
+|   |   |   |   |-- calculador-progreso.js
+|   |   |   |   |-- explorador-archivos.js
+|   |   |   |   |-- gestor-portafolios.js
+|   |   |   |   |-- subir-documentos.js
+|   |   |   |   |-- tablero.js
+|   |   |   |   |-- visor-observaciones.js
+|   |   |   |-- verificador
+|   |   |   |   |-- cola-revision.js
+|   |   |   |   |-- creador-observaciones.js
+|   |   |   |   |-- estadisticas.js
+|   |   |   |   |-- revisar-documentos.js
+|   |   |   |   |-- tablero.js
+|   |   |-- principal.js
+|   |   |-- principal.min.js
+|   |   |-- servicios
+|   |   |   |-- servicio-asignaturas.js
+|   |   |   |-- servicio-autenticacion.js
+|   |   |   |-- servicio-ciclos.js
+|   |   |   |-- servicio-documentos.js
+|   |   |   |-- servicio-notificaciones.js
+|   |   |   |-- servicio-observaciones.js
+|   |   |   |-- servicio-portafolios.js
+|   |   |   |-- servicio-reportes.js
+|   |   |   |-- servicio-roles.js
+|   |   |   |-- servicio-usuarios.js
+|-- componentes
+|   |-- estructura
+|   |   |-- barra-lateral.html
+|   |   |-- barra-superior.html
+|   |   |-- migas-pan.html
+|   |   |-- pie-pagina.html
+|   |-- formularios
+|   |   |-- formulario-busqueda.html
+|   |   |-- formulario-login.html
+|   |   |-- formulario-subida.html
+|   |   |-- formulario-usuario.html
+|   |-- modales
+|   |   |-- modal-confirmacion.html
+|   |   |-- modal-observacion.html
+|   |   |-- modal-usuario.html
+|   |   |-- modal-vista-archivo.html
+|   |-- widgets
+|   |   |-- barra-progreso.html
+|   |   |-- item-archivo.html
+|   |   |-- item-notificacion.html
+|   |   |-- tarjeta-estadisticas.html
+|-- configuracion
+|   |-- constantes.js
+|   |-- entorno.js
+|   |-- rutas.js
+|-- estructura_completa.txt
+|-- index.html
+|-- manifest.json
+|-- paginas
+|   |-- administrador
+|   |   |-- asignaciones.html
+|   |   |-- asignaturas.html
+|   |   |-- carga-excel.html
+|   |   |-- ciclos-academicos.html
+|   |   |-- configuracion.html
+|   |   |-- reportes.html
+|   |   |-- tablero.html
+|   |   |-- usuarios.html
+|   |   |-- verificadores.html
+|   |-- autenticacion
+|   |   |-- login.html
+|   |   |-- recuperar.html
+|   |   |-- restablecer-clave.html
+|   |   |-- selector-rol.html
+|   |-- compartidas
+|   |   |-- ayuda.html
+|   |   |-- cambiar-clave.html
+|   |   |-- notificaciones.html
+|   |   |-- perfil.html
+|   |-- docente
+|   |   |-- explorador.html
+|   |   |-- mis-portafolios.html
+|   |   |-- observaciones.html
+|   |   |-- progreso.html
+|   |   |-- subir.html
+|   |   |-- tablero.html
+|   |-- errores
+|   |   |-- 403.html
+|   |   |-- 404.html
+|   |   |-- 500.html
+|   |   |-- error.html
+|   |-- verificador
+|   |   |-- cola-revision.html
+|   |   |-- crear-observacion.html
+|   |   |-- estadisticas.html
+|   |   |-- revisar.html
+|   |   |-- tablero.html
+|-- plantillas
+|   |-- autenticacion.html
+|   |-- base.html
+|   |-- modal.html
+|   |-- tablero.html
+
+
+
+find . \( -path "*/node_modules" -o -path "*/node_modules/*" \) -prune -o -print | sed -e 's/[^\/]*\//|   /g;s/|   \([^|]\)/|-- \1/' > estructura_completa.txt

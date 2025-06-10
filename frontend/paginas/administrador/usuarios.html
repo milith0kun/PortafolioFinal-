@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Usuarios - Panel de Administración</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Gestión de usuarios - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="usuarios, gestión, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/crud-usuarios.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+        <div class="header-top-container">
+            <!-- Barra de búsqueda -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Buscar usuarios...">
+            </div>
+            
+            <!-- Acciones de usuario y redes sociales -->
+            <div class="header-actions">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <span class="user-name">Administrador</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+        <div class="header-middle-container">
+            <div class="logo-container">
+                <div class="logo-img">
+                    <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+                </div>
+                <div class="logo-text-container">
+                    <span class="logo-title">Sistema de Portafolio</span>
+                    <span class="logo-subtitle">Gestión de Usuarios</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+        <div class="header-bottom-container">
+            <button class="menu-toggle" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="tablero.html">Dashboard</a></li>
+                    <li><a href="usuarios.html" class="active">Usuarios</a></li>
+                    <li><a href="ciclos-academicos.html">Ciclos</a></li>
+                    <li><a href="asignaturas.html">Asignaturas</a></li>
+                    <li><a href="carga-excel.html">Carga Excel</a></li>
+                    <li><a href="reportes.html">Reportes</a></li>
+                    <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Gestión de Usuarios</span>
+  </nav>
+
+  <main>
+    <!-- Estadísticas rápidas -->
+    <section class="users-stats">
+      <div class="stats-cards">
+        <div class="stat-card total-users">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Total Usuarios</h3>
+            <span class="stat-value" id="totalUsers">150</span>
+          </div>
+        </div>
+        <div class="stat-card active-users">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Activos</h3>
+            <span class="stat-value" id="activeUsers">142</span>
+          </div>
+        </div>
+        <div class="stat-card admin-users">
+          <div class="stat-icon">
+            <i class="fas fa-user-cog"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Administradores</h3>
+            <span class="stat-value" id="adminUsers">5</span>
+          </div>
+        </div>
+        <div class="stat-card teacher-users">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Docentes</h3>
+            <span class="stat-value" id="teacherUsers">120</span>
+          </div>
+        </div>
+        <div class="stat-card verifier-users">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Verificadores</h3>
+            <span class="stat-value" id="verifierUsers">25</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de creación de usuario -->
+    <section class="user-creation">
+      <h2><i class="fas fa-user-plus"></i> Registrar Nuevo Usuario</h2>
+      <form id="form-usuario" onsubmit="crearUsuario(event)" class="user-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombres">Nombres</label>
+            <input type="text" id="nombres" placeholder="Nombres" required />
+          </div>
+          <div class="form-group">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" placeholder="Apellidos" required />
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="correo">Correo institucional</label>
+            <input type="email" id="correo" placeholder="usuario@unsaac.edu.pe" required />
+          </div>
+          <div class="form-group">
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono" placeholder="Teléfono (opcional)" />
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" placeholder="Contraseña" required />
+          </div>
+          <div class="form-group">
+            <label for="rol">Rol principal</label>
+            <select id="rol" required>
+              <option value="">Seleccionar Rol</option>
+              <option value="administrador">Administrador</option>
+              <option value="docente">Docente</option>
+              <option value="verificador">Verificador</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-user-plus"></i> Registrar Usuario
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-undo"></i> Limpiar Formulario
+          </button>
+        </div>
+        <p id="mensaje" class="mensaje"></p>
+      </form>
+    </section>
+
+    <!-- Filtros y búsqueda -->
+    <section class="users-filters">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="filterRole">Filtrar por rol:</label>
+          <select id="filterRole" onchange="filtrarUsuarios()">
+            <option value="">Todos los roles</option>
+            <option value="administrador">Administradores</option>
+            <option value="docente">Docentes</option>
+            <option value="verificador">Verificadores</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filterStatus">Estado:</label>
+          <select id="filterStatus" onchange="filtrarUsuarios()">
+            <option value="">Todos</option>
+            <option value="1">Activos</option>
+            <option value="0">Inactivos</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="searchUsers">Buscar usuario:</label>
+          <input type="text" id="searchUsers" placeholder="Nombre, apellido o correo..." onkeyup="buscarUsuarios()">
+        </div>
+        
+        <div class="filter-actions">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar Filtros
+          </button>
+          <button onclick="exportarUsuarios()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar Excel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de usuarios -->
+    <section class="users-list">
+      <h2><i class="fas fa-list"></i> Usuarios Registrados</h2>
+      <div class="table-container">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre Completo</th>
+              <th>Correo</th>
+              <th>Roles</th>
+              <th>Estado</th>
+              <th>Último Acceso</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="lista-usuarios">
+            <tr>
+              <td colspan="7" class="loading">Cargando usuarios...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Paginación -->
+      <div class="pagination" id="pagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Acciones masivas -->
+    <section class="bulk-actions">
+      <h3>Acciones Masivas</h3>
+      <div class="bulk-controls">
+        <label class="checkbox-container">
+          <input type="checkbox" id="selectAll" onchange="seleccionarTodos()">
+          <span class="checkmark"></span>
+          Seleccionar todos
+        </label>
+        
+        <div class="bulk-buttons">
+          <button onclick="activarSeleccionados()" class="btn btn-success" disabled id="activateBtn">
+            <i class="fas fa-check"></i> Activar
+          </button>
+          <button onclick="desactivarSeleccionados()" class="btn btn-warning" disabled id="deactivateBtn">
+            <i class="fas fa-ban"></i> Desactivar
+          </button>
+          <button onclick="eliminarSeleccionados()" class="btn btn-danger" disabled id="deleteBtn">
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para editar usuario -->
+  <div id="editUserModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Usuario</h3>
+        <span class="close" onclick="cerrarModal('editUserModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editUserForm">
+          <!-- Formulario de edición similar al de creación -->
+          <input type="hidden" id="editUserId">
+          <div class="form-group">
+            <label for="editNombres">Nombres</label>
+            <input type="text" id="editNombres" required>
+          </div>
+          <div class="form-group">
+            <label for="editApellidos">Apellidos</label>
+            <input type="text" id="editApellidos" required>
+          </div>
+          <div class="form-group">
+            <label for="editCorreo">Correo</label>
+            <input type="email" id="editCorreo" required>
+          </div>
+          <div class="form-group">
+            <label for="editTelefono">Teléfono</label>
+            <input type="tel" id="editTelefono">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarCambiosUsuario()" class="btn btn-primary">Guardar Cambios</button>
+        <button onclick="cerrarModal('editUserModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para gestionar roles -->
+  <div id="rolesModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Gestionar Roles de Usuario</h3>
+        <span class="close" onclick="cerrarModal('rolesModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="rolesModalContent">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarRoles()" class="btn btn-primary">Guardar Roles</button>
+        <button onclick="cerrarModal('rolesModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="../compartidas/ayuda.html">Ayuda</a>
+        </div>
+    </div>
+  </footer>
+</body>
+</html>

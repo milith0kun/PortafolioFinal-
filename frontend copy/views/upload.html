@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- JS -->
+  <script src="../js/config.js"></script>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/arbol_portafolio_docente.js" defer></script>
+</head>
+
+<body onload="verificarSesion('docente')">
+
+  <!-- Encabezado -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar en portafolio...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user"></i></div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img"></div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="portafolio_docente.html" class="active">Inicio</a></li>
+            <li><a href="#">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <section class="portafolio-section">
+      <h2>📁 Mis Cursos y Documentos</h2>
+      <div id="arbol-portafolio" class="drive-tree">
+        ⏳ Cargando portafolio...
+      </div>
+    </section>
+
+    <section id="seccion-subida" class="upload-section" style="display:none;">
+      <h3>📤 Subir archivo a: <span id="carpeta-seleccionada" class="carpeta-activa"></span></h3>
+      <form id="formUpload" enctype="multipart/form-data">
+        <div class="form-group">
+          <label for="archivo">Archivo</label>
+          <input type="file" id="archivo" name="archivo" required>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcion">Descripción</label>
+          <input type="text" id="descripcion" name="descripcion" placeholder="Descripción del documento" required>
+        </div>
+
+        <!-- Ocultos necesarios -->
+        <input type="hidden" name="portafolio_id" id="inputPortafolioId">
+        <input type="hidden" name="semestre">
+        <input type="hidden" name="asignatura">
+        <input type="hidden" name="carpeta">
+
+        <button type="submit" class="btn btn-primary">Subir</button>
+      </form>
+    </section>
+
+    <section id="archivos-subidos" class="archivos-section" style="display:none;">
+      <h3>📄 Archivos en: <span id="titulo-archivos" class="carpeta-activa"></span></h3>
+      <div id="lista-documentos" class="lista-archivos"></div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="#">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

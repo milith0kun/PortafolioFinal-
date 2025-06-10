@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Ciclos Académicos - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gestión de ciclos académicos - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="ciclos académicos, semestres, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/gestion-ciclos.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar ciclos...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-cog"></i></div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Gestión de Ciclos Académicos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html" class="active">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Gestión de Ciclos Académicos</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Resumen de ciclos -->
+    <section class="cycles-summary">
+      <div class="summary-cards">
+        <div class="summary-card total-cycles">
+          <div class="card-icon">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Ciclos</h3>
+            <span class="card-value" id="totalCycles">8</span>
+            <span class="card-label">Histórico</span>
+          </div>
+        </div>
+
+        <div class="summary-card active-cycle">
+          <div class="card-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Ciclo Activo</h3>
+            <span class="card-value" id="activeCycle">2025-I</span>
+            <span class="card-label">En configuración</span>
+          </div>
+        </div>
+
+        <div class="summary-card preparation-cycles">
+          <div class="card-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <div class="card-info">
+            <h3>En Preparación</h3>
+            <span class="card-value" id="preparationCycles">1</span>
+            <span class="card-label">Configurándose</span>
+          </div>
+        </div>
+
+        <div class="summary-card closed-cycles">
+          <div class="card-icon">
+            <i class="fas fa-archive"></i>
+          </div>
+          <div class="card-info">
+            <h3>Archivados</h3>
+            <span class="card-value" id="closedCycles">6</span>
+            <span class="card-label">Cerrados</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Control del ciclo actual -->
+    <section class="current-cycle-control">
+      <div class="control-header">
+        <h2><i class="fas fa-traffic-light"></i> Control del Ciclo Actual</h2>
+        <div class="cycle-info">
+          <span class="cycle-name" id="currentCycleName">Ciclo Académico 2025-I</span>
+          <span class="cycle-dates" id="currentCycleDates">Enero - Junio 2025</span>
+        </div>
+      </div>
+
+      <div class="cycle-status-card">
+        <div class="status-header">
+          <h3>Estado: <span id="currentStatus" class="status-text">Configuración</span></h3>
+          <div class="status-indicator">
+            <div class="status-light preparation" id="statusLight"></div>
+          </div>
+        </div>
+
+        <div class="status-phases">
+          <div class="phase-item active" data-phase="configuracion">
+            <div class="phase-number">1</div>
+            <div class="phase-info">
+              <h4>Configuración</h4>
+              <p>Cargar datos académicos y asignar docentes</p>
+            </div>
+            <div class="phase-status">
+              <i class="fas fa-clock text-warning"></i>
+            </div>
+          </div>
+
+          <div class="phase-item" data-phase="subida_activa">
+            <div class="phase-number">2</div>
+            <div class="phase-info">
+              <h4>Subida Activa</h4>
+              <p>Docentes pueden subir documentos</p>
+            </div>
+            <div class="phase-status">
+              <i class="fas fa-lock text-muted"></i>
+            </div>
+          </div>
+
+          <div class="phase-item" data-phase="verificacion">
+            <div class="phase-number">3</div>
+            <div class="phase-info">
+              <h4>Verificación</h4>
+              <p>Verificadores revisan documentos</p>
+            </div>
+            <div class="phase-status">
+              <i class="fas fa-lock text-muted"></i>
+            </div>
+          </div>
+
+          <div class="phase-item" data-phase="cerrado">
+            <div class="phase-number">4</div>
+            <div class="phase-info">
+              <h4>Cerrado</h4>
+              <p>Ciclo archivado y reportes finales</p>
+            </div>
+            <div class="phase-status">
+              <i class="fas fa-lock text-muted"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="status-actions">
+          <button onclick="activarSubidas()" class="btn btn-success" id="activateUploadsBtn">
+            <i class="fas fa-unlock"></i> Activar Subidas
+          </button>
+          <button onclick="activarVerificacion()" class="btn btn-warning" id="activateVerificationBtn" disabled>
+            <i class="fas fa-check-circle"></i> Activar Verificación
+          </button>
+          <button onclick="cerrarCiclo()" class="btn btn-danger" id="closeCycleBtn" disabled>
+            <i class="fas fa-archive"></i> Cerrar Ciclo
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creación de nuevo ciclo -->
+    <section class="cycle-creation">
+      <h2><i class="fas fa-plus-circle"></i> Crear Nuevo Ciclo Académico</h2>
+      
+      <form id="formNuevoCiclo" class="cycle-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombreCiclo">Nombre del Ciclo</label>
+            <input type="text" id="nombreCiclo" placeholder="Ej: 2025-II" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="semestreCiclo">Semestre</label>
+            <select id="semestreCiclo" required>
+              <option value="">Seleccionar semestre</option>
+              <option value="I">Primer Semestre (I)</option>
+              <option value="II">Segundo Semestre (II)</option>
+              <option value="VERANO">Ciclo de Verano</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="anioCiclo">Año Académico</label>
+            <input type="number" id="anioCiclo" min="2024" max="2030" value="2025" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fechaInicio">Fecha de Inicio</label>
+            <input type="date" id="fechaInicio" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="fechaFin">Fecha de Fin</label>
+            <input type="date" id="fechaFin" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="descripcionCiclo">Descripción</label>
+          <textarea id="descripcionCiclo" rows="3" placeholder="Descripción del ciclo académico..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Crear Ciclo
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-undo"></i> Limpiar
+          </button>
+        </div>
+
+        <div id="mensajeCreacion" class="mensaje"></div>
+      </form>
+    </section>
+
+    <!-- Lista de ciclos académicos -->
+    <section class="cycles-list">
+      <div class="list-header">
+        <h2><i class="fas fa-list"></i> Historial de Ciclos Académicos</h2>
+        
+        <!-- Filtros -->
+        <div class="list-filters">
+          <div class="filter-group">
+            <label for="filterYear">Año:</label>
+            <select id="filterYear" onchange="filtrarCiclos()">
+              <option value="">Todos</option>
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterSemester">Semestre:</label>
+            <select id="filterSemester" onchange="filtrarCiclos()">
+              <option value="">Todos</option>
+              <option value="I">Primer Semestre</option>
+              <option value="II">Segundo Semestre</option>
+              <option value="VERANO">Verano</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label for="filterStatus">Estado:</label>
+            <select id="filterStatus" onchange="filtrarCiclos()">
+              <option value="">Todos</option>
+              <option value="preparacion">Preparación</option>
+              <option value="activo">Activo</option>
+              <option value="cerrado">Cerrado</option>
+              <option value="archivado">Archivado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table class="cycles-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Período</th>
+              <th>Estado</th>
+              <th>Progreso</th>
+              <th>Creado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="listaCiclos">
+            <tr>
+              <td colspan="7" class="loading">Cargando ciclos académicos...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Configuración de módulos del sistema -->
+    <section class="system-modules">
+      <h2><i class="fas fa-puzzle-piece"></i> Configuración de Módulos del Sistema</h2>
+      
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-header">
+            <i class="fas fa-database"></i>
+            <h3>Carga de Datos</h3>
+          </div>
+          <div class="module-content">
+            <p>Permite la carga masiva de datos académicos desde Excel</p>
+            <div class="module-status">
+              <span class="status-indicator enabled" id="dataLoadStatus"></span>
+              <span class="status-text">Habilitado</span>
+            </div>
+          </div>
+          <div class="module-actions">
+            <button onclick="toggleModule('carga_datos')" class="btn btn-sm btn-warning" id="dataLoadBtn">
+              <i class="fas fa-ban"></i> Deshabilitar
+            </button>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <i class="fas fa-file-upload"></i>
+            <h3>Gestión de Documentos</h3>
+          </div>
+          <div class="module-content">
+            <p>Subida y gestión de documentos por parte de docentes</p>
+            <div class="module-status">
+              <span class="status-indicator disabled" id="documentsStatus"></span>
+              <span class="status-text">Deshabilitado</span>
+            </div>
+          </div>
+          <div class="module-actions">
+            <button onclick="toggleModule('gestion_documentos')" class="btn btn-sm btn-success" id="documentsBtn">
+              <i class="fas fa-check"></i> Habilitar
+            </button>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <i class="fas fa-check-circle"></i>
+            <h3>Verificación</h3>
+          </div>
+          <div class="module-content">
+            <p>Proceso de verificación y aprobación de documentos</p>
+            <div class="module-status">
+              <span class="status-indicator disabled" id="verificationStatus"></span>
+              <span class="status-text">Deshabilitado</span>
+            </div>
+          </div>
+          <div class="module-actions">
+            <button onclick="toggleModule('verificacion')" class="btn btn-sm btn-success" id="verificationBtn">
+              <i class="fas fa-check"></i> Habilitar
+            </button>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <i class="fas fa-chart-line"></i>
+            <h3>Reportes</h3>
+          </div>
+          <div class="module-content">
+            <p>Generación de reportes y estadísticas del sistema</p>
+            <div class="module-status">
+              <span class="status-indicator enabled" id="reportsStatus"></span>
+              <span class="status-text">Habilitado</span>
+            </div>
+          </div>
+          <div class="module-actions">
+            <button onclick="toggleModule('reportes')" class="btn btn-sm btn-warning" id="reportsBtn">
+              <i class="fas fa-ban"></i> Deshabilitar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para editar ciclo -->
+  <div id="editCycleModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Ciclo Académico</h3>
+        <span class="close" onclick="cerrarModal('editCycleModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editCycleForm">
+          <input type="hidden" id="editCycleId">
+          
+          <div class="form-group">
+            <label for="editNombreCiclo">Nombre del Ciclo</label>
+            <input type="text" id="editNombreCiclo" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="editDescripcionCiclo">Descripción</label>
+            <textarea id="editDescripcionCiclo" rows="3"></textarea>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="editFechaInicio">Fecha de Inicio</label>
+              <input type="date" id="editFechaInicio" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="editFechaFin">Fecha de Fin</label>
+              <input type="date" id="editFechaFin" required>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarCambiosCiclo()" class="btn btn-primary">Guardar Cambios</button>
+        <button onclick="cerrarModal('editCycleModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

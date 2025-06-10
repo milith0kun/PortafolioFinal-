@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reportes Administrativos - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Reportes administrativos - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="reportes, estadísticas, análisis, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/reportes-generator.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar reportes...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-cog"></i></div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Reportes Administrativos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html" class="active">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Reportes Administrativos</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Selector de ciclo -->
+    <section class="cycle-selector">
+      <div class="selector-header">
+        <h2><i class="fas fa-calendar-check"></i> Seleccionar Período de Análisis</h2>
+        <div class="cycle-info">
+          <label for="reportCycle">Ciclo académico:</label>
+          <select id="reportCycle" onchange="cambiarCicloReporte()">
+            <option value="">Seleccionar ciclo...</option>
+            <option value="2025-I" selected>2025-I (Actual)</option>
+            <option value="2024-II">2024-II</option>
+            <option value="2024-I">2024-I</option>
+            <option value="all">Todos los ciclos</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen ejecutivo -->
+    <section class="executive-summary">
+      <div class="summary-header">
+        <h2><i class="fas fa-chart-line"></i> Resumen Ejecutivo</h2>
+        <div class="summary-period" id="summaryPeriod">Ciclo 2025-I</div>
+      </div>
+
+      <div class="summary-cards">
+        <div class="summary-card users-summary">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-info">
+            <h3>Usuarios Activos</h3>
+            <span class="card-value" id="activeUsersCount">150</span>
+            <div class="card-breakdown">
+              <span class="breakdown-item">Docentes: <strong>120</strong></span>
+              <span class="breakdown-item">Verificadores: <strong>25</strong></span>
+              <span class="breakdown-item">Administradores: <strong>5</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card documents-summary">
+          <div class="card-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="card-info">
+            <h3>Documentos Totales</h3>
+            <span class="card-value" id="totalDocuments">2,847</span>
+            <div class="card-breakdown">
+              <span class="breakdown-item">Aprobados: <strong>2,156</strong></span>
+              <span class="breakdown-item">Pendientes: <strong>345</strong></span>
+              <span class="breakdown-item">Rechazados: <strong>346</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card completion-summary">
+          <div class="card-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="card-info">
+            <h3>Completitud Promedio</h3>
+            <span class="card-value" id="averageCompletion">78%</span>
+            <div class="card-breakdown">
+              <span class="breakdown-item">Excelente (90-100%): <strong>45</strong></span>
+              <span class="breakdown-item">Bueno (70-89%): <strong>52</strong></span>
+              <span class="breakdown-item">Regular (50-69%): <strong>23</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card verification-summary">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Eficiencia Verificación</h3>
+            <span class="card-value" id="verificationEfficiency">92%</span>
+            <div class="card-breakdown">
+              <span class="breakdown-item">Tiempo promedio: <strong>1.5h</strong></span>
+              <span class="breakdown-item">Observaciones: <strong>456</strong></span>
+              <span class="breakdown-item">Tasa aprobación: <strong>76%</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generador de reportes -->
+    <section class="report-generator">
+      <div class="generator-header">
+        <h2><i class="fas fa-magic"></i> Generador de Reportes</h2>
+        <p>Configure y genere reportes personalizados del sistema</p>
+      </div>
+
+      <div class="generator-container">
+        <!-- Configuración del reporte -->
+        <div class="report-config">
+          <h3>Configuración del Reporte</h3>
+          
+          <form id="reportConfigForm">
+            <div class="config-row">
+              <div class="config-group">
+                <label for="reportType">Tipo de reporte:</label>
+                <select id="reportType" onchange="configurarTipoReporte()">
+                  <option value="">Seleccionar tipo...</option>
+                  <option value="general">Reporte General del Sistema</option>
+                  <option value="docentes">Análisis por Docentes</option>
+                  <option value="asignaturas">Análisis por Asignaturas</option>
+                  <option value="verificacion">Proceso de Verificación</option>
+                  <option value="progreso">Progreso de Portafolios</option>
+                  <option value="comparativo">Análisis Comparativo</option>
+                  <option value="personalizado">Reporte Personalizado</option>
+                </select>
+              </div>
+
+              <div class="config-group">
+                <label for="reportFormat">Formato de salida:</label>
+                <select id="reportFormat">
+                  <option value="pdf">PDF (Recomendado)</option>
+                  <option value="excel">Excel (.xlsx)</option>
+                  <option value="csv">CSV (Datos)</option>
+                  <option value="html">HTML (Web)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="config-row">
+              <div class="config-group">
+                <label for="dateRange">Rango de fechas:</label>
+                <select id="dateRange" onchange="configurarFechas()">
+                  <option value="current_cycle">Ciclo actual</option>
+                  <option value="last_month">Último mes</option>
+                  <option value="last_quarter">Último trimestre</option>
+                  <option value="last_semester">Último semestre</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+              </div>
+
+              <div class="config-group" id="customDateGroup" style="display: none;">
+                <label>Fechas personalizadas:</label>
+                <div class="date-inputs">
+                  <input type="date" id="startDate" placeholder="Fecha inicio">
+                  <input type="date" id="endDate" placeholder="Fecha fin">
+                </div>
+              </div>
+            </div>
+
+            <!-- Filtros específicos -->
+            <div class="report-filters" id="reportFilters">
+              <h4>Filtros del Reporte</h4>
+              
+              <div class="filters-grid">
+                <div class="filter-group">
+                  <label for="filterCarreras">Carreras:</label>
+                  <select id="filterCarreras" multiple>
+                    <option value="all" selected>Todas las carreras</option>
+                    <option value="ing_informatica">Ingeniería Informática</option>
+                    <option value="ing_sistemas">Ingeniería de Sistemas</option>
+                    <option value="ing_civil">Ingeniería Civil</option>
+                    <option value="medicina">Medicina Humana</option>
+                    <option value="administracion">Administración</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label for="filterSemestres">Semestres:</label>
+                  <select id="filterSemestres" multiple>
+                    <option value="all" selected>Todos los semestres</option>
+                    <option value="I">I Semestre</option>
+                    <option value="II">II Semestre</option>
+                    <option value="III">III Semestre</option>
+                    <option value="IV">IV Semestre</option>
+                    <option value="V">V Semestre</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label for="filterEstados">Estados de documentos:</label>
+                  <select id="filterEstados" multiple>
+                    <option value="all" selected>Todos los estados</option>
+                    <option value="aprobado">Aprobados</option>
+                    <option value="pendiente">Pendientes</option>
+                    <option value="rechazado">Rechazados</option>
+                    <option value="en_revision">En revisión</option>
+                  </select>
+                </div>
+
+                <div class="filter-group">
+                  <label for="filterVerificadores">Verificadores:</label>
+                  <select id="filterVerificadores" multiple>
+                    <option value="all" selected>Todos los verificadores</option>
+                    <!-- Se cargará dinámicamente -->
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Métricas incluidas -->
+            <div class="report-metrics" id="reportMetrics">
+              <h4>Métricas a Incluir</h4>
+              
+              <div class="metrics-grid">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeUserStats" checked>
+                  <span class="checkmark"></span>
+                  Estadísticas de usuarios
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeDocumentStats" checked>
+                  <span class="checkmark"></span>
+                  Estadísticas de documentos
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeProgressStats" checked>
+                  <span class="checkmark"></span>
+                  Progreso de portafolios
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeVerificationStats" checked>
+                  <span class="checkmark"></span>
+                  Estadísticas de verificación
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeCharts">
+                  <span class="checkmark"></span>
+                  Gráficos y visualizaciones
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeDetailedTables">
+                  <span class="checkmark"></span>
+                  Tablas detalladas
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeComparison">
+                  <span class="checkmark"></span>
+                  Análisis comparativo
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeRecommendations">
+                  <span class="checkmark"></span>
+                  Recomendaciones
+                </label>
+              </div>
+            </div>
+
+            <!-- Opciones avanzadas -->
+            <div class="advanced-options">
+              <h4>Opciones Avanzadas</h4>
+              
+              <div class="options-grid">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeCoverPage" checked>
+                  <span class="checkmark"></span>
+                  Incluir página de portada
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeExecutiveSummary" checked>
+                  <span class="checkmark"></span>
+                  Resumen ejecutivo
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeTableOfContents" checked>
+                  <span class="checkmark"></span>
+                  Tabla de contenidos
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeAppendix">
+                  <span class="checkmark"></span>
+                  Anexos y datos detallados
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="includeWatermark">
+                  <span class="checkmark"></span>
+                  Marca de agua institucional
+                </label>
+
+                <label class="checkbox-container">
+                  <input type="checkbox" id="enableDigitalSignature">
+                  <span class="checkmark"></span>
+                  Firma digital
+                </label>
+              </div>
+
+              <div class="custom-options">
+                <div class="option-group">
+                  <label for="reportTitle">Título personalizado:</label>
+                  <input type="text" id="reportTitle" placeholder="Reporte del Sistema de Portafolio Docente">
+                </div>
+
+                <div class="option-group">
+                  <label for="reportDescription">Descripción:</label>
+                  <textarea id="reportDescription" rows="2" placeholder="Descripción del reporte..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Acciones del generador -->
+            <div class="generator-actions">
+              <button type="button" onclick="previsualizarReporte()" class="btn btn-secondary">
+                <i class="fas fa-eye"></i> Previsualizar
+              </button>
+              <button type="button" onclick="generarReporte()" class="btn btn-primary">
+                <i class="fas fa-file-pdf"></i> Generar Reporte
+              </button>
+              <button type="button" onclick="programarReporte()" class="btn btn-info">
+                <i class="fas fa-clock"></i> Programar
+              </button>
+              <button type="button" onclick="guardarPlantilla()" class="btn btn-success">
+                <i class="fas fa-save"></i> Guardar Plantilla
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Vista previa del reporte -->
+        <div class="report-preview" id="reportPreview" style="display: none;">
+          <h3>Vista Previa del Reporte</h3>
+          <div class="preview-container" id="previewContainer">
+            <!-- Se cargará dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plantillas de reportes -->
+    <section class="report-templates">
+      <div class="templates-header">
+        <h2><i class="fas fa-layer-group"></i> Plantillas de Reportes</h2>
+        <p>Use plantillas predefinidas para generar reportes rápidamente</p>
+      </div>
+
+      <div class="templates-grid">
+        <div class="template-card general-template">
+          <div class="template-icon">
+            <i class="fas fa-chart-bar"></i>
+          </div>
+          <div class="template-info">
+            <h3>Reporte General</h3>
+            <p>Resumen completo del estado del sistema y métricas principales</p>
+            <ul class="template-features">
+              <li>Estadísticas generales</li>
+              <li>Progreso por carreras</li>
+              <li>Análisis de verificación</li>
+              <li>Tendencias temporales</li>
+            </ul>
+          </div>
+          <div class="template-actions">
+            <button onclick="usarPlantilla('general')" class="btn btn-primary">
+              <i class="fas fa-magic"></i> Usar Plantilla
+            </button>
+            <button onclick="previsualizarPlantilla('general')" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> Vista Previa
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card teachers-template">
+          <div class="template-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="template-info">
+            <h3>Análisis de Docentes</h3>
+            <p>Reporte detallado del desempeño y progreso de docentes</p>
+            <ul class="template-features">
+              <li>Ranking de docentes</li>
+              <li>Completitud por docente</li>
+              <li>Tiempo de respuesta</li>
+              <li>Calidad de documentos</li>
+            </ul>
+          </div>
+          <div class="template-actions">
+            <button onclick="usarPlantilla('docentes')" class="btn btn-primary">
+              <i class="fas fa-magic"></i> Usar Plantilla
+            </button>
+            <button onclick="previsualizarPlantilla('docentes')" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> Vista Previa
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card verification-template">
+          <div class="template-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="template-info">
+            <h3>Proceso de Verificación</h3>
+            <p>Análisis del proceso de verificación y eficiencia del sistema</p>
+            <ul class="template-features">
+              <li>Tiempo de verificación</li>
+              <li>Tasa de aprobación</li>
+              <li>Observaciones comunes</li>
+              <li>Productividad verificadores</li>
+            </ul>
+          </div>
+          <div class="template-actions">
+            <button onclick="usarPlantilla('verificacion')" class="btn btn-primary">
+              <i class="fas fa-magic"></i> Usar Plantilla
+            </button>
+            <button onclick="previsualizarPlantilla('verificacion')" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> Vista Previa
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card comparison-template">
+          <div class="template-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="template-info">
+            <h3>Análisis Comparativo</h3>
+            <p>Comparación entre ciclos, carreras y períodos académicos</p>
+            <ul class="template-features">
+              <li>Comparación entre ciclos</li>
+              <li>Tendencias históricas</li>
+              <li>Benchmarking por carrera</li>
+              <li>Proyecciones futuras</li>
+            </ul>
+          </div>
+          <div class="template-actions">
+            <button onclick="usarPlantilla('comparativo')" class="btn btn-primary">
+              <i class="fas fa-magic"></i> Usar Plantilla
+            </button>
+            <button onclick="previsualizarPlantilla('comparativo')" class="btn btn-secondary">
+              <i class="fas fa-eye"></i> Vista Previa
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Historial de reportes -->
+    <section class="reports-history">
+      <div class="history-header">
+        <h2><i class="fas fa-history"></i> Historial de Reportes</h2>
+        <div class="history-actions">
+          <button onclick="limpiarHistorial()" class="btn btn-outline">
+            <i class="fas fa-trash"></i> Limpiar Historial
+          </button>
+          <button onclick="exportarHistorial()" class="btn btn-secondary">
+            <i class="fas fa-file-excel"></i> Exportar Lista
+          </button>
+        </div>
+      </div>
+
+      <div class="history-filters">
+        <div class="filter-group">
+          <label for="historyType">Tipo:</label>
+          <select id="historyType" onchange="filtrarHistorial()">
+            <option value="">Todos los tipos</option>
+            <option value="general">General</option>
+            <option value="docentes">Docentes</option>
+            <option value="verificacion">Verificación</option>
+            <option value="comparativo">Comparativo</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="historyPeriod">Período:</label>
+          <select id="historyPeriod" onchange="filtrarHistorial()">
+            <option value="">Todos los períodos</option>
+            <option value="today">Hoy</option>
+            <option value="week">Esta semana</option>
+            <option value="month">Este mes</option>
+            <option value="quarter">Este trimestre</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="historyUser">Generado por:</label>
+          <select id="historyUser" onchange="filtrarHistorial()">
+            <option value="">Todos los usuarios</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+      </div>
+
+      <div class="history-table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo de Reporte</th>
+              <th>Período Analizado</th>
+              <th>Formato</th>
+              <th>Generado por</th>
+              <th>Tamaño</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <tr>
+              <td colspan="8" class="loading">Cargando historial de reportes...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación del historial -->
+      <div class="pagination" id="historyPagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Programación de reportes -->
+    <section class="scheduled-reports">
+      <h2><i class="fas fa-calendar-alt"></i> Reportes Programados</h2>
+      
+      <div class="scheduled-list" id="scheduledList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+
+      <div class="schedule-actions">
+        <button onclick="mostrarProgramador()" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Programar Nuevo Reporte
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de programación -->
+  <div id="scheduleModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Programar Reporte</h3>
+        <span class="close" onclick="cerrarModal('scheduleModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="scheduleForm">
+          <div class="form-group">
+            <label for="scheduleName">Nombre del reporte programado:</label>
+            <input type="text" id="scheduleName" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="scheduleFrequency">Frecuencia:</label>
+            <select id="scheduleFrequency" required>
+              <option value="daily">Diario</option>
+              <option value="weekly">Semanal</option>
+              <option value="monthly">Mensual</option>
+              <option value="quarterly">Trimestral</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="scheduleTime">Hora de generación:</label>
+            <input type="time" id="scheduleTime" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="scheduleRecipients">Destinatarios (emails):</label>
+            <textarea id="scheduleRecipients" rows="3" placeholder="email1@unsaac.edu.pe, email2@unsaac.edu.pe"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarProgramacion()" class="btn btn-primary">Programar</button>
+        <button onclick="cerrarModal('scheduleModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

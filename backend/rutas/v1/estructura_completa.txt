@@ -1,0 +1,55 @@
+find . \( -path "*/node_modules" -o -path "*/node_modules/*" \) -prune -o -print | sed -e 's/[^\/]*\//|   /g;s/|   \([^|]\)/|-- \1/' > estructura_completa.txt
+
+
+|-- academico
+|   |-- asignaciones.rutas.js
+|   |-- asignaturas.rutas.js
+|   |-- ciclos.rutas.js
+|   |-- indexAcademico.js
+|-- autenticacion
+|   |-- indexAutenticacion.js
+|   |-- login.rutas.js
+|   |-- recuperacion.rutas.js
+|   |-- sesion.rutas.js
+|-- dashboards
+|   |-- administrador.rutas.js
+|   |-- docente.rutas.js
+|   |-- indexDashboards.js
+|   |-- verificador.rutas.js
+|-- documentos
+|   |-- descarga.rutas.js
+|   |-- gestion.rutas.js
+|   |-- indexDocumentos.js
+|   |-- subida.rutas.js
+|-- estructura_completa.txt
+|-- indexRutas.js
+|-- observaciones
+|   |-- gestionObservaciones.rutas.js
+|   |-- indexObservaciones.js
+|   |-- reportes.rutas.js
+|   |-- respuestas.rutas.js
+|-- portafolios
+|   |-- estructura.rutas.js
+|   |-- indexPortafolios.js
+|   |-- navegacion.rutas.js
+|   |-- progreso.rutas.js
+|-- roles
+|   |-- asignacion.rutas.js
+|   |-- cambio.rutas.js
+|   |-- indexRoles.js
+|   |-- permisos.rutas.js
+|-- sistema
+|   |-- excel.rutas.js
+|   |-- indexSistema.js
+|   |-- notificaciones.rutas.js
+|   |-- reportes.rutas.js
+|-- usuarios
+|   |-- gestion.rutas.js
+|   |-- indexUsuarios.js
+|   |-- perfiles.rutas.js
+|   |-- roles.rutas.js
+|-- verificacion
+|   |-- asignaciones.rutas.js
+|   |-- estadisticas.rutas.js
+|   |-- indexVerificacion.js
+|   |-- revision.rutas.js

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Revisar Documentos - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Revisar documentos - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="revisar documentos, verificación, aprobación, verificador, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/verificador/review-documents.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('verificador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar documentos...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-check"></i></div>
+            <span class="user-name">Verificador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Revisar Documentos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="cola-revision.html">Cola de Revisión</a></li>
+            <li><a href="revisar.html" class="active">Revisar Documentos</a></li>
+            <li><a href="crear-observacion.html">Crear Observación</a></li>
+            <li><a href="estadisticas.html">Mis Estadísticas</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <a href="cola-revision.html">Cola de Revisión</a>
+    <span class="separator">/</span>
+    <span class="current">Revisar Documento</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Información del documento -->
+    <section class="document-info-section">
+      <div class="document-header">
+        <div class="document-title">
+          <h1 id="documentTitle">Syllabus - Metodología de Desarrollo de Software</h1>
+          <div class="document-meta">
+            <span class="meta-item">
+              <i class="fas fa-user"></i>
+              <strong>Docente:</strong> <span id="teacherName">Dr. Juan Pérez García</span>
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-book"></i>
+              <strong>Asignatura:</strong> <span id="subjectName">IF611 - Metodología de Desarrollo de Software</span>
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <strong>Subido:</strong> <span id="uploadDate">15/01/2025 14:30</span>
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-file-alt"></i>
+              <strong>Tipo:</strong> <span id="documentType">Syllabus</span>
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-weight-hanging"></i>
+              <strong>Tamaño:</strong> <span id="fileSize">2.4 MB</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="document-status">
+          <div class="status-badge pending" id="documentStatus">
+            <i class="fas fa-clock"></i>
+            Pendiente de Revisión
+          </div>
+          <div class="priority-badge medium" id="documentPriority">
+            <i class="fas fa-flag"></i>
+            Prioridad Media
+          </div>
+        </div>
+      </div>
+
+      <!-- Navegación entre documentos -->
+      <div class="document-navigation">
+        <button onclick="documentoAnterior()" class="nav-btn" id="prevDocBtn">
+          <i class="fas fa-chevron-left"></i> Anterior
+        </button>
+        <span class="nav-info">
+          Documento <span id="currentDocIndex">1</span> de <span id="totalDocs">23</span>
+        </span>
+        <button onclick="documentoSiguiente()" class="nav-btn" id="nextDocBtn">
+          Siguiente <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <!-- Interfaz principal de revisión -->
+    <section class="review-interface">
+      <div class="interface-container">
+        <!-- Panel de vista previa del documento -->
+        <div class="document-preview-panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-eye"></i> Vista Previa del Documento</h3>
+            <div class="preview-controls">
+              <button onclick="zoomOut()" class="control-btn">
+                <i class="fas fa-search-minus"></i>
+              </button>
+              <span class="zoom-level" id="zoomLevel">100%</span>
+              <button onclick="zoomIn()" class="control-btn">
+                <i class="fas fa-search-plus"></i>
+              </button>
+              <button onclick="toggleFullscreen()" class="control-btn">
+                <i class="fas fa-expand"></i>
+              </button>
+              <button onclick="descargarDocumento()" class="control-btn">
+                <i class="fas fa-download"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="preview-container" id="previewContainer">
+            <!-- Vista previa del documento -->
+            <div class="preview-loading" id="previewLoading">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Cargando documento...</p>
+            </div>
+
+            <div class="preview-content" id="previewContent" style="display: none;">
+              <!-- El contenido se cargará dinámicamente -->
+              <iframe id="documentFrame" src="" frameborder="0"></iframe>
+            </div>
+
+            <div class="preview-error" id="previewError" style="display: none;">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>No se pudo cargar la vista previa</p>
+              <button onclick="recargarPreview()" class="btn btn-primary">Reintentar</button>
+            </div>
+          </div>
+
+          <!-- Páginas del documento (para PDFs) -->
+          <div class="document-pages" id="documentPages" style="display: none;">
+            <button onclick="paginaAnterior()" class="page-btn" id="prevPageBtn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span class="page-info">
+              Página <span id="currentPage">1</span> de <span id="totalPages">10</span>
+            </span>
+            <button onclick="paginaSiguiente()" class="page-btn" id="nextPageBtn">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel de herramientas de revisión -->
+        <div class="review-tools-panel">
+          <div class="panel-header">
+            <h3><i class="fas fa-tools"></i> Herramientas de Revisión</h3>
+          </div>
+
+          <!-- Criterios de verificación -->
+          <div class="verification-criteria">
+            <h4>Criterios de Verificación</h4>
+            <div class="criteria-list">
+              <div class="criterion-item">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="criterion1" onchange="evaluarCriterio(1)">
+                  <span class="checkmark"></span>
+                  Formato y estructura adecuada
+                </label>
+                <div class="criterion-note">
+                  <textarea placeholder="Notas sobre este criterio..."></textarea>
+                </div>
+              </div>
+
+              <div class="criterion-item">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="criterion2" onchange="evaluarCriterio(2)">
+                  <span class="checkmark"></span>
+                  Contenido completo y actualizado
+                </label>
+                <div class="criterion-note">
+                  <textarea placeholder="Notas sobre este criterio..."></textarea>
+                </div>
+              </div>
+
+              <div class="criterion-item">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="criterion3" onchange="evaluarCriterio(3)">
+                  <span class="checkmark"></span>
+                  Cumple con los estándares institucionales
+                </label>
+                <div class="criterion-note">
+                  <textarea placeholder="Notas sobre este criterio..."></textarea>
+                </div>
+              </div>
+
+              <div class="criterion-item">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="criterion4" onchange="evaluarCriterio(4)">
+                  <span class="checkmark"></span>
+                  Bibliografía y referencias apropiadas
+                </label>
+                <div class="criterion-note">
+                  <textarea placeholder="Notas sobre este criterio..."></textarea>
+                </div>
+              </div>
+
+              <div class="criterion-item">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="criterion5" onchange="evaluarCriterio(5)">
+                  <span class="checkmark"></span>
+                  Calidad técnica y presentación
+                </label>
+                <div class="criterion-note">
+                  <textarea placeholder="Notas sobre este criterio..."></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Evaluación general -->
+            <div class="overall-evaluation">
+              <h5>Evaluación General</h5>
+              <div class="evaluation-options">
+                <label class="radio-container">
+                  <input type="radio" name="evaluation" value="excelente">
+                  <span class="radiomark"></span>
+                  Excelente
+                </label>
+                <label class="radio-container">
+                  <input type="radio" name="evaluation" value="bueno">
+                  <span class="radiomark"></span>
+                  Bueno
+                </label>
+                <label class="radio-container">
+                  <input type="radio" name="evaluation" value="regular">
+                  <span class="radiomark"></span>
+                  Regular
+                </label>
+                <label class="radio-container">
+                  <input type="radio" name="evaluation" value="deficiente">
+                  <span class="radiomark"></span>
+                  Deficiente
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observaciones -->
+          <div class="observations-section">
+            <h4>Observaciones</h4>
+            
+            <div class="observation-type">
+              <label for="observationType">Tipo de observación:</label>
+              <select id="observationType">
+                <option value="">Seleccionar tipo...</option>
+                <option value="general">General</option>
+                <option value="correccion">Corrección requerida</option>
+                <option value="mejora">Sugerencia de mejora</option>
+                <option value="felicitacion">Felicitación</option>
+              </select>
+            </div>
+
+            <div class="observation-content">
+              <label for="observationText">Contenido de la observación:</label>
+              <textarea id="observationText" rows="5" placeholder="Escriba sus observaciones detalladas aquí..."></textarea>
+            </div>
+
+            <div class="observation-options">
+              <label class="checkbox-container">
+                <input type="checkbox" id="isPublic" checked>
+                <span class="checkmark"></span>
+                Observación visible para el docente
+              </label>
+              
+              <label class="checkbox-container">
+                <input type="checkbox" id="requiresResponse">
+                <span class="checkmark"></span>
+                Requiere respuesta del docente
+              </label>
+              
+              <div class="priority-selector">
+                <label for="observationPriority">Prioridad:</label>
+                <select id="observationPriority">
+                  <option value="baja">Baja</option>
+                  <option value="media" selected>Media</option>
+                  <option value="alta">Alta</option>
+                  <option value="critica">Crítica</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="observation-actions">
+              <button onclick="guardarObservacion()" class="btn btn-secondary">
+                <i class="fas fa-save"></i> Guardar Observación
+              </button>
+              <button onclick="limpiarObservacion()" class="btn btn-outline">
+                <i class="fas fa-eraser"></i> Limpiar
+              </button>
+            </div>
+          </div>
+
+          <!-- Plantillas de observaciones -->
+          <div class="observation-templates">
+            <h4>Plantillas Rápidas</h4>
+            <div class="templates-list">
+              <button onclick="usarPlantilla('formato')" class="template-btn">
+                Problemas de formato
+              </button>
+              <button onclick="usarPlantilla('contenido')" class="template-btn">
+                Contenido incompleto
+              </button>
+              <button onclick="usarPlantilla('bibliografia')" class="template-btn">
+                Bibliografía deficiente
+              </button>
+              <button onclick="usarPlantilla('excelente')" class="template-btn">
+                Trabajo excelente
+              </button>
+            </div>
+          </div>
+
+          <!-- Acciones de decisión -->
+          <div class="decision-actions">
+            <h4>Decisión de Verificación</h4>
+            
+            <div class="decision-buttons">
+              <button onclick="aprobarDocumento()" class="btn btn-success btn-large" id="approveBtn">
+                <i class="fas fa-check-circle"></i>
+                Aprobar Documento
+              </button>
+              
+              <button onclick="solicitarCorreccion()" class="btn btn-warning btn-large" id="correctBtn">
+                <i class="fas fa-edit"></i>
+                Solicitar Corrección
+              </button>
+              
+              <button onclick="rechazarDocumento()" class="btn btn-danger btn-large" id="rejectBtn">
+                <i class="fas fa-times-circle"></i>
+                Rechazar Documento
+              </button>
+            </div>
+
+            <div class="decision-note">
+              <label for="decisionNote">Nota de decisión (opcional):</label>
+              <textarea id="decisionNote" rows="2" placeholder="Justificación de la decisión..."></textarea>
+            </div>
+          </div>
+
+          <!-- Historial de observaciones -->
+          <div class="observations-history">
+            <h4>Historial de Observaciones</h4>
+            <div class="history-list" id="observationsHistory">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Información adicional del documento -->
+    <section class="document-details">
+      <div class="details-tabs">
+        <button class="tab-btn active" data-tab="metadata" onclick="cambiarTab('metadata')">
+          Metadatos
+        </button>
+        <button class="tab-btn" data-tab="versions" onclick="cambiarTab('versions')">
+          Versiones
+        </button>
+        <button class="tab-btn" data-tab="context" onclick="cambiarTab('context')">
+          Contexto
+        </button>
+      </div>
+
+      <!-- Metadatos -->
+      <div class="tab-content active" id="metadataTab">
+        <div class="metadata-grid">
+          <div class="metadata-item">
+            <label>Nombre original:</label>
+            <span id="originalName">Syllabus_MDS_2025_I.pdf</span>
+          </div>
+          <div class="metadata-item">
+            <label>Descripción:</label>
+            <span id="documentDescription">Syllabus actualizado para el semestre 2025-I</span>
+          </div>
+          <div class="metadata-item">
+            <label>Etiquetas:</label>
+            <span id="documentTags">syllabus, metodología, software, 2025-I</span>
+          </div>
+          <div class="metadata-item">
+            <label>Checksum:</label>
+            <span id="documentChecksum">a1b2c3d4e5f6...</span>
+          </div>
+          <div class="metadata-item">
+            <label>Ubicación en portafolio:</label>
+            <span id="portfolioPath">Presentación > Syllabus</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Versiones -->
+      <div class="tab-content" id="versionsTab" style="display: none;">
+        <div class="versions-list" id="versionsList">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Contexto -->
+      <div class="tab-content" id="contextTab" style="display: none;">
+        <div class="context-info">
+          <div class="teacher-info">
+            <h5>Información del Docente</h5>
+            <p><strong>Grado académico:</strong> Doctor en Ciencias de la Computación</p>
+            <p><strong>Experiencia:</strong> 15 años en docencia universitaria</p>
+            <p><strong>Especialización:</strong> Ingeniería de Software, Metodologías Ágiles</p>
+          </div>
+          
+          <div class="subject-info">
+            <h5>Información de la Asignatura</h5>
+            <p><strong>Carrera:</strong> Ingeniería Informática</p>
+            <p><strong>Semestre:</strong> VI Semestre</p>
+            <p><strong>Créditos:</strong> 4 créditos académicos</p>
+            <p><strong>Tipo:</strong> Teoría-Práctica</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de confirmación -->
+  <div id="confirmationModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="confirmationTitle">Confirmar Acción</h3>
+        <span class="close" onclick="cerrarModal('confirmationModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="confirmation-content">
+          <div class="confirmation-icon" id="confirmationIcon">
+            <i class="fas fa-question-circle"></i>
+          </div>
+          <div class="confirmation-message" id="confirmationMessage">
+            ¿Está seguro de realizar esta acción?
+          </div>
+          <div class="confirmation-details" id="confirmationDetails">
+            <!-- Detalles adicionales de la confirmación -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="confirmarAccion()" class="btn btn-primary" id="confirmActionBtn">Confirmar</button>
+        <button onclick="cerrarModal('confirmationModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de plantillas -->
+  <div id="templatesModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Plantillas de Observaciones</h3>
+        <span class="close" onclick="cerrarModal('templatesModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="templates-categories">
+          <div class="category-tabs">
+            <button class="tab-btn active" data-category="formato" onclick="filtrarPlantillas('formato')">
+              Formato
+            </button>
+            <button class="tab-btn" data-category="contenido" onclick="filtrarPlantillas('contenido')">
+              Contenido
+            </button>
+            <button class="tab-btn" data-category="calidad" onclick="filtrarPlantillas('calidad')">
+              Calidad
+            </button>
+            <button class="tab-btn" data-category="positivas" onclick="filtrarPlantillas('positivas')">
+              Positivas
+            </button>
+          </div>
+          
+          <div class="templates-list-modal" id="templatesListModal">
+            <!-- Se cargará dinámicamente -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="cerrarModal('templatesModal')" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

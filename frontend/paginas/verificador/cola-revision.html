@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Cola de Revisión - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cola de revisión - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="cola revisión, verificación, documentos, verificador, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/verificador/cola-revision.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('verificador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar documentos...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-check"></i></div>
+            <span class="user-name">Verificador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Cola de Revisión</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="cola-revision.html" class="active">Cola de Revisión</a></li>
+            <li><a href="revisar.html">Revisar Documentos</a></li>
+            <li><a href="crear-observacion.html">Crear Observación</a></li>
+            <li><a href="estadisticas.html">Mis Estadísticas</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Cola de Revisión</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Estado de la cola -->
+    <section class="queue-status-section">
+      <div class="status-banner verificador-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-list-alt"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado de la Cola</h3>
+            <p id="queueStatusMessage">Verificación activa. Procese documentos según prioridad.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge active" id="queueStatusBadge">Cola Activa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de la cola -->
+    <section class="queue-summary">
+      <div class="summary-cards">
+        <div class="summary-card total-pending">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-info">
+            <h3>Total Pendientes</h3>
+            <span class="card-value" id="totalPending">23</span>
+            <span class="card-label">Documentos</span>
+          </div>
+        </div>
+
+        <div class="summary-card high-priority">
+          <div class="card-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Alta Prioridad</h3>
+            <span class="card-value" id="highPriority">5</span>
+            <span class="card-label">Urgentes</span>
+          </div>
+        </div>
+
+        <div class="summary-card reviewed-today">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Revisados Hoy</h3>
+            <span class="card-value" id="reviewedToday">12</span>
+            <span class="card-label">Completados</span>
+          </div>
+        </div>
+
+        <div class="summary-card average-time">
+          <div class="card-icon">
+            <i class="fas fa-stopwatch"></i>
+          </div>
+          <div class="card-info">
+            <h3>Tiempo Promedio</h3>
+            <span class="card-value" id="averageTime">1.5h</span>
+            <span class="card-label">Por documento</span>
+          </div>
+        </div>
+
+        <div class="summary-card my-assignments">
+          <div class="card-icon">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <div class="card-info">
+            <h3>Mis Docentes</h3>
+            <span class="card-value" id="myTeachers">8</span>
+            <span class="card-label">Asignados</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros y controles -->
+    <section class="queue-controls">
+      <div class="controls-header">
+        <h2><i class="fas fa-filter"></i> Filtros de Cola</h2>
+      </div>
+
+      <div class="controls-row">
+        <div class="filter-group">
+          <label for="filterDocente">Docente:</label>
+          <select id="filterDocente" onchange="filtrarCola()">
+            <option value="">Todos mis docentes</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterAsignatura">Asignatura:</label>
+          <select id="filterAsignatura" onchange="filtrarCola()">
+            <option value="">Todas las asignaturas</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterPrioridad">Prioridad:</label>
+          <select id="filterPrioridad" onchange="filtrarCola()">
+            <option value="">Todas las prioridades</option>
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterTipoDoc">Tipo:</label>
+          <select id="filterTipoDoc" onchange="filtrarCola()">
+            <option value="">Todos los tipos</option>
+            <option value="syllabus">Syllabus</option>
+            <option value="examen">Examen</option>
+            <option value="practica">Práctica</option>
+            <option value="laboratorio">Laboratorio</option>
+            <option value="proyecto">Proyecto</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterFecha">Fecha:</label>
+          <select id="filterFecha" onchange="filtrarCola()">
+            <option value="">Todas las fechas</option>
+            <option value="hoy">Hoy</option>
+            <option value="ayer">Ayer</option>
+            <option value="semana">Esta semana</option>
+            <option value="mes">Este mes</option>
+          </select>
+        </div>
+
+        <div class="action-controls">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar
+          </button>
+          <button onclick="refrescarCola()" class="btn btn-primary">
+            <i class="fas fa-sync-alt"></i> Refrescar
+          </button>
+          <button onclick="exportarCola()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar
+          </button>
+        </div>
+      </div>
+
+      <!-- Ordenamiento -->
+      <div class="sort-controls">
+        <label>Ordenar por:</label>
+        <div class="sort-buttons">
+          <button class="sort-btn active" data-sort="fecha_subida" onclick="ordenarCola('fecha_subida')">
+            <i class="fas fa-calendar"></i> Fecha
+          </button>
+          <button class="sort-btn" data-sort="prioridad" onclick="ordenarCola('prioridad')">
+            <i class="fas fa-exclamation"></i> Prioridad
+          </button>
+          <button class="sort-btn" data-sort="docente" onclick="ordenarCola('docente')">
+            <i class="fas fa-user"></i> Docente
+          </button>
+          <button class="sort-btn" data-sort="asignatura" onclick="ordenarCola('asignatura')">
+            <i class="fas fa-book"></i> Asignatura
+          </button>
+        </div>
+        
+        <div class="sort-direction">
+          <button class="direction-btn active" data-direction="desc" onclick="cambiarDireccion('desc')">
+            <i class="fas fa-sort-amount-down"></i> Desc
+          </button>
+          <button class="direction-btn" data-direction="asc" onclick="cambiarDireccion('asc')">
+            <i class="fas fa-sort-amount-up"></i> Asc
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cola de documentos -->
+    <section class="documents-queue">
+      <div class="queue-header">
+        <h2><i class="fas fa-list"></i> Documentos Pendientes de Revisión</h2>
+        <div class="queue-info">
+          <span class="queue-count">Mostrando <span id="showingCount">20</span> de <span id="totalCount">23</span> documentos</span>
+        </div>
+      </div>
+
+      <!-- Vista de cola -->
+      <div class="queue-container">
+        <!-- Controles de vista -->
+        <div class="view-controls">
+          <div class="view-buttons">
+            <button class="view-btn active" data-view="cards" onclick="cambiarVistaDocument('cards')">
+              <i class="fas fa-th-large"></i> Cards
+            </button>
+            <button class="view-btn" data-view="list" onclick="cambiarVistaDocument('list')">
+              <i class="fas fa-list"></i> Lista
+            </button>
+            <button class="view-btn" data-view="table" onclick="cambiarVistaDocument('table')">
+              <i class="fas fa-table"></i> Tabla
+            </button>
+          </div>
+          
+          <div class="batch-actions">
+            <label class="checkbox-container">
+              <input type="checkbox" id="selectAllDocs" onchange="seleccionarTodos()">
+              <span class="checkmark"></span>
+              Seleccionar todos
+            </label>
+            
+            <div class="batch-buttons">
+              <button onclick="aprobarSeleccionados()" class="btn btn-sm btn-success" disabled id="approveSelectedBtn">
+                <i class="fas fa-check"></i> Aprobar
+              </button>
+              <button onclick="rechazarSeleccionados()" class="btn btn-sm btn-danger" disabled id="rejectSelectedBtn">
+                <i class="fas fa-times"></i> Rechazar
+              </button>
+              <button onclick="asignarPrioridad()" class="btn btn-sm btn-warning" disabled id="priorityBtn">
+                <i class="fas fa-flag"></i> Prioridad
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista en cards (por defecto) -->
+        <div class="documents-cards" id="documentsCards">
+          <div class="cards-grid" id="cardsGrid">
+            <!-- Se cargará dinámicamente -->
+            <div class="loading-cards">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Cargando documentos...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista en lista -->
+        <div class="documents-list" id="documentsList" style="display: none;">
+          <div class="list-container" id="listContainer">
+            <!-- Se cargará dinámicamente -->
+          </div>
+        </div>
+
+        <!-- Vista en tabla -->
+        <div class="documents-table" id="documentsTable" style="display: none;">
+          <div class="table-container">
+            <table class="queue-table">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAllTable"></th>
+                  <th>Documento</th>
+                  <th>Docente</th>
+                  <th>Asignatura</th>
+                  <th>Tipo</th>
+                  <th>Fecha Subida</th>
+                  <th>Prioridad</th>
+                  <th>Tamaño</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="queueTableBody">
+                <tr>
+                  <td colspan="9" class="loading">Cargando documentos...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination-container">
+          <div class="pagination-info">
+            <span>Documentos por página:</span>
+            <select id="itemsPerPage" onchange="cambiarItemsPorPagina()">
+              <option value="10">10</option>
+              <option value="20" selected>20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+          
+          <div class="pagination" id="pagination">
+            <!-- Se generará dinámicamente -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de revisión rápida -->
+    <section class="quick-review-panel" id="quickReviewPanel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-eye"></i> Revisión Rápida</h3>
+        <button onclick="cerrarPanelRapido()" class="close-panel">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="panel-content">
+        <div class="document-preview" id="documentPreview">
+          <!-- Vista previa del documento -->
+        </div>
+        
+        <div class="review-actions">
+          <div class="action-buttons">
+            <button onclick="aprobarDocumento()" class="btn btn-success">
+              <i class="fas fa-check"></i> Aprobar
+            </button>
+            <button onclick="rechazarDocumento()" class="btn btn-danger">
+              <i class="fas fa-times"></i> Rechazar
+            </button>
+            <button onclick="crearObservacion()" class="btn btn-warning">
+              <i class="fas fa-comment"></i> Observación
+            </button>
+            <button onclick="abrirRevisorCompleto()" class="btn btn-primary">
+              <i class="fas fa-expand"></i> Revisor Completo
+            </button>
+          </div>
+          
+          <div class="quick-observation">
+            <textarea id="quickObservationText" placeholder="Observación rápida (opcional)..." rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas de productividad -->
+    <section class="productivity-stats">
+      <h2><i class="fas fa-chart-bar"></i> Mi Productividad Hoy</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card documents-reviewed">
+          <div class="stat-header">
+            <i class="fas fa-check-circle"></i>
+            <h3>Documentos Revisados</h3>
+          </div>
+          <div class="stat-value" id="documentsReviewedToday">12</div>
+          <div class="stat-change positive">+3 vs ayer</div>
+        </div>
+
+        <div class="stat-card time-spent">
+          <div class="stat-header">
+            <i class="fas fa-clock"></i>
+            <h3>Tiempo Invertido</h3>
+          </div>
+          <div class="stat-value" id="timeSpentToday">4.5h</div>
+          <div class="stat-change neutral">Meta: 6h</div>
+        </div>
+
+        <div class="stat-card approval-rate">
+          <div class="stat-header">
+            <i class="fas fa-thumbs-up"></i>
+            <h3>Tasa de Aprobación</h3>
+          </div>
+          <div class="stat-value" id="approvalRateToday">75%</div>
+          <div class="stat-change positive">+5% vs promedio</div>
+        </div>
+
+        <div class="stat-card observations-created">
+          <div class="stat-header">
+            <i class="fas fa-comments"></i>
+            <h3>Observaciones Creadas</h3>
+          </div>
+          <div class="stat-value" id="observationsCreatedToday">8</div>
+          <div class="stat-change neutral">Promedio semanal</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para observación rápida -->
+  <div id="quickObservationModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Crear Observación</h3>
+        <span class="close" onclick="cerrarModal('quickObservationModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="document-info" id="observationDocumentInfo">
+          <!-- Información del documento -->
+        </div>
+        
+        <form id="quickObservationForm">
+          <input type="hidden" id="observationDocumentId">
+          
+          <div class="form-group">
+            <label for="observationType">Tipo de observación</label>
+            <select id="observationType" required>
+              <option value="">Seleccionar tipo...</option>
+              <option value="general">General</option>
+              <option value="correccion">Corrección requerida</option>
+              <option value="aprobacion">Aprobación con observaciones</option>
+              <option value="rechazo">Rechazo con justificación</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="observationContent">Contenido de la observación</label>
+            <textarea id="observationContent" rows="4" placeholder="Describa la observación..." required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="observationPriority">Prioridad</label>
+            <select id="observationPriority">
+              <option value="baja">Baja</option>
+              <option value="media" selected>Media</option>
+              <option value="alta">Alta</option>
+              <option value="critica">Crítica</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="requiresResponse">
+              <span class="checkmark"></span>
+              Requiere respuesta del docente
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarObservacionRapida()" class="btn btn-primary">Crear Observación</button>
+        <button onclick="cerrarModal('quickObservationModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para acciones masivas -->
+  <div id="batchActionModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="batchActionTitle">Acción Masiva</h3>
+        <span class="close" onclick="cerrarModal('batchActionModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="selected-documents" id="selectedDocumentsInfo">
+          <!-- Información de documentos seleccionados -->
+        </div>
+        
+        <div class="batch-action-content" id="batchActionContent">
+          <!-- Contenido específico de la acción -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="ejecutarAccionMasiva()" class="btn btn-primary" id="executeBatchBtn">Ejecutar</button>
+        <button onclick="cerrarModal('batchActionModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

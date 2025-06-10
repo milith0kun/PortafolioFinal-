@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mi perfil - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="perfil usuario, configuración cuenta, UNSAAC">
+  <meta name="author" content="UNSAAC">
+  <title>Mi Perfil - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+  
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/compartidas/editor-perfil.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion()">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar...">
+        </div>
+
+        <!-- Redes y usuario -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-circle"></i></div>
+            <span class="user-name" id="userName">Usuario</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Mi Perfil</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menú de navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="main-nav">
+          <ul class="nav-list" id="mainNavigation">
+            <!-- Se cargará dinámicamente según el rol -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="#" onclick="volverDashboard()" id="backToDashboard">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Mi Perfil</span>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="profile-container">
+      <!-- Header del perfil -->
+      <div class="profile-header">
+        <div class="profile-banner">
+          <div class="profile-avatar-section">
+            <div class="avatar-container">
+              <img id="userAvatar" src="../../assets/imagenes/avatares/default-avatar.png" alt="Avatar del usuario">
+              <button class="avatar-edit-btn" onclick="cambiarAvatar()">
+                <i class="fas fa-camera"></i>
+              </button>
+            </div>
+            
+            <div class="profile-info">
+              <h1 id="userFullName">Cargando usuario...</h1>
+              <p id="userEmail" class="user-email">correo@unsaac.edu.pe</p>
+              <div class="user-roles" id="userRoles">
+                <!-- Se cargarán dinámicamente -->
+              </div>
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <span class="stat-value" id="lastLogin">Hace 2 horas</span>
+                  <span class="stat-label">Último acceso</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="memberSince">2023</span>
+                  <span class="stat-label">Miembro desde</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-value" id="accountStatus">Activo</span>
+                  <span class="stat-label">Estado</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-actions">
+            <button onclick="editarPerfil()" class="btn btn-primary">
+              <i class="fas fa-edit"></i> Editar Perfil
+            </button>
+            <button onclick="location.href='cambiar-clave.html'" class="btn btn-secondary">
+              <i class="fas fa-key"></i> Cambiar Contraseña
+            </button>
+            <button onclick="descargarDatos()" class="btn btn-outline">
+              <i class="fas fa-download"></i> Exportar Datos
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido del perfil -->
+      <div class="profile-content">
+        <!-- Navegación de pestañas -->
+        <div class="profile-tabs">
+          <button class="tab-btn active" onclick="mostrarPestaña('informacion')" data-tab="informacion">
+            <i class="fas fa-info-circle"></i> Información Personal
+          </button>
+          <button class="tab-btn" onclick="mostrarPestaña('configuracion')" data-tab="configuracion">
+            <i class="fas fa-cog"></i> Configuración
+          </button>
+          <button class="tab-btn" onclick="mostrarPestaña('actividad')" data-tab="actividad">
+            <i class="fas fa-chart-line"></i> Actividad
+          </button>
+          <button class="tab-btn" onclick="mostrarPestaña('privacidad')" data-tab="privacidad">
+            <i class="fas fa-shield-alt"></i> Privacidad y Seguridad
+          </button>
+        </div>
+
+        <!-- Contenido de las pestañas -->
+        <div class="tab-content">
+          <!-- Pestaña de Información Personal -->
+          <div id="informacion" class="tab-pane active">
+            <div class="section-grid">
+              <div class="info-section">
+                <h3><i class="fas fa-user"></i> Datos Personales</h3>
+                <form id="personalInfoForm" onsubmit="actualizarInformacionPersonal(event)">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="nombres">Nombres</label>
+                      <input type="text" id="nombres" name="nombres" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label for="apellidos">Apellidos</label>
+                      <input type="text" id="apellidos" name="apellidos" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="correo">Correo Institucional</label>
+                      <input type="email" id="correo" name="correo" readonly>
+                      <small class="form-help">El correo institucional no se puede modificar</small>
+                    </div>
+                    <div class="form-group">
+                      <label for="telefono">Teléfono</label>
+                      <input type="tel" id="telefono" name="telefono" readonly>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="biografia">Biografía/Descripción</label>
+                    <textarea id="biografia" name="biografia" rows="4" readonly 
+                              placeholder="Cuéntanos un poco sobre ti..."></textarea>
+                  </div>
+
+                  <div class="form-actions" id="personalInfoActions" style="display: none;">
+                    <button type="submit" class="btn btn-primary">
+                      <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                    <button type="button" onclick="cancelarEdicion()" class="btn btn-secondary">
+                      <i class="fas fa-times"></i> Cancelar
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="roles-section">
+                <h3><i class="fas fa-users-cog"></i> Roles Asignados</h3>
+                <div class="roles-list" id="rolesDetallados">
+                  <!-- Se cargarán dinámicamente -->
+                </div>
+
+                <div class="role-actions">
+                  <button onclick="cambiarRolActivo()" class="btn btn-info">
+                    <i class="fas fa-exchange-alt"></i> Cambiar Rol Activo
+                  </button>
+                  <button onclick="verHistorialRoles()" class="btn btn-outline">
+                    <i class="fas fa-history"></i> Historial de Roles
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pestaña de Configuración -->
+          <div id="configuracion" class="tab-pane">
+            <div class="section-grid">
+              <div class="preferences-section">
+                <h3><i class="fas fa-palette"></i> Preferencias de Interfaz</h3>
+                
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Tema de la Interfaz</h4>
+                    <p>Selecciona el tema que prefieres para la interfaz</p>
+                  </div>
+                  <div class="preference-control">
+                    <select id="themeSelect" onchange="cambiarTema()">
+                      <option value="light">Claro</option>
+                      <option value="dark">Oscuro</option>
+                      <option value="unsaac">UNSAAC (Institucional)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Idioma</h4>
+                    <p>Idioma de la interfaz del sistema</p>
+                  </div>
+                  <div class="preference-control">
+                    <select id="languageSelect" onchange="cambiarIdioma()">
+                      <option value="es">Español</option>
+                      <option value="qu">Quechua</option>
+                      <option value="en">English</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="preference-item">
+                  <div class="preference-info">
+                    <h4>Densidad de Información</h4>
+                    <p>Cantidad de información mostrada en pantalla</p>
+                  </div>
+                  <div class="preference-control">
+                    <select id="densitySelect" onchange="cambiarDensidad()">
+                      <option value="comfortable">Cómoda</option>
+                      <option value="compact">Compacta</option>
+                      <option value="spacious">Espaciosa</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="notifications-section">
+                <h3><i class="fas fa-bell"></i> Configuración de Notificaciones</h3>
+                
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <h4>Notificaciones por Email</h4>
+                    <p>Recibir notificaciones importantes por correo electrónico</p>
+                  </div>
+                  <div class="notification-control">
+                    <label class="switch">
+                      <input type="checkbox" id="emailNotifications" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <h4>Notificaciones del Sistema</h4>
+                    <p>Mostrar notificaciones dentro del sistema</p>
+                  </div>
+                  <div class="notification-control">
+                    <label class="switch">
+                      <input type="checkbox" id="systemNotifications" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="notification-item">
+                  <div class="notification-info">
+                    <h4>Recordatorios</h4>
+                    <p>Recordatorios sobre tareas pendientes y plazos</p>
+                  </div>
+                  <div class="notification-control">
+                    <label class="switch">
+                      <input type="checkbox" id="reminders" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button onclick="guardarConfiguracionNotificaciones()" class="btn btn-primary">
+                  <i class="fas fa-save"></i> Guardar Configuración
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pestaña de Actividad -->
+          <div id="actividad" class="tab-pane">
+            <div class="activity-section">
+              <h3><i class="fas fa-chart-line"></i> Resumen de Actividad</h3>
+              
+              <div class="activity-stats">
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="fas fa-sign-in-alt"></i>
+                  </div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="totalLogins">156</span>
+                    <span class="stat-label">Inicios de sesión</span>
+                  </div>
+                </div>
+
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="fas fa-file-upload"></i>
+                  </div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="totalUploads">42</span>
+                    <span class="stat-label">Documentos subidos</span>
+                  </div>
+                </div>
+
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="fas fa-comment"></i>
+                  </div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="totalComments">28</span>
+                    <span class="stat-label">Observaciones</span>
+                  </div>
+                </div>
+
+                <div class="stat-card">
+                  <div class="stat-icon">
+                    <i class="fas fa-clock"></i>
+                  </div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="totalHours">120h</span>
+                    <span class="stat-label">Tiempo en sistema</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="recent-activity">
+                <h4><i class="fas fa-history"></i> Actividad Reciente</h4>
+                <div class="activity-list" id="recentActivityList">
+                  <!-- Se cargará dinámicamente -->
+                </div>
+                <button onclick="verActividadCompleta()" class="btn btn-outline">
+                  <i class="fas fa-list"></i> Ver Actividad Completa
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pestaña de Privacidad y Seguridad -->
+          <div id="privacidad" class="tab-pane">
+            <div class="security-section">
+              <h3><i class="fas fa-shield-alt"></i> Seguridad de la Cuenta</h3>
+              
+              <div class="security-items">
+                <div class="security-item">
+                  <div class="security-info">
+                    <h4><i class="fas fa-key"></i> Contraseña</h4>
+                    <p>Última actualización: <span id="lastPasswordUpdate">Hace 30 días</span></p>
+                  </div>
+                  <div class="security-action">
+                    <a href="cambiar-clave.html" class="btn btn-primary">
+                      <i class="fas fa-edit"></i> Cambiar Contraseña
+                    </a>
+                  </div>
+                </div>
+
+                <div class="security-item">
+                  <div class="security-info">
+                    <h4><i class="fas fa-laptop"></i> Sesiones Activas</h4>
+                    <p><span id="activeSessions">2</span> dispositivos con sesión activa</p>
+                  </div>
+                  <div class="security-action">
+                    <button onclick="gestionarSesiones()" class="btn btn-info">
+                      <i class="fas fa-cog"></i> Gestionar Sesiones
+                    </button>
+                  </div>
+                </div>
+
+                <div class="security-item">
+                  <div class="security-info">
+                    <h4><i class="fas fa-download"></i> Mis Datos</h4>
+                    <p>Descargar una copia de todos sus datos</p>
+                  </div>
+                  <div class="security-action">
+                    <button onclick="exportarDatos()" class="btn btn-success">
+                      <i class="fas fa-file-export"></i> Exportar Datos
+                    </button>
+                  </div>
+                </div>
+
+                <div class="security-item">
+                  <div class="security-info">
+                    <h4><i class="fas fa-trash-alt"></i> Eliminar Cuenta</h4>
+                    <p>Eliminar permanentemente su cuenta y datos</p>
+                  </div>
+                  <div class="security-action">
+                    <button onclick="mostrarEliminarCuenta()" class="btn btn-danger">
+                      <i class="fas fa-exclamation-triangle"></i> Eliminar Cuenta
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="privacy-section">
+              <h3><i class="fas fa-user-secret"></i> Configuración de Privacidad</h3>
+              
+              <div class="privacy-items">
+                <div class="privacy-item">
+                  <div class="privacy-info">
+                    <h4>Perfil Público</h4>
+                    <p>Permitir que otros usuarios vean información básica de su perfil</p>
+                  </div>
+                  <div class="privacy-control">
+                    <label class="switch">
+                      <input type="checkbox" id="publicProfile" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="privacy-item">
+                  <div class="privacy-info">
+                    <h4>Mostrar Actividad</h4>
+                    <p>Permitir que se muestre su actividad reciente a otros usuarios</p>
+                  </div>
+                  <div class="privacy-control">
+                    <label class="switch">
+                      <input type="checkbox" id="showActivity">
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="privacy-item">
+                  <div class="privacy-info">
+                    <h4>Análisis de Uso</h4>
+                    <p>Contribuir con datos anónimos para mejorar el sistema</p>
+                  </div>
+                  <div class="privacy-control">
+                    <label class="switch">
+                      <input type="checkbox" id="analytics" checked>
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <button onclick="guardarConfiguracionPrivacidad()" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar Configuración
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal para cambiar avatar -->
+  <div id="avatarModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cambiar Avatar</h3>
+        <span class="close" onclick="cerrarModal('avatarModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="avatar-upload">
+          <div class="upload-area" onclick="seleccionarArchivo()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Haga clic para seleccionar una imagen</p>
+            <small>JPG, PNG o GIF (máximo 2MB)</small>
+          </div>
+          <input type="file" id="avatarFile" accept="image/*" style="display: none;" onchange="previewAvatar()">
+          <div class="avatar-preview" id="avatarPreview" style="display: none;">
+            <img id="previewImage" alt="Vista previa">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="subirAvatar()" class="btn btn-primary" id="uploadAvatarBtn" disabled>
+          <i class="fas fa-upload"></i> Subir Avatar
+        </button>
+        <button onclick="cerrarModal('avatarModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

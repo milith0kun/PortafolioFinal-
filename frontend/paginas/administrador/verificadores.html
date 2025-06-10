@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de Verificadores - Panel de Administración</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gestión de verificadores - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="verificadores, gestión, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/asignacion-roles.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('administrador')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar verificadores...">
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          
+          <div class="user-menu">
+            <div class="user-icon">
+              <i class="fas fa-user-cog"></i>
+            </div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Gestión de Verificadores</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="asignaciones.html">Asignaciones</a></li>
+            <li><a href="verificadores.html" class="active">Verificadores</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Gestión de Verificadores</span>
+  </nav>
+
+  <main>
+    <!-- Estado del sistema de verificación -->
+    <section class="verification-status-section">
+      <div class="status-card">
+        <div class="status-info">
+          <h3><i class="fas fa-shield-alt"></i> Estado del Sistema de Verificación</h3>
+          <div class="verification-details">
+            <span class="verification-status" id="verificationStatus">Configuración</span>
+            <span class="verification-description">Asignando verificadores a docentes</span>
+          </div>
+        </div>
+        <div class="status-actions">
+          <button onclick="activarSistemaVerificacion()" class="btn btn-success" id="activateVerificationBtn">
+            <i class="fas fa-play"></i> Activar Sistema de Verificación
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas de verificadores -->
+    <section class="verifiers-stats">
+      <div class="stats-cards">
+        <div class="stat-card total-verifiers">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Total Verificadores</h3>
+            <span class="stat-value" id="totalVerifiers">25</span>
+          </div>
+        </div>
+        <div class="stat-card active-verifiers">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Activos</h3>
+            <span class="stat-value" id="activeVerifiers">20</span>
+          </div>
+        </div>
+        <div class="stat-card assigned-teachers">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Docentes Asignados</h3>
+            <span class="stat-value" id="assignedTeachers">95</span>
+          </div>
+        </div>
+        <div class="stat-card pending-reviews">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Revisiones Pendientes</h3>
+            <span class="stat-value" id="pendingReviews">142</span>
+          </div>
+        </div>
+        <div class="stat-card workload-balance">
+          <div class="stat-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Balance de Carga</h3>
+            <span class="stat-value" id="workloadBalance">85%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Asignar verificador a docente -->
+    <section class="verifier-assignment">
+      <h2><i class="fas fa-user-plus"></i> Asignar Verificador a Docente</h2>
+      <form id="verifierAssignmentForm" onsubmit="asignarVerificador(event)" class="assignment-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="verificadorSelect">Seleccionar Verificador</label>
+            <select id="verificadorSelect" required>
+              <option value="">Seleccionar verificador...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="docenteSelect">Seleccionar Docente</label>
+            <select id="docenteSelect" required>
+              <option value="">Seleccionar docente...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cicloSelect">Ciclo Académico</label>
+            <select id="cicloSelect" required>
+              <option value="">Seleccionar ciclo...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prioridadAsignacion">Prioridad</label>
+            <select id="prioridadAsignacion" required>
+              <option value="">Seleccionar prioridad...</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="observacionesAsignacion">Observaciones (opcional)</label>
+          <textarea id="observacionesAsignacion" placeholder="Observaciones sobre la asignación..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Asignar Verificador
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-undo"></i> Limpiar Formulario
+          </button>
+          <button type="button" onclick="asignacionAutomatica()" class="btn btn-success">
+            <i class="fas fa-magic"></i> Asignación Automática
+          </button>
+        </div>
+        <p id="mensaje" class="mensaje"></p>
+      </form>
+    </section>
+
+    <!-- Filtros y búsqueda -->
+    <section class="verifiers-filters">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="filterCycle">Filtrar por ciclo:</label>
+          <select id="filterCycle" onchange="filtrarVerificadores()">
+            <option value="">Todos los ciclos</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filterStatus">Estado:</label>
+          <select id="filterStatus" onchange="filtrarVerificadores()">
+            <option value="">Todos</option>
+            <option value="activo">Activos</option>
+            <option value="inactivo">Inactivos</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filterWorkload">Carga de trabajo:</label>
+          <select id="filterWorkload" onchange="filtrarVerificadores()">
+            <option value="">Todas</option>
+            <option value="baja">Baja (1-5 docentes)</option>
+            <option value="media">Media (6-10 docentes)</option>
+            <option value="alta">Alta (11+ docentes)</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="searchVerifiers">Buscar verificador:</label>
+          <input type="text" id="searchVerifiers" placeholder="Nombre o correo..." onkeyup="buscarVerificadores()">
+        </div>
+        
+        <div class="filter-actions">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar Filtros
+          </button>
+          <button onclick="exportarVerificadores()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar Excel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de verificadores -->
+    <section class="verifiers-list">
+      <h2><i class="fas fa-list"></i> Verificadores y sus Asignaciones</h2>
+      <div class="table-container">
+        <table class="verifiers-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Verificador</th>
+              <th>Correo</th>
+              <th>Docentes Asignados</th>
+              <th>Documentos Pendientes</th>
+              <th>Carga de Trabajo</th>
+              <th>Estado</th>
+              <th>Última Actividad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="lista-verificadores">
+            <tr>
+              <td colspan="9" class="loading">Cargando verificadores...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Paginación -->
+      <div class="pagination" id="pagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Asignaciones detalladas -->
+    <section class="detailed-assignments">
+      <h2><i class="fas fa-sitemap"></i> Asignaciones Detalladas Verificador-Docente</h2>
+      <div class="assignments-container">
+        <div class="table-container">
+          <table class="assignments-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Verificador</th>
+                <th>Docente</th>
+                <th>Asignaturas</th>
+                <th>Ciclo</th>
+                <th>Prioridad</th>
+                <th>Estado</th>
+                <th>Fecha Asignación</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="lista-asignaciones-detalladas">
+              <tr>
+                <td colspan="9" class="loading">Cargando asignaciones...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Herramientas de gestión -->
+    <section class="verification-tools">
+      <h2><i class="fas fa-tools"></i> Herramientas de Gestión de Verificación</h2>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <h3>Balance de Carga</h3>
+          <p>Redistribuye la carga de trabajo entre verificadores</p>
+          <button onclick="abrirBalanceador()" class="btn btn-primary">
+            <i class="fas fa-chart-bar"></i> Balancear Carga
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-random"></i>
+          </div>
+          <h3>Asignación Aleatoria</h3>
+          <p>Asigna docentes automáticamente a verificadores disponibles</p>
+          <button onclick="asignacionAleatoria()" class="btn btn-info">
+            <i class="fas fa-dice"></i> Asignar Aleatoriamente
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <h3>Rotar Asignaciones</h3>
+          <p>Rota las asignaciones para evitar sesgos en la verificación</p>
+          <button onclick="rotarAsignaciones()" class="btn btn-warning">
+            <i class="fas fa-sync"></i> Rotar Asignaciones
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Estadísticas Avanzadas</h3>
+          <p>Analiza el rendimiento y eficiencia de verificadores</p>
+          <button onclick="verEstadisticasAvanzadas()" class="btn btn-secondary">
+            <i class="fas fa-analytics"></i> Ver Estadísticas
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3>Notificaciones Masivas</h3>
+          <p>Envía notificaciones a todos los verificadores</p>
+          <button onclick="enviarNotificacionMasiva()" class="btn btn-success">
+            <i class="fas fa-bullhorn"></i> Enviar Notificación
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-copy"></i>
+          </div>
+          <h3>Clonar del Ciclo Anterior</h3>
+          <p>Copia las asignaciones del ciclo académico anterior</p>
+          <button onclick="clonarAsignacionesAnteriores()" class="btn btn-info">
+            <i class="fas fa-copy"></i> Clonar Asignaciones
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Acciones masivas -->
+    <section class="bulk-actions">
+      <h3>Acciones Masivas</h3>
+      <div class="bulk-controls">
+        <label class="checkbox-container">
+          <input type="checkbox" id="selectAll" onchange="seleccionarTodas()">
+          <span class="checkmark"></span>
+          Seleccionar todas las asignaciones
+        </label>
+        
+        <div class="bulk-buttons">
+          <button onclick="activarSeleccionadas()" class="btn btn-success" disabled id="activateBtn">
+            <i class="fas fa-check"></i> Activar
+          </button>
+          <button onclick="desactivarSeleccionadas()" class="btn btn-warning" disabled id="deactivateBtn">
+            <i class="fas fa-ban"></i> Desactivar
+          </button>
+          <button onclick="reasignarSeleccionadas()" class="btn btn-info" disabled id="reassignBtn">
+            <i class="fas fa-exchange-alt"></i> Reasignar
+          </button>
+          <button onclick="eliminarSeleccionadas()" class="btn btn-danger" disabled id="deleteBtn">
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para editar asignación de verificador -->
+  <div id="editVerifierAssignmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Asignación de Verificador</h3>
+        <span class="close" onclick="cerrarModal('editVerifierAssignmentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editVerifierAssignmentForm">
+          <input type="hidden" id="editAssignmentId">
+          <div class="form-group">
+            <label for="editVerificador">Verificador</label>
+            <select id="editVerificador" required>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editDocente">Docente</label>
+            <select id="editDocente" required>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editPrioridad">Prioridad</label>
+            <select id="editPrioridad" required>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editObservaciones">Observaciones</label>
+            <textarea id="editObservaciones"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarCambiosAsignacionVerificador()" class="btn btn-primary">Guardar Cambios</button>
+        <button onclick="cerrarModal('editVerifierAssignmentModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

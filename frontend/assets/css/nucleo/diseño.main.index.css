@@ -1,0 +1,371 @@
+/* ====================================
+   🏠 Estilos para Página Principal
+   ==================================== */
+
+/* === Sección: Banner de Bienvenida === */
+.welcome-banner {
+   background: linear-gradient(to bottom, #f5f7fa, #e4e8f0);
+   padding: 3rem 1.5rem;
+ }
+ 
+ .banner-container {
+   display: flex;
+   flex-wrap: wrap;
+   align-items: center;
+   justify-content: space-between;
+   max-width: 1200px;
+   margin: auto;
+   gap: 2rem;
+ }
+ 
+ .banner-content {
+   flex: 1 1 500px;
+ }
+ 
+ .banner-content h1 {
+   font-size: 2rem;
+   color: #000072;
+   margin-bottom: 1rem;
+ }
+ 
+ .banner-content p {
+   font-size: 1.1rem;
+   color: #444444;
+   margin-bottom: 2rem;
+ }
+ 
+ .cycle-status-banner {
+   background-color: #fffbe6;
+   border-left: 6px solid #daa520;
+   padding: 1rem;
+   border-radius: 6px;
+   margin-bottom: 1.5rem;
+   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+ }
+ 
+ .status-info {
+   display: flex;
+   align-items: flex-start;
+   gap: 1rem;
+ }
+ 
+ .status-icon {
+   font-size: 1.5rem;
+   color: #daa520;
+ }
+ 
+ .status-title {
+   font-weight: 600;
+   color: #000;
+   font-size: 1rem;
+ }
+ 
+ .status-description {
+   font-size: 0.95rem;
+   color: #555;
+ }
+ 
+ .banner-actions .btn {
+   margin-right: 1rem;
+ }
+ 
+ .banner-image {
+   flex: 1 1 400px;
+ }
+ 
+ .feature-cards {
+   display: flex;
+   flex-direction: column;
+   gap: 1.5rem;
+ }
+ 
+ .feature-card {
+   background-color: #ffffff;
+   padding: 1.5rem;
+   border-radius: 8px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+   text-align: center;
+   transition: transform 0.3s ease;
+ }
+ 
+ .feature-card:hover {
+   transform: translateY(-5px);
+ }
+ 
+ .card-icon {
+   font-size: 2rem;
+   color: #000072;
+   margin-bottom: 0.5rem;
+ }
+ 
+ .card-features {
+   margin-top: 1rem;
+ }
+ 
+ .feature-tag {
+   background-color: #e4e8f0;
+   color: #000072;
+   padding: 0.4rem 0.8rem;
+   border-radius: 20px;
+   margin: 0.2rem;
+   display: inline-block;
+   font-size: 0.85rem;
+   font-weight: 500;
+ }
+ 
+ /* === Sección: Flujo del Proceso Académico === */
+ .process-flow-section {
+   padding: 4rem 1.5rem;
+   background: #ffffff;
+ }
+ 
+ .process-container {
+   max-width: 1200px;
+   margin: auto;
+ }
+ 
+ .section-header {
+   text-align: center;
+   margin-bottom: 2.5rem;
+ }
+ 
+ .section-header h2 {
+   font-size: 1.8rem;
+   color: #000072;
+ }
+ 
+ .section-header p {
+   font-size: 1.05rem;
+   color: #666;
+ }
+ 
+ .process-timeline {
+   display: flex;
+   flex-direction: column;
+   gap: 2.5rem;
+ }
+ 
+ .process-step {
+   display: flex;
+   gap: 1.5rem;
+   align-items: flex-start;
+   background-color: #f9f9f9;
+   border-left: 5px solid #ccc;
+   padding: 1.5rem;
+   border-radius: 8px;
+   transition: border-color 0.3s;
+ }
+ 
+ .process-step:hover {
+   border-color: #daa520;
+ }
+ 
+ .step-icon {
+   font-size: 1.8rem;
+   padding: 0.8rem;
+   border-radius: 50%;
+   background-color: #eee;
+   color: #000072;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+ }
+ 
+ .admin-color {
+   background-color: #00007215;
+   color: #000072;
+ }
+ 
+ .docente-color {
+   background-color: #daa52015;
+   color: #daa520;
+ }
+ 
+ .verificador-color {
+   background-color: #008b8b15;
+   color: #008b8b;
+ }
+ 
+ .step-content h3 {
+   font-size: 1.3rem;
+   margin-bottom: 0.5rem;
+   color: #333;
+ }
+ 
+ .step-actions {
+   margin-top: 0.8rem;
+ }
+ 
+ .action-item {
+   display: inline-block;
+   background-color: #e4e8f0;
+   color: #000072;
+   padding: 0.3rem 0.7rem;
+   font-size: 0.85rem;
+   border-radius: 12px;
+   margin-right: 0.4rem;
+   margin-top: 0.3rem;
+ }
+ 
+ /* === Sección: Acceso por Roles === */
+ .quick-access-section {
+   background: linear-gradient(to right, #000072, #000080);
+   color: #ffffff;
+   padding: 4rem 1.5rem;
+ }
+ 
+ .quick-access-container {
+   max-width: 1200px;
+   margin: auto;
+ }
+ 
+ .quick-access-container .section-header {
+   text-align: center;
+   margin-bottom: 2.5rem;
+ }
+ 
+ .quick-access-container .section-header h2 {
+   font-size: 1.8rem;
+   color: #ffffff;
+ }
+ 
+ .quick-access-container .section-header p {
+   font-size: 1.05rem;
+   color: #cccccc;
+   margin-top: 0.5rem;
+ }
+ 
+ .access-cards {
+   display: flex;
+   flex-wrap: wrap;
+   gap: 2rem;
+   justify-content: center;
+ }
+ 
+ .access-card {
+   background-color: #ffffff;
+   color: #000;
+   flex: 1 1 300px;
+   padding: 2rem 1.5rem;
+   border-radius: 10px;
+   box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+   transition: transform 0.3s ease;
+   min-width: 280px;
+ }
+ 
+ .access-card:hover {
+   transform: translateY(-6px);
+ }
+ 
+ .card-header {
+   text-align: center;
+   margin-bottom: 1rem;
+ }
+ 
+ .card-header i {
+   font-size: 2rem;
+   margin-bottom: 0.5rem;
+ }
+ 
+ .card-header h3 {
+   font-size: 1.3rem;
+   font-weight: 700;
+   margin-bottom: 0.3rem;
+ }
+ 
+ .role-badge {
+   display: inline-block;
+   padding: 0.3rem 0.6rem;
+   font-size: 0.75rem;
+   font-weight: 600;
+   border-radius: 20px;
+   text-transform: uppercase;
+ }
+ 
+ .admin-badge {
+   background-color: #000072;
+   color: #ffffff;
+ }
+ 
+ .docente-badge {
+   background-color: #daa520;
+   color: #ffffff;
+ }
+ 
+ .verificador-badge {
+   background-color: #008b8b;
+   color: #ffffff;
+ }
+ 
+ .card-content h4 {
+   font-size: 1rem;
+   margin-bottom: 0.5rem;
+   color: #000;
+ }
+ 
+ .card-content ul {
+   padding-left: 1.2rem;
+   font-size: 0.95rem;
+   color: #444444;
+ }
+ 
+ .card-footer {
+   text-align: center;
+   margin-top: 1.5rem;
+ }
+ 
+ .card-footer a {
+   display: inline-block;
+   padding: 0.6rem 1.2rem;
+   border-radius: 6px;
+   font-size: 0.95rem;
+   font-weight: 600;
+   color: #ffffff;
+   text-decoration: none;
+   transition: all 0.3s ease;
+ }
+ 
+ .btn-admin {
+   background-color: #000072;
+ }
+ 
+ .btn-docente {
+   background-color: #daa520;
+ }
+ 
+ .btn-verificador {
+   background-color: #008b8b;
+ }
+ 
+ .btn-admin:hover,
+ .btn-docente:hover,
+ .btn-verificador:hover {
+   opacity: 0.95;
+   transform: translateY(-2px);
+ }
+ 
+ /* ===========================
+    📱 Responsive
+    =========================== */
+ @media (max-width: 768px) {
+   .banner-container,
+   .process-timeline,
+   .access-cards {
+     flex-direction: column;
+   }
+ 
+   .banner-actions .btn {
+     margin-bottom: 1rem;
+     display: block;
+     width: 100%;
+   }
+ 
+   .feature-cards {
+     flex-direction: column;
+   }
+ 
+   .access-card {
+     width: 100%;
+   }
+ }
+ 

@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Estadísticas - Panel de Verificación</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estadísticas de verificación - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="estadísticas, métricas, verificación, rendimiento, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/verificador/estadisticas.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('verificador')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar estadísticas...">
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          
+          <div class="user-menu">
+            <div class="user-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <span class="user-name">Verificador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Estadísticas de Verificación</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="cola-revision.html">Cola de Revisión</a></li>
+            <li><a href="revisar.html">Revisar Documentos</a></li>
+            <li><a href="crear-observacion.html">Crear Observación</a></li>
+            <li><a href="estadisticas.html" class="active">Estadísticas</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Estadísticas de Verificación</span>
+  </nav>
+
+  <main>
+    <!-- Controles de período y filtros -->
+    <section class="stats-controls">
+      <div class="controls-container">
+        <div class="period-selector">
+          <h2><i class="fas fa-chart-line"></i> Estadísticas de Verificación</h2>
+          <div class="period-buttons">
+            <button class="period-btn active" onclick="cambiarPeriodo('semana')" data-period="semana">
+              Última Semana
+            </button>
+            <button class="period-btn" onclick="cambiarPeriodo('mes')" data-period="mes">
+              Último Mes
+            </button>
+            <button class="period-btn" onclick="cambiarPeriodo('trimestre')" data-period="trimestre">
+              Último Trimestre
+            </button>
+            <button class="period-btn" onclick="cambiarPeriodo('anio')" data-period="anio">
+              Último Año
+            </button>
+          </div>
+        </div>
+
+        <div class="date-range-selector">
+          <label for="fechaInicio">Desde:</label>
+          <input type="date" id="fechaInicio" onchange="actualizarEstadisticas()">
+          <label for="fechaFin">Hasta:</label>
+          <input type="date" id="fechaFin" onchange="actualizarEstadisticas()">
+          <button onclick="aplicarFiltroPersonalizado()" class="btn btn-primary btn-sm">
+            <i class="fas fa-filter"></i> Aplicar
+          </button>
+        </div>
+
+        <div class="export-actions">
+          <button onclick="exportarEstadisticas('pdf')" class="btn btn-secondary">
+            <i class="fas fa-file-pdf"></i> Exportar PDF
+          </button>
+          <button onclick="exportarEstadisticas('excel')" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar Excel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Métricas principales -->
+    <section class="main-metrics">
+      <div class="metrics-grid">
+        <div class="metric-card documents-reviewed">
+          <div class="metric-icon">
+            <i class="fas fa-file-check"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Documentos Revisados</h3>
+            <span class="metric-value" id="totalReviewed">0</span>
+            <span class="metric-change positive" id="reviewedChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="reviewedChart"></div>
+        </div>
+
+        <div class="metric-card documents-approved">
+          <div class="metric-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Documentos Aprobados</h3>
+            <span class="metric-value" id="totalApproved">0</span>
+            <span class="metric-change positive" id="approvedChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="approvedChart"></div>
+        </div>
+
+        <div class="metric-card documents-rejected">
+          <div class="metric-icon">
+            <i class="fas fa-times-circle"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Documentos Rechazados</h3>
+            <span class="metric-value" id="totalRejected">0</span>
+            <span class="metric-change neutral" id="rejectedChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="rejectedChart"></div>
+        </div>
+
+        <div class="metric-card observations-created">
+          <div class="metric-icon">
+            <i class="fas fa-comment"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Observaciones Creadas</h3>
+            <span class="metric-value" id="totalObservations">0</span>
+            <span class="metric-change positive" id="observationsChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="observationsChart"></div>
+        </div>
+
+        <div class="metric-card avg-review-time">
+          <div class="metric-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Tiempo Promedio de Revisión</h3>
+            <span class="metric-value" id="avgReviewTime">0h</span>
+            <span class="metric-change negative" id="timeChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="timeChart"></div>
+        </div>
+
+        <div class="metric-card efficiency-rate">
+          <div class="metric-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <div class="metric-content">
+            <h3>Eficiencia</h3>
+            <span class="metric-value" id="efficiencyRate">0%</span>
+            <span class="metric-change positive" id="efficiencyChange">+0%</span>
+          </div>
+          <div class="metric-chart" id="efficiencyChart"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gráficos detallados -->
+    <section class="detailed-charts">
+      <div class="charts-grid">
+        <!-- Gráfico de actividad diaria -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3><i class="fas fa-chart-line"></i> Actividad Diaria de Verificación</h3>
+            <div class="chart-controls">
+              <select id="activityMetric" onchange="actualizarGraficoActividad()">
+                <option value="documentos">Documentos Revisados</option>
+                <option value="observaciones">Observaciones Creadas</option>
+                <option value="tiempo">Tiempo de Revisión</option>
+              </select>
+            </div>
+          </div>
+          <div class="chart-content">
+            <canvas id="activityChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Distribución por estado -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3><i class="fas fa-chart-pie"></i> Distribución por Estado</h3>
+            <div class="chart-legend" id="statusLegend"></div>
+          </div>
+          <div class="chart-content">
+            <canvas id="statusChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Comparativa con otros verificadores -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3><i class="fas fa-chart-bar"></i> Comparativa con Otros Verificadores</h3>
+            <div class="chart-controls">
+              <select id="comparisonMetric" onchange="actualizarGraficoComparacion()">
+                <option value="productividad">Productividad</option>
+                <option value="calidad">Calidad de Observaciones</option>
+                <option value="tiempo">Tiempo de Respuesta</option>
+              </select>
+            </div>
+          </div>
+          <div class="chart-content">
+            <canvas id="comparisonChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+
+        <!-- Tendencias mensuales -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3><i class="fas fa-chart-area"></i> Tendencias Mensuales</h3>
+            <div class="chart-controls">
+              <button onclick="toggleTrendLine('documentos')" class="trend-toggle active" data-trend="documentos">
+                Documentos
+              </button>
+              <button onclick="toggleTrendLine('observaciones')" class="trend-toggle active" data-trend="observaciones">
+                Observaciones
+              </button>
+              <button onclick="toggleTrendLine('eficiencia')" class="trend-toggle active" data-trend="eficiencia">
+                Eficiencia
+              </button>
+            </div>
+          </div>
+          <div class="chart-content">
+            <canvas id="trendsChart" width="400" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Análisis de rendimiento -->
+    <section class="performance-analysis">
+      <h2><i class="fas fa-analytics"></i> Análisis de Rendimiento</h2>
+      
+      <div class="analysis-grid">
+        <!-- Indicadores de calidad -->
+        <div class="analysis-card quality-indicators">
+          <h3><i class="fas fa-star"></i> Indicadores de Calidad</h3>
+          <div class="indicators-list">
+            <div class="indicator-item">
+              <div class="indicator-label">Precisión en Revisiones</div>
+              <div class="indicator-value">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 92%" data-value="92"></div>
+                </div>
+                <span class="indicator-percent">92%</span>
+              </div>
+            </div>
+
+            <div class="indicator-item">
+              <div class="indicator-label">Consistencia en Criterios</div>
+              <div class="indicator-value">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 88%" data-value="88"></div>
+                </div>
+                <span class="indicator-percent">88%</span>
+              </div>
+            </div>
+
+            <div class="indicator-item">
+              <div class="indicator-label">Satisfacción de Docentes</div>
+              <div class="indicator-value">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 95%" data-value="95"></div>
+                </div>
+                <span class="indicator-percent">95%</span>
+              </div>
+            </div>
+
+            <div class="indicator-item">
+              <div class="indicator-label">Retroalimentación Constructiva</div>
+              <div class="indicator-value">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 90%" data-value="90"></div>
+                </div>
+                <span class="indicator-percent">90%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metas y objetivos -->
+        <div class="analysis-card goals-tracking">
+          <h3><i class="fas fa-bullseye"></i> Seguimiento de Metas</h3>
+          <div class="goals-list">
+            <div class="goal-item">
+              <div class="goal-info">
+                <h4>Documentos por Día</h4>
+                <p>Meta: 15 documentos | Actual: 12 documentos</p>
+              </div>
+              <div class="goal-progress">
+                <div class="circular-progress" data-percentage="80">
+                  <span class="percentage">80%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="goal-item">
+              <div class="goal-info">
+                <h4>Tiempo de Respuesta</h4>
+                <p>Meta: < 24h | Actual: 18h promedio</p>
+              </div>
+              <div class="goal-progress">
+                <div class="circular-progress" data-percentage="75">
+                  <span class="percentage">75%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="goal-item">
+              <div class="goal-info">
+                <h4>Calidad de Observaciones</h4>
+                <p>Meta: 90% | Actual: 92%</p>
+              </div>
+              <div class="goal-progress">
+                <div class="circular-progress" data-percentage="102">
+                  <span class="percentage">102%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="configurarMetas()" class="btn btn-primary btn-sm">
+            <i class="fas fa-cog"></i> Configurar Metas
+          </button>
+        </div>
+
+        <!-- Retroalimentación y mejoras -->
+        <div class="analysis-card feedback-section">
+          <h3><i class="fas fa-lightbulb"></i> Recomendaciones de Mejora</h3>
+          <div class="recommendations-list">
+            <div class="recommendation-item">
+              <div class="recommendation-icon">
+                <i class="fas fa-clock text-warning"></i>
+              </div>
+              <div class="recommendation-content">
+                <h4>Optimizar Tiempo de Revisión</h4>
+                <p>Su tiempo promedio de revisión ha aumentado. Considere usar plantillas de observación para agilizar el proceso.</p>
+              </div>
+            </div>
+
+            <div class="recommendation-item">
+              <div class="recommendation-icon">
+                <i class="fas fa-chart-line text-success"></i>
+              </div>
+              <div class="recommendation-content">
+                <h4>Excelente Consistencia</h4>
+                <p>Mantiene criterios consistentes en sus revisiones. Continue aplicando los mismos estándares.</p>
+              </div>
+            </div>
+
+            <div class="recommendation-item">
+              <div class="recommendation-icon">
+                <i class="fas fa-users text-info"></i>
+              </div>
+              <div class="recommendation-content">
+                <h4>Colaboración con Otros Verificadores</h4>
+                <p>Considere participar en sesiones de calibración para alinear criterios con otros verificadores.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas detalladas por docente -->
+    <section class="teacher-statistics">
+      <h2><i class="fas fa-graduation-cap"></i> Estadísticas por Docente Asignado</h2>
+      
+      <div class="stats-table-container">
+        <div class="table-controls">
+          <div class="search-box">
+            <input type="text" id="searchTeacher" placeholder="Buscar docente..." onkeyup="filtrarDocentes()">
+          </div>
+          <div class="sort-controls">
+            <select id="sortTeachers" onchange="ordenarDocentes()">
+              <option value="nombre">Ordenar por Nombre</option>
+              <option value="documentos">Documentos Revisados</option>
+              <option value="observaciones">Observaciones</option>
+              <option value="promedio">Tiempo Promedio</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="teacher-stats-table">
+          <thead>
+            <tr>
+              <th>Docente</th>
+              <th>Asignatura</th>
+              <th>Documentos Revisados</th>
+              <th>Observaciones Creadas</th>
+              <th>Tiempo Promedio</th>
+              <th>Estado General</th>
+              <th>Última Actividad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="teacherStatsBody">
+            <tr>
+              <td colspan="8" class="loading">Cargando estadísticas por docente...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="pagination" id="teacherPagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section class="quick-actions">
+      <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+      
+      <div class="actions-grid">
+        <button onclick="generarReportePersonal()" class="action-btn">
+          <i class="fas fa-file-alt"></i>
+          <span>Generar Reporte Personal</span>
+        </button>
+        
+        <button onclick="configurarAlertas()" class="action-btn">
+          <i class="fas fa-bell"></i>
+          <span>Configurar Alertas</span>
+        </button>
+        
+        <button onclick="verHistorialCompleto()" class="action-btn">
+          <i class="fas fa-history"></i>
+          <span>Ver Historial Completo</span>
+        </button>
+        
+        <button onclick="compararPeriodos()" class="action-btn">
+          <i class="fas fa-balance-scale"></i>
+          <span>Comparar Períodos</span>
+        </button>
+        
+        <button onclick="exportarDatosPersonales()" class="action-btn">
+          <i class="fas fa-download"></i>
+          <span>Exportar Datos</span>
+        </button>
+        
+        <button onclick="solicitarRetroalimentacion()" class="action-btn">
+          <i class="fas fa-comment-dots"></i>
+          <span>Solicitar Retroalimentación</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para configurar metas -->
+  <div id="goalsModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Configurar Metas Personales</h3>
+        <span class="close" onclick="cerrarModal('goalsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="goalsForm">
+          <div class="form-group">
+            <label for="dailyDocuments">Documentos por día:</label>
+            <input type="number" id="dailyDocuments" min="1" max="50" value="15">
+          </div>
+          
+          <div class="form-group">
+            <label for="responseTime">Tiempo máximo de respuesta (horas):</label>
+            <input type="number" id="responseTime" min="1" max="72" value="24">
+          </div>
+          
+          <div class="form-group">
+            <label for="qualityGoal">Meta de calidad (%):</label>
+            <input type="number" id="qualityGoal" min="70" max="100" value="90">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarMetas()" class="btn btn-primary">Guardar Metas</button>
+        <button onclick="cerrarModal('goalsModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Establecer fechas por defecto
+    document.addEventListener('DOMContentLoaded', function() {
+      const fechaFin = new Date();
+      const fechaInicio = new Date();
+      fechaInicio.setDate(fechaInicio.getDate() - 7); // Última semana por defecto
+
+      document.getElementById('fechaInicio').value = fechaInicio.toISOString().split('T')[0];
+      document.getElementById('fechaFin').value = fechaFin.toISOString().split('T')[0];
+    });
+
+    function cambiarPeriodo(periodo) {
+      // Remover clase active de todos los botones
+      document.querySelectorAll('.period-btn').forEach(btn => btn.classList.remove('active'));
+      
+      // Agregar clase active al botón seleccionado
+      document.querySelector(`[data-period="${periodo}"]`).classList.add('active');
+      
+      // Actualizar fechas según el período
+      const fechaFin = new Date();
+      const fechaInicio = new Date();
+      
+      switch(periodo) {
+        case 'semana':
+          fechaInicio.setDate(fechaInicio.getDate() - 7);
+          break;
+        case 'mes':
+          fechaInicio.setMonth(fechaInicio.getMonth() - 1);
+          break;
+        case 'trimestre':
+          fechaInicio.setMonth(fechaInicio.getMonth() - 3);
+          break;
+        case 'anio':
+          fechaInicio.setFullYear(fechaInicio.getFullYear() - 1);
+          break;
+      }
+      
+      document.getElementById('fechaInicio').value = fechaInicio.toISOString().split('T')[0];
+      document.getElementById('fechaFin').value = fechaFin.toISOString().split('T')[0];
+      
+      // Actualizar estadísticas
+      actualizarEstadisticas();
+    }
+  </script>
+</body>
+</html>

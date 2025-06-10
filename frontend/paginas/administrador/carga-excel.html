@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carga Académica Excel - Sistema de Portafolio Docente</title>
+  <meta name="description" content="Carga masiva de datos desde Excel - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="carga excel, datos masivos, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/administrador/manejador-excel.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar..." aria-label="Buscar">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-cog"></i></div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Carga Académica</span>
+            <span class="logo-subtitle">Semestre 2025-I</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="carga-excel.html" class="active">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Carga Masiva Excel</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Información del proceso -->
+    <section class="excel-info">
+      <div class="info-header">
+        <h1><i class="fas fa-file-excel"></i> Carga Masiva desde Excel</h1>
+        <p>Importe datos académicos de forma masiva utilizando archivos Excel predefinidos</p>
+      </div>
+
+      <div class="info-cards">
+        <div class="info-card types-card">
+          <h3><i class="fas fa-list"></i> Tipos de Carga Disponibles</h3>
+          <ul class="load-types">
+            <li><strong>Usuarios:</strong> Docentes, verificadores y administradores</li>
+            <li><strong>Asignaturas:</strong> Materias por ciclo académico</li>
+            <li><strong>Asignaciones:</strong> Docente-asignatura del ciclo</li>
+            <li><strong>Verificadores:</strong> Asignación verificador-docente</li>
+            <li><strong>Estructura:</strong> Estructura de portafolios</li>
+          </ul>
+        </div>
+
+        <div class="info-card requirements-card">
+          <h3><i class="fas fa-exclamation-triangle"></i> Requisitos Importantes</h3>
+          <ul class="requirements">
+            <li>Archivo en formato .xlsx (Excel 2010 o superior)</li>
+            <li>Máximo 1000 registros por archivo</li>
+            <li>Columnas exactamente como en la plantilla</li>
+            <li>Datos sin espacios adicionales</li>
+            <li>Correos en formato @unsaac.edu.pe</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plantillas disponibles -->
+    <section class="templates-section">
+      <h2><i class="fas fa-download"></i> Descargar Plantillas</h2>
+      <div class="templates-grid">
+        <div class="template-card users-template">
+          <div class="template-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="template-info">
+            <h3>Plantilla de Usuarios</h3>
+            <p>Para cargar docentes, verificadores y administradores</p>
+            <span class="template-columns">Columnas: nombres, apellidos, correo, rol, activo</span>
+          </div>
+          <div class="template-action">
+            <button onclick="descargarPlantilla('usuarios')" class="btn btn-primary">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card subjects-template">
+          <div class="template-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="template-info">
+            <h3>Plantilla de Asignaturas</h3>
+            <p>Para cargar materias del ciclo académico</p>
+            <span class="template-columns">Columnas: codigo, nombre, carrera, semestre, creditos, tipo</span>
+          </div>
+          <div class="template-action">
+            <button onclick="descargarPlantilla('asignaturas')" class="btn btn-primary">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card assignments-template">
+          <div class="template-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <div class="template-info">
+            <h3>Plantilla de Asignaciones</h3>
+            <p>Para asignar docentes a asignaturas</p>
+            <span class="template-columns">Columnas: correo_docente, codigo_asignatura, activo</span>
+          </div>
+          <div class="template-action">
+            <button onclick="descargarPlantilla('asignaciones')" class="btn btn-primary">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+
+        <div class="template-card verifiers-template">
+          <div class="template-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="template-info">
+            <h3>Plantilla de Verificadores</h3>
+            <p>Para asignar verificadores a docentes</p>
+            <span class="template-columns">Columnas: correo_verificador, correo_docente, activo</span>
+          </div>
+          <div class="template-action">
+            <button onclick="descargarPlantilla('verificadores')" class="btn btn-primary">
+              <i class="fas fa-download"></i> Descargar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de subida -->
+    <section class="upload-section">
+      <h2><i class="fas fa-cloud-upload-alt"></i> Subir archivo Excel de carga académica</h2>
+      
+      <!-- Selector de tipo de carga -->
+      <div class="load-type-selector">
+        <label for="tipoC arga">Tipo de carga:</label>
+        <select id="tipoCarga" required onchange="actualizarInstrucciones()">
+          <option value="">Seleccione el tipo de datos a cargar</option>
+          <option value="usuarios">Usuarios del sistema</option>
+          <option value="asignaturas">Asignaturas del ciclo</option>
+          <option value="asignaciones">Asignaciones docente-asignatura</option>
+          <option value="verificadores">Asignaciones verificador-docente</option>
+          <option value="estructura">Estructura de portafolios</option>
+        </select>
+      </div>
+
+      <!-- Instrucciones dinámicas -->
+      <div id="instrucciones" class="load-instructions" style="display: none;">
+        <!-- Se cargará dinámicamente según el tipo seleccionado -->
+      </div>
+
+      <!-- Formulario de subida -->
+      <form id="formCargaExcel" enctype="multipart/form-data" class="upload-form">
+        <div class="file-upload-area">
+          <div class="upload-zone" id="uploadZone">
+            <div class="upload-icon">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <div class="upload-text">
+              <h3>Arrastra tu archivo Excel aquí</h3>
+              <p>o haz clic para seleccionar</p>
+              <span class="file-types">Archivos soportados: .xlsx</span>
+            </div>
+            <input type="file" id="archivoExcel" name="archivo" accept=".xlsx" required class="file-input">
+          </div>
+        </div>
+
+        <!-- Información del archivo seleccionado -->
+        <div id="fileInfo" class="file-info" style="display: none;">
+          <div class="file-details">
+            <div class="file-icon">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <div class="file-data">
+              <span class="file-name" id="fileName"></span>
+              <span class="file-size" id="fileSize"></span>
+            </div>
+            <button type="button" onclick="removeFile()" class="remove-file">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Opciones adicionales -->
+        <div class="upload-options">
+          <label class="checkbox-container">
+            <input type="checkbox" id="validarSolo" name="validar_solo">
+            <span class="checkmark"></span>
+            Solo validar archivo (no procesar datos)
+          </label>
+          
+          <label class="checkbox-container">
+            <input type="checkbox" id="sobrescribir" name="sobrescribir">
+            <span class="checkmark"></span>
+            Sobrescribir datos existentes
+          </label>
+        </div>
+
+        <!-- Botón de subida -->
+        <div class="upload-actions">
+          <button type="submit" class="btn btn-primary" id="uploadBtn" disabled>
+            <i class="fas fa-upload"></i>
+            <span class="btn-text">Subir archivo</span>
+            <div class="loading-spinner" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i>
+            </div>
+          </button>
+          <button type="button" onclick="limpiarFormulario()" class="btn btn-secondary">
+            <i class="fas fa-broom"></i> Limpiar
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Resultados de la carga -->
+    <section class="results-section" id="resultsSection" style="display: none;">
+      <h2><i class="fas fa-chart-pie"></i> Resultados de la Carga</h2>
+      
+      <!-- Resumen general -->
+      <div class="results-summary">
+        <div class="summary-cards">
+          <div class="summary-card total-card">
+            <div class="card-icon">
+              <i class="fas fa-list-ol"></i>
+            </div>
+            <div class="card-info">
+              <h3>Total Registros</h3>
+              <span class="card-value" id="totalRecords">0</span>
+            </div>
+          </div>
+          
+          <div class="summary-card success-card">
+            <div class="card-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="card-info">
+              <h3>Procesados</h3>
+              <span class="card-value" id="processedRecords">0</span>
+            </div>
+          </div>
+          
+          <div class="summary-card error-card">
+            <div class="card-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="card-info">
+              <h3>Con Errores</h3>
+              <span class="card-value" id="errorRecords">0</span>
+            </div>
+          </div>
+          
+          <div class="summary-card time-card">
+            <div class="card-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="card-info">
+              <h3>Tiempo</h3>
+              <span class="card-value" id="processTime">0s</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de progreso -->
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-text" id="progressText">0% completado</span>
+      </div>
+
+      <!-- Mensajes y errores -->
+      <div class="results-details">
+        <div id="resultado" class="mensaje"></div>
+        <div id="errores" class="error-list"></div>
+      </div>
+
+      <!-- Acciones post-carga -->
+      <div class="post-load-actions">
+        <button onclick="descargarReporte()" class="btn btn-info">
+          <i class="fas fa-download"></i> Descargar Reporte
+        </button>
+        <button onclick="enviarNotificacion()" class="btn btn-warning">
+          <i class="fas fa-bell"></i> Notificar Usuarios
+        </button>
+        <button onclick="nuevaCarga()" class="btn btn-success">
+          <i class="fas fa-plus"></i> Nueva Carga
+        </button>
+      </div>
+    </section>
+
+    <!-- Historial de cargas -->
+    <section class="history-section">
+      <h2><i class="fas fa-history"></i> Historial de Cargas</h2>
+      <div class="history-table-container">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Archivo</th>
+              <th>Registros</th>
+              <th>Estado</th>
+              <th>Usuario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <tr>
+              <td colspan="7" class="loading">Cargando historial...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <p>&copy; 2025 Sistema de Portafolio Docente – UNSAAC</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asignaciones Docente-Materia - Panel de Administración</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Gestión de asignaciones docente-materia - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="asignaciones, docentes, materias, administración, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+  <link rel="stylesheet" href="../../../frontend/assets/css/paginas/administrador/asignaciones.css">
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/administrador/asignaciones.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('administrador')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar asignaciones...">
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          
+          <div class="user-menu">
+            <div class="user-icon">
+              <i class="fas fa-user-cog"></i>
+            </div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Asignaciones Académicas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="asignaciones.html" class="active">Asignaciones</a></li>
+            <li><a href="verificadores.html">Verificadores</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Asignaciones Docente-Materia</span>
+  </nav>
+
+  <main>
+    <!-- Estado del ciclo académico -->
+    <section class="cycle-status-section">
+      <div class="status-card">
+        <div class="status-info">
+          <h3><i class="fas fa-calendar-alt"></i> Ciclo Académico Actual</h3>
+          <div class="cycle-details">
+            <span class="cycle-name" id="currentCycle">2025-I</span>
+            <span class="cycle-status" id="cycleStatus">Configuración</span>
+            <span class="cycle-description">Asignando docentes a asignaturas</span>
+          </div>
+        </div>
+        <div class="status-actions">
+          <button onclick="abrirPeriodoAsignaciones()" class="btn btn-success" id="openPeriodBtn">
+            <i class="fas fa-unlock"></i> Abrir Período de Asignaciones
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Estadísticas de asignaciones -->
+    <section class="assignments-stats">
+      <div class="stats-cards">
+        <div class="stat-card total-assignments">
+          <div class="stat-icon">
+            <i class="fas fa-link"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Total Asignaciones</h3>
+            <span class="stat-value" id="totalAssignments">245</span>
+          </div>
+        </div>
+        <div class="stat-card active-assignments">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Activas</h3>
+            <span class="stat-value" id="activeAssignments">230</span>
+          </div>
+        </div>
+        <div class="stat-card pending-assignments">
+          <div class="stat-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Pendientes</h3>
+            <span class="stat-value" id="pendingAssignments">15</span>
+          </div>
+        </div>
+        <div class="stat-card teachers-assigned">
+          <div class="stat-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Docentes Asignados</h3>
+            <span class="stat-value" id="teachersAssigned">85</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crear nueva asignación -->
+    <section class="new-assignment">
+      <h2><i class="fas fa-plus-circle"></i> Nueva Asignación Docente-Materia</h2>
+      <form id="assignmentForm" onsubmit="crearAsignacion(event)" class="assignment-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="docenteSelect">Seleccionar Docente</label>
+            <select id="docenteSelect" required>
+              <option value="">Seleccionar docente...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="asignaturaSelect">Seleccionar Asignatura</label>
+            <select id="asignaturaSelect" required>
+              <option value="">Seleccionar asignatura...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="cicloSelect">Ciclo Académico</label>
+            <select id="cicloSelect" required>
+              <option value="">Seleccionar ciclo...</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="tipoAsignacion">Tipo de Asignación</label>
+            <select id="tipoAsignacion" required>
+              <option value="">Seleccionar tipo...</option>
+              <option value="principal">Principal</option>
+              <option value="auxiliar">Auxiliar</option>
+              <option value="laboratorio">Laboratorio</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="observaciones">Observaciones (opcional)</label>
+          <textarea id="observaciones" placeholder="Observaciones sobre la asignación..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Crear Asignación
+          </button>
+          <button type="reset" class="btn btn-secondary">
+            <i class="fas fa-undo"></i> Limpiar Formulario
+          </button>
+          <button type="button" onclick="asignacionMasiva()" class="btn btn-success">
+            <i class="fas fa-users"></i> Asignación Masiva
+          </button>
+        </div>
+        <p id="mensaje" class="mensaje"></p>
+      </form>
+    </section>
+
+    <!-- Filtros y búsqueda -->
+    <section class="assignments-filters">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="filterCycle">Filtrar por ciclo:</label>
+          <select id="filterCycle" onchange="filtrarAsignaciones()">
+            <option value="">Todos los ciclos</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filterCareer">Carrera:</label>
+          <select id="filterCareer" onchange="filtrarAsignaciones()">
+            <option value="">Todas las carreras</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="filterStatus">Estado:</label>
+          <select id="filterStatus" onchange="filtrarAsignaciones()">
+            <option value="">Todos</option>
+            <option value="1">Activas</option>
+            <option value="0">Inactivas</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="searchAssignments">Buscar:</label>
+          <input type="text" id="searchAssignments" placeholder="Docente o asignatura..." onkeyup="buscarAsignaciones()">
+        </div>
+        
+        <div class="filter-actions">
+          <button onclick="limpiarFiltros()" class="btn btn-outline">
+            <i class="fas fa-times"></i> Limpiar Filtros
+          </button>
+          <button onclick="exportarAsignaciones()" class="btn btn-success">
+            <i class="fas fa-file-excel"></i> Exportar Excel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de asignaciones -->
+    <section class="assignments-list">
+      <h2><i class="fas fa-list"></i> Asignaciones Registradas</h2>
+      <div class="table-container">
+        <table class="assignments-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Docente</th>
+              <th>Asignatura</th>
+              <th>Carrera</th>
+              <th>Ciclo</th>
+              <th>Tipo</th>
+              <th>Estado</th>
+              <th>Fecha Asignación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="lista-asignaciones">
+            <tr>
+              <td colspan="9" class="loading">Cargando asignaciones...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Paginación -->
+      <div class="pagination" id="pagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Acciones masivas -->
+    <section class="bulk-actions">
+      <h3>Acciones Masivas</h3>
+      <div class="bulk-controls">
+        <label class="checkbox-container">
+          <input type="checkbox" id="selectAll" onchange="seleccionarTodas()">
+          <span class="checkmark"></span>
+          Seleccionar todas
+        </label>
+        
+        <div class="bulk-buttons">
+          <button onclick="activarSeleccionadas()" class="btn btn-success" disabled id="activateBtn">
+            <i class="fas fa-check"></i> Activar
+          </button>
+          <button onclick="desactivarSeleccionadas()" class="btn btn-warning" disabled id="deactivateBtn">
+            <i class="fas fa-ban"></i> Desactivar
+          </button>
+          <button onclick="eliminarSeleccionadas()" class="btn btn-danger" disabled id="deleteBtn">
+            <i class="fas fa-trash"></i> Eliminar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Herramientas adicionales -->
+    <section class="assignment-tools">
+      <h2><i class="fas fa-tools"></i> Herramientas de Gestión</h2>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-copy"></i>
+          </div>
+          <h3>Clonar Asignaciones</h3>
+          <p>Copia asignaciones de un ciclo anterior al actual</p>
+          <button onclick="abrirClonadorAsignaciones()" class="btn btn-primary">
+            <i class="fas fa-copy"></i> Abrir Clonador
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <h3>Balance de Carga</h3>
+          <p>Visualiza la distribución de carga académica por docente</p>
+          <button onclick="verBalanceCarga()" class="btn btn-info">
+            <i class="fas fa-chart-bar"></i> Ver Balance
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-exchange-alt"></i>
+          </div>
+          <h3>Intercambiar Asignaciones</h3>
+          <p>Facilita el intercambio de asignaturas entre docentes</p>
+          <button onclick="abrirIntercambiador()" class="btn btn-warning">
+            <i class="fas fa-exchange-alt"></i> Intercambiar
+          </button>
+        </div>
+        
+        <div class="tool-card">
+          <div class="tool-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3>Historial de Cambios</h3>
+          <p>Revisa el historial de modificaciones en asignaciones</p>
+          <button onclick="verHistorial()" class="btn btn-secondary">
+            <i class="fas fa-history"></i> Ver Historial
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para editar asignación -->
+  <div id="editAssignmentModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Editar Asignación</h3>
+        <span class="close" onclick="cerrarModal('editAssignmentModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="editAssignmentForm">
+          <input type="hidden" id="editAssignmentId">
+          <div class="form-group">
+            <label for="editDocente">Docente</label>
+            <select id="editDocente" required>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editAsignatura">Asignatura</label>
+            <select id="editAsignatura" required>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editTipo">Tipo de Asignación</label>
+            <select id="editTipo" required>
+              <option value="principal">Principal</option>
+              <option value="auxiliar">Auxiliar</option>
+              <option value="laboratorio">Laboratorio</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editObservaciones">Observaciones</label>
+            <textarea id="editObservaciones"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarCambiosAsignacion()" class="btn btn-primary">Guardar Cambios</button>
+        <button onclick="cerrarModal('editAssignmentModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Recuperar Contraseña - Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Recuperar contraseña - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="recuperar contraseña, reset password, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/autenticacion/recuperar-clave.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+        <div class="header-top-container">
+            <!-- Barra de búsqueda -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Buscar..." readonly>
+            </div>
+            
+            <!-- Acciones de usuario y redes sociales -->
+            <div class="header-actions">
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-icon">
+                        <i class="fas fa-user-slash"></i>
+                    </div>
+                    <span class="user-name">No autenticado</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+        <div class="header-middle-container">
+            <div class="logo-container">
+                <div class="logo-img">
+                    <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+                </div>
+                <div class="logo-text-container">
+                    <span class="logo-title">Sistema de Portafolio</span>
+                    <span class="logo-subtitle">Docente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+        <div class="header-bottom-container">
+            <button class="menu-toggle" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="../../index.html">Inicio</a></li>
+                    <li><a href="login.html">Iniciar Sesión</a></li>
+                    <li><a href="recuperar.html" class="active">Recuperar Contraseña</a></li>
+                    <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <div class="login-container">
+      <div class="login-form-container">
+        <div class="login-header">
+          <div class="login-logo">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <h1>Recuperar Contraseña</h1>
+          <p class="recovery-subtitle">Ingrese su correo institucional para recibir instrucciones de recuperación</p>
+        </div>
+
+        <form id="recoveryForm" class="login-form" onsubmit="recuperarContrasena(event)">
+          <div class="form-group">
+            <label for="correo">
+              <i class="fas fa-envelope"></i>
+              Correo institucional
+            </label>
+            <input type="email" id="correo" name="correo" placeholder="usuario@unsaac.edu.pe" required>
+            <div class="field-help">
+              Debe usar el mismo correo con el que se registró en el sistema
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="recoveryBtn">
+              <i class="fas fa-paper-plane"></i>
+              <span class="btn-text">Enviar enlace de recuperación</span>
+              <div class="loading-spinner" style="display: none;">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+            </button>
+          </div>
+
+          <div class="form-links">
+            <a href="login.html" class="link">
+              <i class="fas fa-arrow-left"></i>
+              Volver al inicio de sesión
+            </a>
+          </div>
+
+          <!-- Mensaje de respuesta -->
+          <div id="mensaje" class="message-container" style="display: none;">
+            <div class="message-content">
+              <i class="message-icon"></i>
+              <span class="message-text"></span>
+            </div>
+          </div>
+        </form>
+
+        <!-- Información adicional -->
+        <div class="recovery-info">
+          <h3><i class="fas fa-info-circle"></i> Instrucciones</h3>
+          <ul class="info-list">
+            <li>Ingrese su correo institucional (@unsaac.edu.pe)</li>
+            <li>Recibirá un enlace de recuperación en su bandeja de entrada</li>
+            <li>El enlace será válido por 30 minutos</li>
+            <li>Revise también su carpeta de spam o correo no deseado</li>
+          </ul>
+        </div>
+
+        <!-- Contacto de soporte -->
+        <div class="support-contact">
+          <h3><i class="fas fa-life-ring"></i> ¿Necesita ayuda adicional?</h3>
+          <p>Si no puede recuperar su contraseña, contacte al soporte técnico:</p>
+          <div class="contact-methods">
+            <a href="mailto:portafolio@unsaac.edu.pe" class="contact-item">
+              <i class="fas fa-envelope"></i>
+              portafolio@unsaac.edu.pe
+            </a>
+            <a href="tel:+51842320006" class="contact-item">
+              <i class="fas fa-phone"></i>
+              +51 84 232006
+            </a>
+          </div>
+        </div>
+
+        <div class="login-footer">
+          <p>Sistema de Gestión de Portafolio Docente &copy; 2025</p>
+          <p>Universidad Nacional de San Antonio Abad del Cusco</p>
+        </div>
+      </div>
+
+      <!-- Información de seguridad -->
+      <div class="login-info">
+        <div class="info-content">
+          <h2>Recuperación Segura de Contraseña</h2>
+          <p>Nuestro sistema utiliza protocolos seguros para la recuperación de contraseñas, garantizando la protección de su cuenta académica.</p>
+
+          <div class="security-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-shield-alt"></i>
+              </div>
+              <div class="feature-content">
+                <h3>Proceso Seguro</h3>
+                <p>Los enlaces de recuperación son únicos, temporales y están encriptados para proteger su seguridad.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="feature-content">
+                <h3>Tiempo Limitado</h3>
+                <p>Los enlaces expiran automáticamente después de 30 minutos para evitar accesos no autorizados.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-envelope-open-text"></i>
+              </div>
+              <div class="feature-content">
+                <h3>Verificación por Email</h3>
+                <p>Solo enviamos enlaces al correo institucional registrado en el sistema.</p>
+              </div>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-history"></i>
+              </div>
+              <div class="feature-content">
+                <h3>Registro de Actividad</h3>
+                <p>Todas las solicitudes de recuperación quedan registradas para auditoría de seguridad.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Consejos de seguridad -->
+          <div class="security-tips">
+            <h3><i class="fas fa-lightbulb"></i> Consejos de Seguridad</h3>
+            <ul class="tips-list">
+              <li>Use una contraseña fuerte con al menos 8 caracteres</li>
+              <li>Incluya mayúsculas, minúsculas, números y símbolos</li>
+              <li>No comparta su contraseña con otras personas</li>
+              <li>Cierre sesión cuando termine de usar el sistema</li>
+              <li>Mantenga actualizada la información de su perfil</li>
+            </ul>
+          </div>
+
+          <!-- Estados del proceso -->
+          <div class="process-status">
+            <h3><i class="fas fa-list-ol"></i> Proceso de Recuperación</h3>
+            <div class="status-steps">
+              <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-text">Ingrese su correo</div>
+              </div>
+              <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-text">Revise su email</div>
+              </div>
+              <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-text">Haga clic en el enlace</div>
+              </div>
+              <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-text">Cree nueva contraseña</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="../compartidas/ayuda.html">Ayuda</a>
+        </div>
+    </div>
+  </footer>
+</body>
+</html>

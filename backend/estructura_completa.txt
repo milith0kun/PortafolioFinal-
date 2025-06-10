@@ -1,0 +1,229 @@
+.
+|-- .env
+|-- .gitignore
+|-- base_datos
+|   |-- conexiones
+|   |   |-- Crear_Tablas.sql
+|   |   |-- Datos.sql
+|   |   |-- pool.conexion.js
+|-- configuracion
+|   |-- autenticacion
+|   |   |-- cors.config.js
+|   |-- base_datos
+|   |   |-- mysql.config.js
+|   |-- seguridad
+|   |   |-- helmet.config.js
+|   |   |-- limitador.config.js
+|   |-- subida.archivos.js
+|   |   |-- almacenamiento.config.js
+|   |   |-- multer.config.js
+|   |   |-- validacion.config.js
+|-- controladores
+|   |-- asignaturas
+|   |   |-- asignaciones.controlador.js
+|   |   |-- gestion.controlador.js
+|   |   |-- reportes.controlador.js
+|   |-- autenticacion
+|   |   |-- login.controlador.js
+|   |   |-- recuperacion.controlador.js
+|   |   |-- sesion.controlador.js
+|   |-- carga-excel
+|   |   |-- estructura.base.exce.js
+|   |   |-- procesamiento.controlador.js
+|   |   |-- subida.controlador.js
+|   |   |-- validacion.controlador.js
+|   |-- ciclos-academicos
+|   |   |-- configuracion.controlador.js
+|   |   |-- estados.controlador.js
+|   |   |-- gestion.controlador.js
+|   |-- documentos
+|   |   |-- descarga.controlador.js
+|   |   |-- gestion.controlador.js
+|   |   |-- subida.controlador.js
+|   |-- estructura_completa.txt
+|   |-- notificaciones
+|   |   |-- configuracion.controlador.js
+|   |   |-- envio.controlador.js
+|   |   |-- gestion.controlador.js
+|   |-- observaciones
+|   |   |-- gestion.controlador.js
+|   |   |-- reportes.controlador.js
+|   |   |-- respuestas.controlador.js
+|   |-- portafolios
+|   |   |-- estructura.controlador.js
+|   |   |-- navegacion.controlador.js
+|   |   |-- progreso.controlador.js
+|   |-- reportes
+|   |   |-- docentes.controlador.js
+|   |   |-- exportacion.controlador.js
+|   |   |-- generales.controlador.js
+|   |-- roles
+|   |   |-- asignacion.controlador.js
+|   |   |-- cambio.controlador.js
+|   |   |-- permisos.controlador.js
+|   |-- tableros
+|   |   |-- administrador.controlador.js
+|   |   |-- docente.controlador.js
+|   |   |-- verificador.controlador.js
+|   |-- usuarios
+|   |   |-- actividad.controlador.js
+|   |   |-- gestion.controlador.js
+|   |   |-- perfiles.controlador.js
+|   |-- verificacion
+|   |   |-- asignaciones.controlador.js
+|   |   |-- estadisticas.controlador.js
+|   |   |-- revision.controlador.js
+|-- documentacion
+|   |-- .gitkeep
+|-- estructura_completa.txt
+|-- index.js
+|-- logs
+|   |-- .gitkeep
+|   |-- acceso
+|   |-- aplicacion
+|   |-- auditoria
+|   |-- errores
+|-- middleware
+|   |-- autenticacion
+|   |   |-- intentos.middleware.js
+|   |   |-- jwt.middleware.js
+|   |   |-- sesion.middleware.js
+|   |-- autorizacion
+|   |   |-- permisos.middleware.js
+|   |   |-- recursos.middleware.js
+|   |   |-- roles.middleware.js
+|   |-- registro-logs
+|   |   |-- acceso.middleware.js
+|   |   |-- auditoria.middleware.js
+|   |   |-- errores.middleware.js
+|   |-- seguridad
+|   |   |-- cors.middleware.js
+|   |   |-- helmet.middleware.js
+|   |   |-- limitador.middleware.js
+|   |-- subida-archivos
+|   |   |-- almacenamiento.middleware.js
+|   |   |-- multer.middleware.js
+|   |   |-- validacion.middleware.js
+|   |-- validacion
+|   |   |-- esquemas.middleware.js
+|   |   |-- formato.middleware.js
+|   |   |-- sanitizacion.middleware.js
+|-- modelos
+|   |-- academico
+|   |   |-- asignacion.modelo.js
+|   |   |-- asignatura.modelo.js
+|   |   |-- ciclo.modelo.js
+|   |-- documento
+|   |   |-- documento.modelo.js
+|   |   |-- metadato.modelo.js
+|   |   |-- version.modelo.js
+|   |-- notificacion
+|   |   |-- notificacion.modelo.js
+|   |   |-- observacion.modelo.js
+|   |   |-- respuesta.modelo.js
+|   |-- portafolio
+|   |   |-- carpeta.modelo.js
+|   |   |-- estructura.modelo.js
+|   |   |-- portafolio.modelo.js
+|   |-- sistema
+|   |   |-- auditoria.modelo.js
+|   |   |-- configuracion.modelo.js
+|   |   |-- log.modelo.js
+|   |-- usuario
+|   |   |-- rol.modelo.js
+|   |   |-- sesion.modelo.js
+|   |   |-- usuario.modelo.js
+|-- package-lock.json
+|-- package.json
+|-- plantillas
+|   |-- .gitkeep
+|-- pruebas
+|   |-- .gitkeep
+|-- rutas
+|   |-- v1
+|   |   |-- academico
+|   |   |   |-- asignaciones.rutas.js
+|   |   |   |-- asignaturas.rutas.js
+|   |   |   |-- ciclos.rutas.js
+|   |   |   |-- indexAcademico.js
+|   |   |-- autenticacion
+|   |   |   |-- indexAutenticacion.js
+|   |   |   |-- login.rutas.js
+|   |   |   |-- recuperacion.rutas.js
+|   |   |   |-- sesion.rutas.js
+|   |   |-- dashboards
+|   |   |   |-- administrador.rutas.js
+|   |   |   |-- docente.rutas.js
+|   |   |   |-- indexDashboards.js
+|   |   |   |-- verificador.rutas.js
+|   |   |-- documentos
+|   |   |   |-- descarga.rutas.js
+|   |   |   |-- gestion.rutas.js
+|   |   |   |-- indexDocumentos.js
+|   |   |   |-- subida.rutas.js
+|   |   |-- estructura_completa.txt
+|   |   |-- indexRutas.js
+|   |   |-- observaciones
+|   |   |   |-- gestionObservaciones.rutas.js
+|   |   |   |-- indexObservaciones.js
+|   |   |   |-- reportes.rutas.js
+|   |   |   |-- respuestas.rutas.js
+|   |   |-- portafolios
+|   |   |   |-- estructura.rutas.js
+|   |   |   |-- indexPortafolios.js
+|   |   |   |-- navegacion.rutas.js
+|   |   |   |-- progreso.rutas.js
+|   |   |-- roles
+|   |   |   |-- asignacion.rutas.js
+|   |   |   |-- cambio.rutas.js
+|   |   |   |-- indexRoles.js
+|   |   |   |-- permisos.rutas.js
+|   |   |-- sistema
+|   |   |   |-- excel.rutas.js
+|   |   |   |-- indexSistema.js
+|   |   |   |-- notificaciones.rutas.js
+|   |   |   |-- reportes.rutas.js
+|   |   |-- usuarios
+|   |   |   |-- gestion.rutas.js
+|   |   |   |-- indexUsuarios.js
+|   |   |   |-- perfiles.rutas.js
+|   |   |   |-- roles.rutas.js
+|   |   |-- verificacion
+|   |   |   |-- asignaciones.rutas.js
+|   |   |   |-- estadisticas.rutas.js
+|   |   |   |-- indexVerificacion.js
+|   |   |   |-- revision.rutas.js
+|-- se.sh
+|-- servicios
+|   |-- autenticacion
+|   |-- envio-emails
+|   |-- generacion-reportes
+|   |-- gestion-academica
+|   |-- gestion-documentos
+|   |-- gestion-portafolios
+|   |-- gestion-usuarios
+|   |-- procesamiento-excel
+|   |-- sistema-notificaciones
+|-- servidor.js
+|-- subidas
+|   |-- .gitkeep
+|   |-- documentos
+|   |-- excel
+|   |-- temp
+|-- utilidades
+|   |-- base-datos
+|   |-- encriptacion
+|   |-- fecha-hora
+|   |-- formato
+|   |-- manejo-archivos
+|   |-- validacion
+|-- validadores
+|   |-- academico
+|   |-- autenticacion
+|   |-- comunes
+|   |-- documentos
+|   |-- excel
+|   |-- usuarios
+
+
+find . \( -path "*/node_modules" -o -path "*/node_modules/*" \) -prune -o -print | sed -e 's/[^\/]*\//|   /g;s/|   \([^|]\)/|-- \1/' > estructura_completa.txt

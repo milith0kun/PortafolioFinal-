@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Verificación - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard Verificador - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="verificador, revisión, documentos, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/verificador/tablero.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('verificador')">
+
+  <!-- Header -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar documentos...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-check"></i></div>
+            <span class="user-name">Verificador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Panel de Verificación</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html" class="active">Dashboard</a></li>
+            <li><a href="cola-revision.html">Cola de Revisión</a></li>
+            <li><a href="revisar.html">Revisar Documentos</a></li>
+            <li><a href="crear-observacion.html">Crear Observación</a></li>
+            <li><a href="estadisticas.html">Mis Estadísticas</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- Estado del sistema para verificador -->
+    <section class="system-status-section">
+      <div class="status-banner verificador-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-clipboard-check"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado de Verificación</h3>
+            <p id="verificationStatusMessage">El período de verificación está activo. Puede revisar y aprobar documentos.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge active" id="verificationStatusBadge">Verificación Activa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard del verificador -->
+    <section class="dashboard-overview">
+      <div class="dashboard-cards">
+        <div class="dashboard-card pending-card">
+          <div class="card-header">
+            <h3><i class="fas fa-clock"></i> Cola de Revisión</h3>
+          </div>
+          <div class="card-content">
+            <div class="large-number">
+              <span class="number" id="pendingCount">23</span>
+              <span class="label">Documentos pendientes</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <p class="progress-text">65% de capacidad de trabajo</p>
+          </div>
+          <div class="card-action">
+            <a href="cola-revision.html" class="btn btn-warning">Ver Cola</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card stats-card">
+          <div class="card-header">
+            <h3><i class="fas fa-chart-bar"></i> Mis Estadísticas</h3>
+          </div>
+          <div class="card-content">
+            <div class="stats-grid">
+              <div class="stat-item">
+                <span class="stat-value approved" id="approvedToday">12</span>
+                <span class="stat-label">Aprobados hoy</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value rejected" id="rejectedToday">3</span>
+                <span class="stat-label">Rechazados hoy</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value total" id="totalWeek">67</span>
+                <span class="stat-label">Total esta semana</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-value average" id="averageTime">1.2h</span>
+                <span class="stat-label">Tiempo promedio</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="estadisticas.html" class="btn btn-info">Ver Detalles</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card teachers-card">
+          <div class="card-header">
+            <h3><i class="fas fa-users"></i> Docentes Asignados</h3>
+          </div>
+          <div class="card-content">
+            <div class="teachers-list" id="teachersList">
+              <!-- Se cargará dinámicamente -->
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="cola-revision.html" class="btn btn-secondary">Ver Asignaciones</a>
+          </div>
+        </div>
+
+        <div class="dashboard-card observations-card">
+          <div class="card-header">
+            <h3><i class="fas fa-comments"></i> Observaciones Activas</h3>
+          </div>
+          <div class="card-content">
+            <div class="observations-summary">
+              <div class="observation-item">
+                <span class="count" id="pendingResponses">5</span>
+                <span class="label">Esperando respuesta</span>
+              </div>
+              <div class="observation-item">
+                <span class="count" id="newResponses">2</span>
+                <span class="label">Nuevas respuestas</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-action">
+            <a href="../compartidas/observaciones.html" class="btn btn-primary">Gestionar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cola de revisión rápida -->
+    <section class="quick-review-section">
+      <h2><i class="fas fa-list"></i> Documentos para Revisión Prioritaria</h2>
+      <div id="arbol-verificacion" class="lista-documentos">
+        <p>⏳ Cargando docentes y portafolios...</p>
+      </div>
+    </section>
+
+    <!-- Acciones de verificación rápidas -->
+    <section id="verificacion-acciones" class="acciones">
+      <h2>Acciones de Verificación</h2>
+      <div class="verificacion-controles">
+        <button onclick="verificarSeleccionados('aprobado')" class="btn btn-success" aria-label="Aprobar documentos seleccionados">
+          <i class="fas fa-check"></i> Aprobar Seleccionados
+        </button>
+        <button onclick="verificarSeleccionados('rechazado')" class="btn btn-danger" aria-label="Rechazar documentos seleccionados">
+          <i class="fas fa-times"></i> Rechazar Seleccionados
+        </button>
+        <button onclick="crearObservacionMasiva()" class="btn btn-warning" aria-label="Crear observación masiva">
+          <i class="fas fa-comment"></i> Observación Masiva
+        </button>
+      </div>
+      <div id="resultado-verificacion" class="resultado-mensaje"></div>
+    </section>
+
+    <!-- Sección de observaciones -->
+    <section id="documento-observaciones" class="observaciones">
+      <h2>Crear Observación</h2>
+      <textarea id="observacion" rows="4" placeholder="Escribe aquí una observación...&#10;Ejemplo: El documento no está firmado correctamente."></textarea>
+      <button onclick="enviarObservacion()" class="btn btn-primary" aria-label="Enviar observación del documento">
+        <i class="fas fa-paper-plane"></i> Enviar Observación
+      </button>
+      <div id="resultado-observacion" class="resultado-mensaje"></div>
+    </section>
+
+    <!-- Herramientas del verificador -->
+    <section class="verification-tools">
+      <h2><i class="fas fa-tools"></i> Herramientas de Verificación</h2>
+      <div class="tools-grid">
+        <a href="revisar.html" class="tool-card review-tool">
+          <div class="tool-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Revisar Documentos</h3>
+            <p>Interface completa de revisión y verificación</p>
+          </div>
+        </a>
+
+        <a href="crear-observacion.html" class="tool-card observation-tool">
+          <div class="tool-icon">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Crear Observaciones</h3>
+            <p>Herramienta para crear observaciones detalladas</p>
+          </div>
+        </a>
+
+        <a href="estadisticas.html" class="tool-card stats-tool">
+          <div class="tool-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Mis Estadísticas</h3>
+            <p>Análisis de rendimiento y productividad</p>
+          </div>
+        </a>
+
+        <a href="../compartidas/notificaciones.html" class="tool-card notifications-tool">
+          <div class="tool-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div class="tool-content">
+            <h3>Centro de Notificaciones</h3>
+            <p>Mensajes y alertas del sistema</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

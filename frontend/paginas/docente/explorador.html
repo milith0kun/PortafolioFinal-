@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Explorador de Portafolios - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explorador de portafolios - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="portafolios, documentos, explorador, docente, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/docente/explorador-archivos.js" defer></script>
+  <script src="../../assets/js/paginas/docente/arbol-portafolio.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('docente')">
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar en mis portafolios...">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-graduation-cap"></i></div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Explorador de Portafolios</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Inicio</a></li>
+            <li><a href="explorador.html" class="active">Mis Portafolios</a></li>
+            <li><a href="subir.html">Subir Documentos</a></li>
+            <li><a href="observaciones.html">Observaciones</a></li>
+            <li><a href="progreso.html">Mi Progreso</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+            <li><a href="#" onclick="cerrarSesion()">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Explorador de Portafolios</span>
+  </nav>
+
+  <main class="main-content">
+    <!-- Estado del sistema -->
+    <section class="system-status-section">
+      <div class="status-banner docente-banner">
+        <div class="status-content">
+          <div class="status-icon">
+            <i class="fas fa-folder-open"></i>
+          </div>
+          <div class="status-text">
+            <h3>Estado de Portafolios</h3>
+            <p id="portfolioStatusMessage">Sus portafolios están disponibles para gestión. Puede subir y organizar documentos.</p>
+          </div>
+          <div class="status-indicator">
+            <span class="status-badge active" id="portfolioStatusBadge">Gestión Activa</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de portafolios -->
+    <section class="portfolio-summary">
+      <div class="summary-cards">
+        <div class="summary-card total-portfolios">
+          <div class="card-icon">
+            <i class="fas fa-folder"></i>
+          </div>
+          <div class="card-info">
+            <h3>Mis Asignaturas</h3>
+            <span class="card-value" id="totalPortfolios">3</span>
+            <span class="card-label">Portafolios asignados</span>
+          </div>
+        </div>
+
+        <div class="summary-card documents-uploaded">
+          <div class="card-icon">
+            <i class="fas fa-file-upload"></i>
+          </div>
+          <div class="card-info">
+            <h3>Documentos Subidos</h3>
+            <span class="card-value" id="documentsUploaded">42</span>
+            <span class="card-label">Archivos totales</span>
+          </div>
+        </div>
+
+        <div class="summary-card documents-approved">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-info">
+            <h3>Aprobados</h3>
+            <span class="card-value" id="documentsApproved">35</span>
+            <span class="card-label">Verificados</span>
+          </div>
+        </div>
+
+        <div class="summary-card documents-pending">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-info">
+            <h3>Pendientes</h3>
+            <span class="card-value" id="documentsPending">7</span>
+            <span class="card-label">Por revisar</span>
+          </div>
+        </div>
+
+        <div class="summary-card progress-overall">
+          <div class="card-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="card-info">
+            <h3>Progreso Total</h3>
+            <span class="card-value" id="progressOverall">78%</span>
+            <span class="card-label">Completitud</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros y vista -->
+    <section class="portfolio-controls">
+      <div class="controls-header">
+        <h2><i class="fas fa-filter"></i> Filtros y Vista</h2>
+      </div>
+
+      <div class="controls-row">
+        <div class="filter-group">
+          <label for="filterAsignatura">Asignatura:</label>
+          <select id="filterAsignatura" onchange="filtrarPortafolios()">
+            <option value="">Todas las asignaturas</option>
+            <!-- Se cargará dinámicamente -->
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filterEstado">Estado:</label>
+          <select id="filterEstado" onchange="filtrarPortafolios()">
+            <option value="">Todos los estados</option>
+            <option value="completo">Completo</option>
+            <option value="incompleto">Incompleto</option>
+            <option value="en_revision">En revisión</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="searchDocuments">Buscar documento:</label>
+          <input type="text" id="searchDocuments" placeholder="Nombre del archivo..." onkeyup="buscarDocumentos()">
+        </div>
+
+        <div class="view-controls">
+          <label>Vista:</label>
+          <div class="view-buttons">
+            <button class="view-btn active" data-view="tree" onclick="cambiarVista('tree')">
+              <i class="fas fa-sitemap"></i> Árbol
+            </button>
+            <button class="view-btn" data-view="list" onclick="cambiarVista('list')">
+              <i class="fas fa-list"></i> Lista
+            </button>
+            <button class="view-btn" data-view="grid" onclick="cambiarVista('grid')">
+              <i class="fas fa-th"></i> Grilla
+            </button>
+          </div>
+        </div>
+
+        <div class="action-controls">
+          <button onclick="expandirTodo()" class="btn btn-sm btn-secondary">
+            <i class="fas fa-expand-alt"></i> Expandir Todo
+          </button>
+          <button onclick="contraerTodo()" class="btn btn-sm btn-secondary">
+            <i class="fas fa-compress-alt"></i> Contraer Todo
+          </button>
+          <button onclick="refrescarPortafolios()" class="btn btn-sm btn-primary">
+            <i class="fas fa-sync-alt"></i> Refrescar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explorador de portafolios -->
+    <section class="portfolio-explorer">
+      <div class="explorer-container">
+        <!-- Panel de navegación -->
+        <div class="explorer-sidebar">
+          <div class="sidebar-header">
+            <h3><i class="fas fa-folder-tree"></i> Mis Portafolios</h3>
+          </div>
+          
+          <div class="portfolio-tree" id="portfolioTree">
+            <!-- Se cargará dinámicamente -->
+            <div class="loading-tree">
+              <i class="fas fa-spinner fa-spin"></i>
+              <p>Cargando estructura...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel principal de contenido -->
+        <div class="explorer-main">
+          <!-- Barra de herramientas -->
+          <div class="toolbar">
+            <div class="toolbar-left">
+              <div class="path-breadcrumb" id="pathBreadcrumb">
+                <span class="path-item root">
+                  <i class="fas fa-home"></i> Mis Portafolios
+                </span>
+              </div>
+            </div>
+            
+            <div class="toolbar-right">
+              <button onclick="mostrarSubida()" class="btn btn-success btn-sm">
+                <i class="fas fa-upload"></i> Subir Archivo
+              </button>
+              <button onclick="crearCarpeta()" class="btn btn-primary btn-sm">
+                <i class="fas fa-folder-plus"></i> Nueva Carpeta
+              </button>
+              <button onclick="refrescarContenido()" class="btn btn-secondary btn-sm">
+                <i class="fas fa-sync-alt"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Área de contenido -->
+          <div class="content-area" id="contentArea">
+            <!-- Vista por defecto -->
+            <div class="welcome-view" id="welcomeView">
+              <div class="welcome-content">
+                <i class="fas fa-folder-open fa-3x"></i>
+                <h3>Bienvenido al Explorador de Portafolios</h3>
+                <p>Seleccione una asignatura del panel izquierdo para comenzar a explorar sus documentos.</p>
+                <div class="quick-actions">
+                  <button onclick="location.href='subir.html'" class="btn btn-primary">
+                    <i class="fas fa-upload"></i> Subir Primer Documento
+                  </button>
+                  <button onclick="mostrarTutorial()" class="btn btn-secondary">
+                    <i class="fas fa-question-circle"></i> Ver Tutorial
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vista de archivos -->
+            <div class="files-view" id="filesView" style="display: none;">
+              <!-- Información de la carpeta actual -->
+              <div class="folder-info" id="folderInfo">
+                <!-- Se cargará dinámicamente -->
+              </div>
+
+              <!-- Lista de archivos -->
+              <div class="files-container" id="filesContainer">
+                <!-- Se cargará dinámicamente -->
+              </div>
+            </div>
+
+            <!-- Vista de carga -->
+            <div class="loading-view" id="loadingView" style="display: none;">
+              <div class="loading-content">
+                <i class="fas fa-spinner fa-spin fa-2x"></i>
+                <p>Cargando contenido...</p>
+              </div>
+            </div>
+
+            <!-- Vista de error -->
+            <div class="error-view" id="errorView" style="display: none;">
+              <div class="error-content">
+                <i class="fas fa-exclamation-triangle fa-2x"></i>
+                <h3>Error al cargar contenido</h3>
+                <p id="errorMessage">No se pudo cargar el contenido de la carpeta.</p>
+                <button onclick="refrescarContenido()" class="btn btn-primary">
+                  <i class="fas fa-retry"></i> Intentar de nuevo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de detalles del archivo seleccionado -->
+    <section class="file-details-panel" id="fileDetailsPanel" style="display: none;">
+      <div class="panel-header">
+        <h3><i class="fas fa-info-circle"></i> Detalles del Archivo</h3>
+        <button onclick="cerrarDetalles()" class="close-btn">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="panel-content" id="fileDetailsContent">
+        <!-- Se cargará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section class="quick-actions-section">
+      <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+      
+      <div class="actions-grid">
+        <div class="action-card upload-card">
+          <div class="card-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="card-content">
+            <h3>Subir Documentos</h3>
+            <p>Agregar nuevos archivos a sus portafolios</p>
+          </div>
+          <div class="card-action">
+            <a href="subir.html" class="btn btn-primary">Subir Archivos</a>
+          </div>
+        </div>
+
+        <div class="action-card progress-card">
+          <div class="card-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Ver Progreso</h3>
+            <p>Monitorear completitud de portafolios</p>
+          </div>
+          <div class="card-action">
+            <a href="progreso.html" class="btn btn-info">Ver Progreso</a>
+          </div>
+        </div>
+
+        <div class="action-card observations-card">
+          <div class="card-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="card-content">
+            <h3>Observaciones</h3>
+            <p>Revisar comentarios de verificadores</p>
+          </div>
+          <div class="card-action">
+            <a href="observaciones.html" class="btn btn-warning">Ver Observaciones</a>
+          </div>
+        </div>
+
+        <div class="action-card backup-card">
+          <div class="card-icon">
+            <i class="fas fa-download"></i>
+          </div>
+          <div class="card-content">
+            <h3>Descargar Portafolio</h3>
+            <p>Exportar portafolio completo</p>
+          </div>
+          <div class="card-action">
+            <button onclick="descargarPortafolio()" class="btn btn-success">Descargar ZIP</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para subir archivo -->
+  <div id="uploadModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Subir Archivo</h3>
+        <span class="close" onclick="cerrarModal('uploadModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="upload-info">
+          <p>Subiendo a: <strong id="uploadLocationText"></strong></p>
+        </div>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+          <input type="hidden" id="uploadPortfolioId">
+          <input type="hidden" id="uploadFolderId">
+          
+          <div class="form-group">
+            <label for="uploadFile">Archivo</label>
+            <input type="file" id="uploadFile" name="archivo" required>
+            <small class="form-text">Formatos permitidos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX</small>
+          </div>
+          
+          <div class="form-group">
+            <label for="uploadDescription">Descripción</label>
+            <input type="text" id="uploadDescription" name="descripcion" placeholder="Descripción del documento" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="uploadType">Tipo de documento</label>
+            <select id="uploadType" name="tipo_documento">
+              <option value="">Seleccionar tipo...</option>
+              <option value="syllabus">Syllabus</option>
+              <option value="examen">Examen</option>
+              <option value="practica">Práctica</option>
+              <option value="laboratorio">Laboratorio</option>
+              <option value="proyecto">Proyecto</option>
+              <option value="evaluacion">Evaluación</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="subirArchivo()" class="btn btn-primary">Subir Archivo</button>
+        <button onclick="cerrarModal('uploadModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para vista previa de archivo -->
+  <div id="previewModal" class="modal modal-large" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="previewTitle">Vista Previa</h3>
+        <span class="close" onclick="cerrarModal('previewModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="preview-container" id="previewContainer">
+          <!-- Se cargará contenido dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="descargarArchivo()" class="btn btn-primary" id="downloadBtn">
+          <i class="fas fa-download"></i> Descargar
+        </button>
+        <button onclick="cerrarModal('previewModal')" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

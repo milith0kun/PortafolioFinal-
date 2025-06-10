@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis Portafolios - Panel Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mis portafolios - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="portafolios, docente, gestión académica, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../../assets/js/paginas/docente/gestor-portafolios.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('docente')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+      <div class="header-top-container">
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar portafolios...">
+        </div>
+        
+        <!-- Acciones de usuario y redes sociales -->
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          
+          <div class="user-menu">
+            <div class="user-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <span class="user-name">Docente</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Mis Portafolios</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú">
+          <i class="fas fa-bars"></i>
+        </button>
+        
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html">Dashboard</a></li>
+            <li><a href="mis-portafolios.html" class="active">Mis Portafolios</a></li>
+            <li><a href="explorador.html">Explorador</a></li>
+            <li><a href="subir.html">Subir Documentos</a></li>
+            <li><a href="progreso.html">Progreso</a></li>
+            <li><a href="observaciones.html">Observaciones</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Navegación breadcrumb -->
+  <nav class="breadcrumb">
+    <a href="tablero.html">← Volver al Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Mis Portafolios</span>
+  </nav>
+
+  <main>
+    <!-- Estado del ciclo académico -->
+    <section class="cycle-status-section">
+      <div class="status-card">
+        <div class="status-info">
+          <h3><i class="fas fa-calendar-alt"></i> Ciclo Académico Actual</h3>
+          <div class="cycle-details">
+            <span class="cycle-name" id="currentCycle">2025-I</span>
+            <span class="cycle-status" id="cycleStatus">Subida Activa</span>
+            <span class="cycle-description">Puede subir y gestionar documentos</span>
+          </div>
+        </div>
+        <div class="status-actions">
+          <div class="time-remaining">
+            <i class="fas fa-clock"></i>
+            <span>Tiempo restante: <strong id="timeRemaining">45 días</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Resumen de portafolios -->
+    <section class="portfolios-summary">
+      <h2><i class="fas fa-chart-pie"></i> Resumen de Mis Portafolios</h2>
+      
+      <div class="summary-cards">
+        <div class="summary-card total-portfolios">
+          <div class="card-icon">
+            <i class="fas fa-folder"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Portafolios</h3>
+            <span class="card-value" id="totalPortfolios">0</span>
+            <span class="card-subtitle">Asignaturas asignadas</span>
+          </div>
+        </div>
+
+        <div class="summary-card completed-portfolios">
+          <div class="card-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="card-content">
+            <h3>Completados</h3>
+            <span class="card-value" id="completedPortfolios">0</span>
+            <span class="card-subtitle">100% de documentos</span>
+          </div>
+        </div>
+
+        <div class="summary-card in-progress-portfolios">
+          <div class="card-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="card-content">
+            <h3>En Progreso</h3>
+            <span class="card-value" id="inProgressPortfolios">0</span>
+            <span class="card-subtitle">Faltan documentos</span>
+          </div>
+        </div>
+
+        <div class="summary-card avg-progress">
+          <div class="card-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="card-content">
+            <h3>Progreso Promedio</h3>
+            <span class="card-value" id="avgProgress">0%</span>
+            <span class="card-subtitle">De todos los portafolios</span>
+          </div>
+        </div>
+
+        <div class="summary-card pending-observations">
+          <div class="card-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <div class="card-content">
+            <h3>Observaciones Pendientes</h3>
+            <span class="card-value" id="pendingObservations">0</span>
+            <span class="card-subtitle">Requieren atención</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filtros y búsqueda -->
+    <section class="portfolios-filters">
+      <div class="filters-container">
+        <div class="filters-row">
+          <div class="filter-group">
+            <label for="filterCycle">Ciclo Académico:</label>
+            <select id="filterCycle" onchange="filtrarPortafolios()">
+              <option value="">Todos los ciclos</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="filterCareer">Carrera:</label>
+            <select id="filterCareer" onchange="filtrarPortafolios()">
+              <option value="">Todas las carreras</option>
+              <!-- Se cargará dinámicamente -->
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="filterProgress">Progreso:</label>
+            <select id="filterProgress" onchange="filtrarPortafolios()">
+              <option value="">Todos</option>
+              <option value="0-25">0% - 25%</option>
+              <option value="26-50">26% - 50%</option>
+              <option value="51-75">51% - 75%</option>
+              <option value="76-99">76% - 99%</option>
+              <option value="100">100% (Completo)</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label for="filterStatus">Estado:</label>
+            <select id="filterStatus" onchange="filtrarPortafolios()">
+              <option value="">Todos</option>
+              <option value="activo">Activo</option>
+              <option value="bloqueado">Bloqueado</option>
+              <option value="archivado">Archivado</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="search-and-actions">
+          <div class="search-group">
+            <input type="text" id="searchPortfolios" placeholder="Buscar por asignatura..." onkeyup="buscarPortafolios()">
+            <button onclick="buscarPortafolios()" class="search-btn">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          
+          <div class="view-actions">
+            <button onclick="cambiarVista('grid')" class="view-btn active" id="gridView">
+              <i class="fas fa-th"></i>
+            </button>
+            <button onclick="cambiarVista('list')" class="view-btn" id="listView">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+          
+          <div class="bulk-actions">
+            <button onclick="exportarPortafolios()" class="btn btn-success">
+              <i class="fas fa-file-excel"></i> Exportar
+            </button>
+            <button onclick="generarReporteGeneral()" class="btn btn-info">
+              <i class="fas fa-file-pdf"></i> Reporte General
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lista de portafolios -->
+    <section class="portfolios-list">
+      <h2><i class="fas fa-folder-open"></i> Mis Portafolios por Asignatura</h2>
+      
+      <!-- Vista de tarjetas (por defecto) -->
+      <div id="portfoliosGrid" class="portfolios-grid">
+        <!-- Se cargará dinámicamente -->
+        <div class="loading-portfolios">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Cargando portafolios...</p>
+        </div>
+      </div>
+
+      <!-- Vista de tabla (alternativa) -->
+      <div id="portfoliosTable" class="portfolios-table-container" style="display: none;">
+        <table class="portfolios-table">
+          <thead>
+            <tr>
+              <th>Asignatura</th>
+              <th>Carrera</th>
+              <th>Ciclo</th>
+              <th>Progreso</th>
+              <th>Documentos</th>
+              <th>Observaciones</th>
+              <th>Estado</th>
+              <th>Última Actividad</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="portfoliosTableBody">
+            <tr>
+              <td colspan="9" class="loading">Cargando portafolios...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación -->
+      <div class="pagination" id="pagination">
+        <!-- Se generará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section class="quick-actions">
+      <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+      
+      <div class="actions-grid">
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-upload"></i>
+          </div>
+          <h3>Subir Documentos</h3>
+          <p>Sube nuevos documentos a tus portafolios</p>
+          <button onclick="location.href='subir.html'" class="btn btn-primary">
+            <i class="fas fa-upload"></i> Subir Ahora
+          </button>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Ver Progreso</h3>
+          <p>Revisa el progreso detallado de tus portafolios</p>
+          <button onclick="location.href='progreso.html'" class="btn btn-info">
+            <i class="fas fa-chart-line"></i> Ver Progreso
+          </button>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-comment-dots"></i>
+          </div>
+          <h3>Observaciones</h3>
+          <p>Revisa las observaciones de los verificadores</p>
+          <button onclick="location.href='observaciones.html'" class="btn btn-warning">
+            <i class="fas fa-comment-dots"></i> Ver Observaciones
+          </button>
+        </div>
+
+        <div class="action-card">
+          <div class="action-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3>Explorador</h3>
+          <p>Navega por la estructura de tus portafolios</p>
+          <button onclick="location.href='explorador.html'" class="btn btn-secondary">
+            <i class="fas fa-search"></i> Explorar
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recordatorios y alertas -->
+    <section class="reminders-section">
+      <h2><i class="fas fa-bell"></i> Recordatorios y Alertas</h2>
+      
+      <div class="reminders-list" id="remindersList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+      
+      <div class="reminders-actions">
+        <button onclick="configurarRecordatorios()" class="btn btn-outline">
+          <i class="fas fa-cog"></i> Configurar Recordatorios
+        </button>
+        <button onclick="marcarTodosComoLeidos()" class="btn btn-secondary">
+          <i class="fas fa-check-double"></i> Marcar Todos como Leídos
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal para detalles del portafolio -->
+  <div id="portfolioDetailsModal" class="modal" style="display: none;">
+    <div class="modal-content large-modal">
+      <div class="modal-header">
+        <h3>Detalles del Portafolio</h3>
+        <span class="close" onclick="cerrarModal('portfolioDetailsModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="portfolioDetailsContent">
+          <!-- Se cargará dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="abrirExplorador()" class="btn btn-primary">
+          <i class="fas fa-folder-open"></i> Abrir en Explorador
+        </button>
+        <button onclick="cerrarModal('portfolioDetailsModal')" class="btn btn-secondary">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para configurar recordatorios -->
+  <div id="remindersModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Configurar Recordatorios</h3>
+        <span class="close" onclick="cerrarModal('remindersModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="remindersForm">
+          <div class="form-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="remindDeadlines" checked>
+              <span class="checkmark"></span>
+              Recordar fechas límite de entrega
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="remindObservations" checked>
+              <span class="checkmark"></span>
+              Notificar nuevas observaciones
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox-container">
+              <input type="checkbox" id="remindProgress" checked>
+              <span class="checkmark"></span>
+              Alertas de progreso bajo
+            </label>
+          </div>
+          
+          <div class="form-group">
+            <label for="reminderFrequency">Frecuencia de recordatorios:</label>
+            <select id="reminderFrequency">
+              <option value="daily">Diario</option>
+              <option value="weekly">Semanal</option>
+              <option value="biweekly">Quincenal</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="reminderTime">Hora preferida:</label>
+            <input type="time" id="reminderTime" value="09:00">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button onclick="guardarConfiguracionRecordatorios()" class="btn btn-primary">
+          <i class="fas fa-save"></i> Guardar Configuración
+        </button>
+        <button onclick="cerrarModal('remindersModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template para tarjetas de portafolio -->
+  <template id="portfolioCardTemplate">
+    <div class="portfolio-card" data-portfolio-id="">
+      <div class="card-header">
+        <div class="subject-info">
+          <h3 class="subject-name"></h3>
+          <span class="subject-code"></span>
+        </div>
+        <div class="portfolio-status">
+          <span class="status-badge"></span>
+        </div>
+      </div>
+      
+      <div class="card-content">
+        <div class="portfolio-meta">
+          <div class="meta-item">
+            <i class="fas fa-graduation-cap"></i>
+            <span class="career-name"></span>
+          </div>
+          <div class="meta-item">
+            <i class="fas fa-calendar"></i>
+            <span class="cycle-name"></span>
+          </div>
+          <div class="meta-item">
+            <i class="fas fa-user"></i>
+            <span class="teacher-type"></span>
+          </div>
+        </div>
+        
+        <div class="progress-section">
+          <div class="progress-header">
+            <span class="progress-label">Progreso de Completitud</span>
+            <span class="progress-percentage"></span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+          </div>
+          <div class="progress-details">
+            <span class="documents-count"></span>
+            <span class="observations-count"></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <div class="last-activity">
+          <i class="fas fa-clock"></i>
+          <span class="activity-text"></span>
+        </div>
+        <div class="card-actions">
+          <button onclick="verDetallesPortafolio()" class="btn btn-sm btn-info">
+            <i class="fas fa-eye"></i> Ver
+          </button>
+          <button onclick="abrirPortafolio()" class="btn btn-sm btn-primary">
+            <i class="fas fa-folder-open"></i> Abrir
+          </button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Funciones básicas para la gestión de vista
+    function cambiarVista(tipo) {
+      const gridView = document.getElementById('portfoliosGrid');
+      const tableView = document.getElementById('portfoliosTable');
+      const gridBtn = document.getElementById('gridView');
+      const listBtn = document.getElementById('listView');
+
+      if (tipo === 'grid') {
+        gridView.style.display = 'grid';
+        tableView.style.display = 'none';
+        gridBtn.classList.add('active');
+        listBtn.classList.remove('active');
+      } else {
+        gridView.style.display = 'none';
+        tableView.style.display = 'block';
+        gridBtn.classList.remove('active');
+        listBtn.classList.add('active');
+      }
+      
+      // Guardar preferencia en localStorage
+      localStorage.setItem('portfolioViewType', tipo);
+    }
+
+    // Cargar preferencia de vista guardada
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedView = localStorage.getItem('portfolioViewType') || 'grid';
+      cambiarVista(savedView);
+    });
+  </script>
+</body>
+</html>

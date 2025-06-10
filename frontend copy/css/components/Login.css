@@ -1,0 +1,266 @@
+
+
+/* Estilos para la página de login */
+
+/* Contenedor principal del login */
+.login-container {
+    display: flex;
+    /* min-height: calc(100vh - 150px); */ /* Correctamente eliminado/comentado */
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    /* position: fixed; */ /* Correctamente eliminado/comentado */
+    /* top: 150px; */ /* Correctamente eliminado/comentado */
+    left: 0;
+    right: 0;
+    bottom: 0; 
+    /* overflow-y: auto; */ /* Correctamente eliminado/comentado */
+    /* z-index: 1; */ /* Correctamente eliminado/comentado */
+    
+}
+
+/* Contenedor del formulario */
+.login-form-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    align-items: center;
+    padding: 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    /* overflow-y: auto; */ /* Correctamente eliminado/comentado */
+    /* height: 100%; */ /* Correctamente eliminado/comentado */
+}
+
+/* Encabezado del login */
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    width: 120%;
+    max-width: 500px;
+}
+
+/* Logo institucional */
+.login-logo {
+    height: 250px;
+    width: 225px;
+    background-image: url('../../assets/images/logos/logoInstitucional.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 auto 1rem;
+}
+
+.login-header h1 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #010080;
+    margin-top: 1rem;
+}
+
+/* Formulario de login */
+.login-form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333333;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #010080;
+    box-shadow: 0 0 0 3px rgba(1, 0, 128, 0.1);
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: calc(100% - 1rem) center;
+    padding-right: 2.5rem;
+}
+
+/* Acciones del formulario */
+.form-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 500;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    color: #ffffff;
+    background: linear-gradient(to bottom, #010080, #1741ff);
+    border-color: #010080;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(to bottom, #1741ff, #010080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.forgot-password {
+    color: #010080;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #daa520;
+    text-decoration: underline;
+}
+
+/* Pie de página del login */
+.login-footer {
+    margin-top: 3rem;
+    text-align: center;
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Panel informativo */
+.login-info {
+    flex: 1;
+    background: linear-gradient(15deg, #000072, #25243de1);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.info-content {
+    max-width: 500px;
+    padding: 2rem;
+}
+
+.info-content h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #daa520;
+}
+
+.info-content p {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    font-size: 1.1rem;
+}
+
+/* Características destacadas */
+.feature-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.feature-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.feature-item i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #daa520;
+}
+
+.feature-item h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.feature-item p {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .login-container {
+        /* min-height: calc(100vh - 120px); */ /* Eliminado */
+        /* top: 120px; */ /* Eliminado */
+        padding-top: 120px; /* Ajustamos el padding superior para el header más pequeño */
+    }
+    
+    .login-form-container,
+    .login-info {
+        flex: none;
+    }
+    
+    .login-info {
+        padding: 3rem 1.5rem;
+    }
+    
+    .feature-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-list {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    
+    .login-form-container {
+        padding: 2rem 1rem;
+    }
+    
+    .login-header h1 {
+        font-size: 1.4rem;
+    }
+    
+    .login-container {
+        /* min-height: calc(100vh - 100px); */ /* Eliminado */
+        /* top: 100px; */ /* Eliminado */
+        padding-top: 20px; /* Ajusta este valor según sea necesario */
+        flex-direction: column; /* Aseguramos que en móvil el layout sea columnar si es necesario */
+    }
+}

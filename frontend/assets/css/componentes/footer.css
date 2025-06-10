@@ -1,0 +1,150 @@
+/* ==============================
+   🧱 ESTILOS DEL FOOTER
+   ============================== */
+
+   .main-footer {
+    background: linear-gradient(to right, #000072e3, #000080af);
+    color: #ffffff;
+    padding: 2.5rem 0 1.5rem;
+    border-top: 1px solid rgba(218, 165, 32, 0.2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  
+  .footer-section {
+    flex: 1 1 220px;
+    min-width: 200px;
+  }
+  
+  .footer-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    border-bottom: 2px solid #daa520;
+    padding-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  .footer-section p,
+  .footer-section li,
+  .footer-section a {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #dddddd;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .footer-section a:hover {
+    color: #daa520;
+    text-decoration: underline;
+  }
+  
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .footer-social {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.8rem;
+  }
+  
+  .footer-social a {
+    font-size: 1.2rem;
+    color: #dddddd;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-social a:hover {
+    color: #daa520;
+  }
+  
+  .contact-info p {
+    margin: 0.3rem 0;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-info i {
+    margin-right: 0.5rem;
+    color: #daa520;
+  }
+  
+  /* Footer inferior */
+  .footer-bottom {
+    width: 100%;
+    margin-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1.2rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #cccccc;
+    line-height: 1.5;
+  }
+  
+  /* ==============================
+     📱 RESPONSIVE FOOTER
+     ============================== */
+  
+  @media (max-width: 992px) {
+    .footer-container,
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .footer-section {
+      width: 100%;
+    }
+  
+    .footer-bottom {
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .footer-social {
+      justify-content: center;
+    }
+  
+    .footer-section h4 {
+      font-size: 1.1rem;
+    }
+  
+    .footer-section p,
+    .footer-section a {
+      font-size: 0.9rem;
+    }
+  
+    .footer-links li {
+      margin-bottom: 0.4rem;
+    }
+  }
+  

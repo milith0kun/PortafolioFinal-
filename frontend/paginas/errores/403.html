@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acceso prohibido - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="403, error, acceso prohibido, permisos, UNSAAC">
+  <meta name="author" content="UNSAAC">
+  <title>Acceso Prohibido (403) - Sistema de Portafolio Docente</title>
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../assets/js/nucleo/configuracion.js"></script>
+  <script src="../assets/js/nucleo/autenticacion.js"></script>
+  <script src="../assets/js/paginas/compartidas/manejador-errores.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Meta adicionales -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#e67e22">
+  <link rel="icon" type="image/png" href="../assets/imagenes/iconos/favicon.png">
+</head>
+
+<body class="error-page error-403">
+  <!-- Header simplificado -->
+  <header class="error-header">
+    <div class="header-container">
+      <div class="logo-container">
+        <div class="logo-img">
+          <img src="../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC" onclick="irAlInicio()">
+        </div>
+        <div class="logo-text">
+          <span class="logo-title">Sistema de Portafolio</span>
+          <span class="logo-subtitle">UNSAAC</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button onclick="volverAtras()" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i> Volver
+        </button>
+        <button onclick="irAlDashboard()" class="btn btn-primary">
+          <i class="fas fa-tachometer-alt"></i> Mi Dashboard
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal del error -->
+  <main class="error-main">
+    <div class="error-container">
+      <!-- Sección visual del error -->
+      <div class="error-visual">
+        <div class="error-number">403</div>
+        <div class="error-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="access-denied-animation">
+          <div class="shield-container">
+            <div class="shield-main">
+              <i class="fas fa-lock"></i>
+            </div>
+            <div class="access-waves">
+              <div class="wave wave-1"></div>
+              <div class="wave wave-2"></div>
+              <div class="wave wave-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información del error -->
+      <div class="error-content">
+        <h1 class="error-title">Acceso Prohibido</h1>
+        <p class="error-description">
+          No tienes los permisos necesarios para acceder a esta página o realizar esta acción. 
+          Tu rol actual no te permite ver este contenido.
+        </p>
+
+        <!-- Información del usuario actual -->
+        <div class="user-info-card" id="userInfoCard">
+          <div class="user-avatar">
+            <img id="currentUserAvatar" src="../assets/imagenes/avatares/default-avatar.png" alt="Avatar">
+          </div>
+          <div class="user-details">
+            <h3 id="currentUserName">Usuario no identificado</h3>
+            <div class="user-roles" id="currentUserRoles">
+              <span class="role-badge">Sin rol asignado</span>
+            </div>
+            <div class="user-permissions">
+              <span class="permission-text">Permisos limitados</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información sobre los permisos requeridos -->
+        <div class="permissions-required">
+          <h3><i class="fas fa-key"></i> Permisos Requeridos</h3>
+          <div class="required-permission" id="requiredPermission">
+            <div class="permission-icon">
+              <i class="fas fa-user-shield"></i>
+            </div>
+            <div class="permission-info">
+              <h4>Acceso Restringido</h4>
+              <p>Esta página requiere permisos especiales que tu cuenta actual no posee.</p>
+              <div class="permission-details" id="permissionDetails">
+                <!-- Se llena dinámicamente -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Opciones disponibles para el usuario -->
+        <div class="available-options">
+          <h3><i class="fas fa-route"></i> ¿Qué puedes hacer?</h3>
+          <div class="options-grid">
+            <div class="option-card" onclick="cambiarRol()">
+              <div class="option-icon">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+              <h4>Cambiar Rol</h4>
+              <p>Si tienes múltiples roles, cambia al rol apropiado</p>
+            </div>
+
+            <div class="option-card" onclick="solicitarAcceso()">
+              <div class="option-icon">
+                <i class="fas fa-paper-plane"></i>
+              </div>
+              <h4>Solicitar Acceso</h4>
+              <p>Pedir permisos adicionales al administrador</p>
+            </div>
+
+            <div class="option-card" onclick="irAlDashboard()">
+              <div class="option-icon">
+                <i class="fas fa-tachometer-alt"></i>
+              </div>
+              <h4>Mi Dashboard</h4>
+              <p>Ir a tu panel principal del sistema</p>
+            </div>
+
+            <div class="option-card" onclick="contactarSoporte()">
+              <div class="option-icon">
+                <i class="fas fa-headset"></i>
+              </div>
+              <h4>Contactar Soporte</h4>
+              <p>Obtener ayuda del equipo técnico</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones principales -->
+        <div class="error-actions">
+          <button onclick="irAlDashboard()" class="btn btn-primary btn-large">
+            <i class="fas fa-tachometer-alt"></i> Ir a Mi Dashboard
+          </button>
+          <button onclick="iniciarSesion()" class="btn btn-secondary btn-large" id="loginBtn" style="display: none;">
+            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+          </button>
+          <button onclick="cambiarRol()" class="btn btn-warning btn-large" id="switchRoleBtn" style="display: none;">
+            <i class="fas fa-exchange-alt"></i> Cambiar Rol
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección de ayuda -->
+    <div class="help-section">
+      <div class="help-container">
+        <h3><i class="fas fa-question-circle"></i> ¿Por qué veo este mensaje?</h3>
+        
+        <div class="help-reasons">
+          <div class="reason-item">
+            <div class="reason-icon">
+              <i class="fas fa-user-times"></i>
+            </div>
+            <div class="reason-content">
+              <h4>Rol Insuficiente</h4>
+              <p>Tu rol actual no tiene permisos para acceder a esta funcionalidad. Cada rol tiene acceso a diferentes partes del sistema.</p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="reason-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="reason-content">
+              <h4>Sesión Expirada</h4>
+              <p>Tu sesión puede haber expirado o tus permisos pueden haber cambiado recientemente.</p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="reason-icon">
+              <i class="fas fa-cog"></i>
+            </div>
+            <div class="reason-content">
+              <h4>Configuración del Sistema</h4>
+              <p>La página puede estar temporalmente restringida por configuraciones del administrador.</p>
+            </div>
+          </div>
+
+          <div class="reason-item">
+            <div class="reason-icon">
+              <i class="fas fa-ban"></i>
+            </div>
+            <div class="reason-content">
+              <h4>Acceso Revocado</h4>
+              <p>Tus permisos pueden haber sido modificados por un administrador del sistema.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información sobre roles del sistema -->
+    <div class="roles-info-section">
+      <div class="roles-container">
+        <h3><i class="fas fa-users-cog"></i> Roles del Sistema</h3>
+        <p>Cada rol tiene acceso a diferentes funcionalidades:</p>
+        
+        <div class="roles-grid">
+          <div class="role-card admin-role">
+            <div class="role-icon">
+              <i class="fas fa-user-cog"></i>
+            </div>
+            <h4>Administrador</h4>
+            <ul class="role-permissions">
+              <li>Gestión completa del sistema</li>
+              <li>Configuración de ciclos académicos</li>
+              <li>Administración de usuarios</li>
+              <li>Generación de reportes ejecutivos</li>
+              <li>Control del flujo del sistema</li>
+            </ul>
+          </div>
+
+          <div class="role-card verificador-role">
+            <div class="role-icon">
+              <i class="fas fa-user-check"></i>
+            </div>
+            <h4>Verificador</h4>
+            <ul class="role-permissions">
+              <li>Revisión de documentos académicos</li>
+              <li>Creación de observaciones</li>
+              <li>Aprobación/rechazo de contenido</li>
+              <li>Gestión de cola de verificación</li>
+              <li>Estadísticas de verificación</li>
+            </ul>
+          </div>
+
+          <div class="role-card docente-role">
+            <div class="role-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h4>Docente</h4>
+            <ul class="role-permissions">
+              <li>Gestión de portafolios personales</li>
+              <li>Subida de documentos</li>
+              <li>Seguimiento de progreso</li>
+              <li>Respuesta a observaciones</li>
+              <li>Visualización de reportes propios</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Información de contacto -->
+    <div class="contact-section">
+      <div class="contact-container">
+        <h3><i class="fas fa-headset"></i> ¿Necesitas Acceso Adicional?</h3>
+        <p>Si crees que deberías tener acceso a esta página, contacta al administrador:</p>
+        
+        <div class="contact-options">
+          <div class="contact-option">
+            <i class="fas fa-envelope"></i>
+            <div class="contact-info">
+              <strong>Email del Administrador:</strong>
+              <a href="mailto:admin@unsaac.edu.pe">admin@unsaac.edu.pe</a>
+            </div>
+          </div>
+          
+          <div class="contact-option">
+            <i class="fas fa-phone"></i>
+            <div class="contact-info">
+              <strong>Teléfono de Soporte:</strong>
+              <a href="tel:+51842320006">+51 84 232006 - Ext. 1001</a>
+            </div>
+          </div>
+          
+          <div class="contact-option">
+            <i class="fas fa-ticket-alt"></i>
+            <div class="contact-info">
+              <strong>Sistema de Tickets:</strong>
+              <button onclick="crearTicketSoporte()" class="btn btn-sm btn-info">Crear Ticket</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer simplificado -->
+  <footer class="error-footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco</p>
+          <p>Sistema de Portafolio Docente | Todos los derechos reservados</p>
+        </div>
+        
+        <div class="footer-links">
+          <a href="../index.html">Inicio</a>
+          <a href="../paginas/compartidas/ayuda.html">Ayuda</a>
+          <a href="mailto:portafolio@unsaac.edu.pe">Soporte</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal para cambiar rol -->
+  <div id="changeRoleModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cambiar Rol Activo</h3>
+        <span class="close" onclick="cerrarModal('changeRoleModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <p>Selecciona el rol con el que deseas continuar trabajando:</p>
+        <div class="available-roles" id="availableRoles">
+          <!-- Se llenan dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button onclick="cerrarModal('changeRoleModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para solicitar acceso -->
+  <div id="requestAccessModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Solicitar Acceso</h3>
+        <span class="close" onclick="cerrarModal('requestAccessModal')">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="accessRequestForm" onsubmit="enviarSolicitudAcceso(event)">
+          <div class="form-group">
+            <label for="requestReason">¿Por qué necesitas acceso a esta página?</label>
+            <textarea id="requestReason" name="razon" rows="4" 
+                      placeholder="Explica brevemente por qué necesitas acceso..."
+                      required></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="requestUrgency">Urgencia:</label>
+            <select id="requestUrgency" name="urgencia" required>
+              <option value="">Seleccionar...</option>
+              <option value="baja">Baja - Puedo esperar varios días</option>
+              <option value="media">Media - Necesario esta semana</option>
+              <option value="alta">Alta - Necesario hoy</option>
+              <option value="critica">Crítica - Urgente</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="requestDetails">Detalles adicionales (opcional):</label>
+            <textarea id="requestDetails" name="detalles" rows="3"
+                      placeholder="Información adicional que pueda ayudar..."></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" form="accessRequestForm" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i> Enviar Solicitud
+        </button>
+        <button onclick="cerrarModal('requestAccessModal')" class="btn btn-secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overlay para modales -->
+  <div id="modalOverlay" class="modal-overlay" style="display: none;"></div>
+
+  <!-- JavaScript Principal -->
+  <script src="../assets/js/principal.js"></script>
+
+  <!-- Scripts específicos del error 403 -->
+  <script>
+    // Configuración inicial del error 403
+    document.addEventListener('DOMContentLoaded', function() {
+      inicializarError403();
+      verificarEstadoSesion();
+      cargarInformacionUsuario();
+      configurarOpcionesDisponibles();
+    });
+
+    function inicializarError403() {
+      // Iniciar animaciones
+      iniciarAnimacionesAcceso();
+      
+      // Registrar el intento de acceso prohibido
+      registrarAccesoProhibido();
+      
+      // Verificar si hay información sobre el permiso requerido en la URL
+      analizarPermisoRequerido();
+    }
+
+    function verificarEstadoSesion() {
+      // Verificar si el usuario está autenticado
+      const token = localStorage.getItem('authToken');
+      const userData = localStorage.getItem('userData');
+      
+      if (!token || !userData) {
+        // Usuario no autenticado
+        mostrarOpcionLogin();
+      } else {
+        // Usuario autenticado - verificar roles
+        const user = JSON.parse(userData);
+        cargarDatosUsuario(user);
+        verificarRolesDisponibles(user);
+      }
+    }
+
+    function cargarInformacionUsuario() {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('currentUserName').textContent = user.nombres + ' ' + user.apellidos;
+        
+        if (user.avatar) {
+          document.getElementById('currentUserAvatar').src = user.avatar;
+        }
+        
+        // Mostrar roles actuales
+        mostrarRolesUsuario(user.roles || []);
+      }
+    }
+
+    function configurarOpcionesDisponibles() {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        
+        // Si tiene múltiples roles, mostrar opción de cambiar rol
+        if (user.roles && user.roles.length > 1) {
+          document.getElementById('switchRoleBtn').style.display = 'inline-block';
+        }
+      } else {
+        // Si no está autenticado, mostrar botón de login
+        document.getElementById('loginBtn').style.display = 'inline-block';
+      }
+    }
+
+    function iniciarAnimacionesAcceso() {
+      // Animar las ondas de acceso denegado
+      const waves = document.querySelectorAll('.wave');
+      waves.forEach((wave, index) => {
+        wave.style.animationDelay = `${index * 0.3}s`;
+      });
+    }
+
+    function registrarAccesoProhibido() {
+      // Registrar el intento de acceso para auditoría
+      const accessData = {
+        url: window.location.href,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        referrer: document.referrer
+      };
+      
+      console.log('Acceso prohibido registrado:', accessData);
+    }
+
+    function analizarPermisoRequerido() {
+      // Analizar parámetros de URL para mostrar información específica
+      const urlParams = new URLSearchParams(window.location.search);
+      const requiredRole = urlParams.get('role');
+      const requiredPermission = urlParams.get('permission');
+      
+      if (requiredRole || requiredPermission) {
+        mostrarPermisoEspecifico(requiredRole, requiredPermission);
+      }
+    }
+
+    function mostrarPermisoEspecifico(role, permission) {
+      const permissionDetails = document.getElementById('permissionDetails');
+      if (role) {
+        permissionDetails.innerHTML += `<p><strong>Rol requerido:</strong> ${role}</p>`;
+      }
+      if (permission) {
+        permissionDetails.innerHTML += `<p><strong>Permiso específico:</strong> ${permission}</p>`;
+      }
+    }
+
+    function mostrarRolesUsuario(roles) {
+      const rolesContainer = document.getElementById('currentUserRoles');
+      rolesContainer.innerHTML = '';
+      
+      if (roles.length === 0) {
+        rolesContainer.innerHTML = '<span class="role-badge no-role">Sin rol asignado</span>';
+        return;
+      }
+      
+      roles.forEach(role => {
+        const roleBadge = document.createElement('span');
+        roleBadge.className = `role-badge role-${role.toLowerCase()}`;
+        roleBadge.textContent = role;
+        rolesContainer.appendChild(roleBadge);
+      });
+    }
+
+    function mostrarOpcionLogin() {
+      document.getElementById('loginBtn').style.display = 'inline-block';
+      document.getElementById('currentUserName').textContent = 'Usuario no autenticado';
+    }
+
+    // Funciones de navegación
+    function irAlInicio() {
+      window.location.href = '../index.html';
+    }
+
+    function irAlDashboard() {
+      // Determinar el dashboard apropiado según el rol del usuario
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        const rolActual = user.rolActual || user.roles[0];
+        
+        switch(rolActual.toLowerCase()) {
+          case 'administrador':
+            window.location.href = '../paginas/administrador/tablero.html';
+            break;
+          case 'docente':
+            window.location.href = '../paginas/docente/tablero.html';
+            break;
+          case 'verificador':
+            window.location.href = '../paginas/verificador/tablero.html';
+            break;
+          default:
+            window.location.href = '../index.html';
+        }
+      } else {
+        window.location.href = '../paginas/autenticacion/login.html';
+      }
+    }
+
+    function iniciarSesion() {
+      window.location.href = '../paginas/autenticacion/login.html';
+    }
+
+    function volverAtras() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        irAlInicio();
+      }
+    }
+
+    // Funciones de acciones disponibles
+    function cambiarRol() {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const user = JSON.parse(userData);
+        if (user.roles && user.roles.length > 1) {
+          mostrarModalCambioRol(user.roles);
+        } else {
+          alert('Solo tienes un rol asignado.');
+        }
+      } else {
+        alert('Debes iniciar sesión para cambiar de rol.');
+      }
+    }
+
+    function solicitarAcceso() {
+      document.getElementById('requestAccessModal').style.display = 'block';
+      document.getElementById('modalOverlay').style.display = 'block';
+    }
+
+    function contactarSoporte() {
+      window.location.href = 'mailto:admin@unsaac.edu.pe?subject=Solicitud de Acceso - Error 403&body=Necesito acceso a: ' + encodeURIComponent(window.location.href);
+    }
+
+    function crearTicketSoporte() {
+      // Redirigir al sistema de tickets o mostrar formulario
+      alert('Función de tickets en desarrollo. Por favor, contacta por email.');
+    }
+
+    function mostrarModalCambioRol(roles) {
+      const rolesContainer = document.getElementById('availableRoles');
+      rolesContainer.innerHTML = '';
+      
+      roles.forEach(role => {
+        const roleOption = document.createElement('div');
+        roleOption.className = 'role-option';
+        roleOption.innerHTML = `
+          <div class="role-option-content">
+            <i class="fas fa-${getRoleIcon(role)}"></i>
+            <span>${role}</span>
+          </div>
+          <button onclick="seleccionarRol('${role}')" class="btn btn-sm btn-primary">Seleccionar</button>
+        `;
+        rolesContainer.appendChild(roleOption);
+      });
+      
+      document.getElementById('changeRoleModal').style.display = 'block';
+      document.getElementById('modalOverlay').style.display = 'block';
+    }
+
+    function getRoleIcon(role) {
+      switch(role.toLowerCase()) {
+        case 'administrador': return 'user-cog';
+        case 'docente': return 'graduation-cap';
+        case 'verificador': return 'user-check';
+        default: return 'user';
+      }
+    }
+
+    function seleccionarRol(role) {
+      // Cambiar el rol activo del usuario
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      userData.rolActual = role;
+      localStorage.setItem('userData', JSON.stringify(userData));
+      
+      cerrarModal('changeRoleModal');
+      
+      // Redirigir al dashboard apropiado
+      setTimeout(() => {
+        irAlDashboard();
+      }, 500);
+    }
+
+    function enviarSolicitudAcceso(event) {
+      event.preventDefault();
+      
+      const formData = new FormData(event.target);
+      const solicitud = {
+        url: window.location.href,
+        razon: formData.get('razon'),
+        urgencia: formData.get('urgencia'),
+        detalles: formData.get('detalles'),
+        timestamp: new Date().toISOString()
+      };
+      
+      // Aquí enviarías la solicitud al servidor
+      console.log('Enviando solicitud de acceso:', solicitud);
+      
+      // Simular envío exitoso
+      setTimeout(() => {
+        alert('Solicitud enviada exitosamente. Recibirás una respuesta por email.');
+        cerrarModal('requestAccessModal');
+      }, 1000);
+    }
+
+    function cerrarModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    // Cerrar modales al hacer clic en el overlay
+    document.getElementById('modalOverlay').addEventListener('click', function() {
+      document.querySelectorAll('.modal').forEach(modal => {
+        modal.style.display = 'none';
+      });
+      this.style.display = 'none';
+    });
+  </script>
+
+  <!-- CSS específico para la página 403 -->
+  <style>
+    .error-page.error-403 {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+      color: white;
+    }
+
+    .access-denied-animation {
+      position: relative;
+      margin: 2rem 0;
+    }
+
+    .shield-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .shield-main {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .access-waves {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .wave {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: accessDeniedWave 2s infinite;
+    }
+
+    .wave-1 {
+      width: 100px;
+      height: 100px;
+      margin-left: -50px;
+      margin-top: -50px;
+    }
+
+    .wave-2 {
+      width: 140px;
+      height: 140px;
+      margin-left: -70px;
+      margin-top: -70px;
+      animation-delay: 0.5s;
+    }
+
+    .wave-3 {
+      width: 180px;
+      height: 180px;
+      margin-left: -90px;
+      margin-top: -90px;
+      animation-delay: 1s;
+    }
+
+    @keyframes accessDeniedWave {
+      0% {
+        transform: scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .user-info-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .user-avatar img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      margin: 0.25rem;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .option-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1.5rem;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .option-card:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .option-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #f39c12;
+    }
+
+    .permissions-required {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .required-permission {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .permission-icon {
+      font-size: 2rem;
+      color: #f39c12;
+      margin-top: 0.5rem;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .role-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .role-permissions {
+      list-style: none;
+      padding: 0;
+      margin-top: 1rem;
+    }
+
+    .role-permissions li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .role-permissions li:before {
+      content: "✓";
+      color: #2ecc71;
+      margin-right: 0.5rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .error-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .options-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .roles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</body>
+</html>

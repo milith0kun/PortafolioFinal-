@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Panel de Administración - Sistema de Portafolio Docente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard Administrador - Sistema de Portafolio Docente UNSAAC">
+  <meta name="keywords" content="administrador, dashboard, gestión, portafolio docente, UNSAAC">
+  <meta name="author" content="UNSAAC">
+
+  <!-- CSS Principal -->
+  <link rel="stylesheet" href="../../assets/css/principal.css">
+
+  <!-- JavaScript -->
+  <script src="../../assets/js/nucleo/configuracion.js"></script>
+  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
+  <script src="../../assets/js/paginas/administrador/tablero.js" defer></script>
+  <script src="../../assets/js/paginas/administrador/arbol-portafolio-admin.js" defer></script>
+
+  <!-- Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body onload="verificarSesion('administrador')">
+  <!-- Header principal -->
+  <header class="main-header">
+    <div class="header-top">
+      <div class="header-top-container">
+        <div class="search-container">
+          <input type="text" class="search-input" placeholder="Buscar..." aria-label="Buscar">
+        </div>
+        <div class="header-actions">
+          <div class="social-icons">
+            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+          </div>
+          <div class="user-menu">
+            <div class="user-icon"><i class="fas fa-user-cog"></i></div>
+            <span class="user-name">Administrador</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-middle">
+      <div class="header-middle-container">
+        <div class="logo-container">
+          <div class="logo-img" alt="Logo UNSAAC">
+            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+          </div>
+          <div class="logo-text-container">
+            <span class="logo-title">Sistema de Portafolio</span>
+            <span class="logo-subtitle">Panel de Administración</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <div class="header-bottom-container">
+        <button class="menu-toggle" aria-label="Abrir menú"><i class="fas fa-bars"></i></button>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="tablero.html" class="active">Dashboard</a></li>
+            <li><a href="usuarios.html">Usuarios</a></li>
+            <li><a href="ciclos-academicos.html">Ciclos</a></li>
+            <li><a href="asignaturas.html">Asignaturas</a></li>
+            <li><a href="carga-excel.html">Carga Excel</a></li>
+            <li><a href="reportes.html">Reportes</a></li>
+            <li><a href="../compartidas/notificaciones.html">Notificaciones</a></li>
+            <li><a href="#" onclick="cerrarSesion()" class="boton-salir">Cerrar sesión</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main>
+    <!-- Control de Estado del Sistema -->
+    <section class="system-control-section">
+      <div class="control-header">
+        <h2><i class="fas fa-traffic-light"></i> Control del Sistema</h2>
+        <p>Gestione el estado y flujo del ciclo académico actual</p>
+      </div>
+      
+      <div class="system-status-card">
+        <div class="status-main">
+          <div class="status-indicator">
+            <div class="status-light" id="systemStatusLight"></div>
+            <div class="status-info">
+              <h3>Estado del Ciclo: <span id="systemStatusText">Configuración</span></h3>
+              <p id="systemStatusDescription">Sistema en preparación - Configure usuarios y asignaciones</p>
+            </div>
+          </div>
+          
+          <div class="status-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="systemProgress"></div>
+            </div>
+            <span class="progress-text">15% completado</span>
+          </div>
+        </div>
+
+        <!-- Controles de Estado -->
+        <div class="status-controls">
+          <div class="control-phases">
+            <div class="phase-item active" data-phase="configuracion">
+              <div class="phase-icon">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <span class="phase-label">Configuración</span>
+              <div class="phase-actions">
+                <button class="btn btn-sm btn-secondary" onclick="showPhaseDetails('configuracion')">
+                  Ver Detalles
+                </button>
+              </div>
+            </div>
+
+            <div class="phase-item" data-phase="subida_activa">
+              <div class="phase-icon">
+                <i class="fas fa-upload"></i>
+              </div>
+              <span class="phase-label">Subida Activa</span>
+              <div class="phase-actions">
+                <button class="btn btn-sm btn-success" onclick="activarFase('subida_activa')">
+                  Activar Subidas
+                </button>
+              </div>
+            </div>
+
+            <div class="phase-item" data-phase="verificacion">
+              <div class="phase-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <span class="phase-label">Verificación</span>
+              <div class="phase-actions">
+                <button class="btn btn-sm btn-warning" onclick="activarFase('verificacion')">
+                  Activar Verificación
+                </button>
+              </div>
+            </div>
+
+            <div class="phase-item" data-phase="cerrado">
+              <div class="phase-icon">
+                <i class="fas fa-archive"></i>
+              </div>
+              <span class="phase-label">Ciclo Cerrado</span>
+              <div class="phase-actions">
+                <button class="btn btn-sm btn-danger" onclick="cerrarCiclo()">
+                  Cerrar Ciclo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Métricas del Dashboard -->
+    <section class="dashboard-metrics">
+      <div class="metrics-grid">
+        <div class="metric-card users-metric">
+          <div class="metric-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="metric-info">
+            <h3>Usuarios Activos</h3>
+            <span class="metric-value" id="activeUsers">150</span>
+            <span class="metric-change positive">+5 este mes</span>
+          </div>
+          <div class="metric-action">
+            <a href="usuarios.html" class="btn btn-sm">Gestionar</a>
+          </div>
+        </div>
+
+        <div class="metric-card documents-metric">
+          <div class="metric-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="metric-info">
+            <h3>Documentos Totales</h3>
+            <span class="metric-value" id="totalDocuments">2,847</span>
+            <span class="metric-change positive">+156 esta semana</span>
+          </div>
+          <div class="metric-action">
+            <a href="reportes.html" class="btn btn-sm">Ver Reporte</a>
+          </div>
+        </div>
+
+        <div class="metric-card verification-metric">
+          <div class="metric-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="metric-info">
+            <h3>Verificaciones Pendientes</h3>
+            <span class="metric-value" id="pendingVerifications">23</span>
+            <span class="metric-change neutral">Sin cambios</span>
+          </div>
+          <div class="metric-action">
+            <a href="../verificador/tablero.html" class="btn btn-sm">Revisar</a>
+          </div>
+        </div>
+
+        <div class="metric-card subjects-metric">
+          <div class="metric-icon">
+            <i class="fas fa-book"></i>
+          </div>
+          <div class="metric-info">
+            <h3>Asignaturas Activas</h3>
+            <span class="metric-value" id="activeSubjects">45</span>
+            <span class="metric-change positive">+3 nuevas</span>
+          </div>
+          <div class="metric-action">
+            <a href="asignaturas.html" class="btn btn-sm">Gestionar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Árbol de portafolios -->
+    <section id="explorador-archivos">
+      <h2>Gestión de Portafolios por Semestre</h2>
+      <div id="arbol-portafolio">Cargando estructura...</div>
+    </section>
+
+    <!-- Acciones rápidas -->
+    <section id="acciones-rapidas">
+      <h2>Acciones Rápidas</h2>
+      <div class="acciones">
+        <button onclick="location.href='usuarios.html'" class="btn btn-primary">
+          <i class="fas fa-user-plus"></i> Crear Usuario
+        </button>
+        <button onclick="location.href='reportes.html'" class="btn btn-secondary">
+          <i class="fas fa-file-pdf"></i> Generar Reporte PDF
+        </button>
+        <button onclick="location.href='../compartidas/notificaciones.html'" class="btn btn-info">
+          <i class="fas fa-bell"></i> Enviar Notificación
+        </button>
+        <button onclick="location.href='carga-excel.html'" class="btn btn-success">
+          <i class="fas fa-file-excel"></i> Cargar Excel Académico
+        </button>
+      </div>
+    </section>
+
+    <!-- Actividad reciente -->
+    <section class="recent-activity">
+      <h2><i class="fas fa-history"></i> Actividad Reciente</h2>
+      <div class="activity-list" id="activityList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Alertas del sistema -->
+    <section class="system-alerts">
+      <h2><i class="fas fa-exclamation-triangle"></i> Alertas del Sistema</h2>
+      <div class="alerts-list" id="alertsList">
+        <!-- Se cargará dinámicamente -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-info">
+        <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Términos y Condiciones</a>
+        <a href="#">Política de Privacidad</a>
+        <a href="../compartidas/ayuda.html">Ayuda</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

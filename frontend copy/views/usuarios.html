@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestión de Usuarios - Panel de Administración</title>
+  <link rel="stylesheet" href="../css/usuarios.css" />
+  <script src="../js/config.js"></script>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/usuarios.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Enlace al archivo CSS principal -->
+  <link rel="stylesheet" href="../css/main.css">
+  <!-- Enlace a Font Awesome para iconos -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body onload="verificarSesion('administrador')">
+
+
+  <!-- Header principal -->
+  <header class="main-header">
+    <!-- Sección superior del header -->
+    <div class="header-top">
+        <div class="header-top-container">
+            <!-- Barra de búsqueda -->
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Buscar...">
+            </div>
+            
+            <!-- Acciones de usuario y redes sociales -->
+            <div class="header-actions">
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name">Entrar</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección central con logo -->
+    <div class="header-middle">
+        <div class="header-middle-container">
+            <div class="logo-container">
+                <div class="logo-img"></div>
+                <div class="logo-text-container">
+                    <span class="logo-title">Sistema de Portafolio</span>
+                    <span class="logo-subtitle">Docente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sección inferior con navegación -->
+    <div class="header-bottom">
+        <div class="header-bottom-container">
+            <button class="menu-toggle" aria-label="Abrir menú">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="pages/documentos.html">Documentos</a></li>
+                    <li><a href="pages/verificacion.html">Verificación</a></li>
+                    <li><a href="pages/reportes.html">Reportes</a></li>
+                    <li><a href="pages/ayuda.html">Ayuda</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+
+  <header>
+    <h1>Gestión de Usuarios</h1>
+    <nav>
+      <a href="dashboard.html">← Volver al Dashboard</a>
+      <button onclick="cerrarSesion()">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Registrar Nuevo Usuario</h2>
+      <form id="form-usuario" onsubmit="crearUsuario(event)">
+        <input type="text" id="nombres" placeholder="Nombres" required />
+        <input type="text" id="apellidos" placeholder="Apellidos" required />
+        <input type="email" id="correo" placeholder="Correo institucional" required />
+        <input type="password" id="contrasena" placeholder="Contraseña" required />
+        <select id="rol" required>
+          <option value="">Seleccionar Rol</option>
+          <option value="administrador">Administrador</option>
+          <option value="docente">Docente</option>
+          <option value="verificador">Verificador</option>
+        </select>
+        <button type="submit">Registrar Usuario</button>
+        <p id="mensaje" class="mensaje"></p>
+      </form>
+    </section>
+
+    <section>
+      <h2>Usuarios Registrados</h2>
+      <div id="lista-usuarios">Cargando usuarios...</div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-info">
+            <p>&copy; 2025 Sistema de Portafolio Docente. Todos los derechos reservados.</p>
+        </div>
+        
+        <div class="footer-links">
+            <a href="#">Términos y Condiciones</a>
+            <a href="#">Política de Privacidad</a>
+            <a href="#">Ayuda</a>
+        </div>
+    </div>
+  </footer>
+</body>
+</html>
