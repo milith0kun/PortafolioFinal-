@@ -24,7 +24,7 @@
  * CRUD completo de asignaturas del sistema
  */
 
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 
 /**
  * 📋 Listar asignaturas con filtros y paginación

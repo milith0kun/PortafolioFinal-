@@ -23,8 +23,7 @@
  * Maneja información de sesión actual y perfil del usuario
  */
 
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
-
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 /**
  * 👤 Obtener perfil del usuario actual
  */

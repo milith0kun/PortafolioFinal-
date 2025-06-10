@@ -24,7 +24,7 @@
  * Gestión de perfiles personales y información adicional
  */
 
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 
 /**
  * 👤 Obtener mi perfil completo

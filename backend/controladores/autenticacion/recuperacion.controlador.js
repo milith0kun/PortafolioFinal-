@@ -25,8 +25,7 @@
 
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
-
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 /**
  * 📧 Solicitar recuperación de contraseña
  */

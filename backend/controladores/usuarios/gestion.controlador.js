@@ -28,7 +28,7 @@
  */
 
 const bcrypt = require('bcryptjs');
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 
 /**
  * 📋 Listar usuarios con filtros y paginación

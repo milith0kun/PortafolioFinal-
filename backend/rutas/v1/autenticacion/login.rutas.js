@@ -1,42 +1,23 @@
 /**
  * 🔐 RUTAS DE LOGIN Y AUTENTICACIÓN
  * 
- * Define endpoints para autenticación de usuarios:
- * 
- * POST /api/v1/auth/login
- * - Autenticar usuario con email/password
- * - Generar token JWT
- * - Registrar sesión activa
- * 
- * POST /api/v1/auth/logout
- * - Cerrar sesión actual
- * - Invalidar token
- * - Limpiar datos de sesión
- * 
- * POST /api/v1/auth/refresh
- * - Renovar token expirado
- * - Validar refresh token
- * - Generar nuevo par de tokens
- */
-
-// TODO: Definir rutas con express.Router()
-// TODO: Aplicar middlewares de validación
-// TODO: Conectar con controladores correspondientes
-// TODO: Configurar rate limiting específico
-// TODO: Documentar endpoints con JSDoc
-/**
- * 🔐 RUTAS LOGIN - Sistema Portafolio Docente UNSAAC
- * Rutas para autenticación básica
+ * Rutas disponibles:
+ * POST /api/v1/auth/login     - Autenticación de usuario
+ * POST /api/v1/auth/logout    - Cerrar sesión
+ * GET  /api/v1/auth/verificar - Verificar validez del token
  */
 
 const express = require('express');
 const router = express.Router();
 
+// Importar controlador de autenticación
 const loginController = require('../../../controladores/autenticacion/login.controlador');
-const { verificarToken } = require('../../../middleware/autenticacion/jwt.middleware');
+
+// Importar middleware de verificación JWT
+const { verificarJWT } = require('../../../middleware/autenticacion/jwt.middleware');
 
 // ============================================
-// RUTAS PÚBLICAS (sin autenticación)
+// RUTAS PÚBLICAS
 // ============================================
 
 /**
@@ -52,13 +33,17 @@ router.post('/login', loginController.login);
 router.post('/logout', loginController.logout);
 
 // ============================================
-// RUTAS PROTEGIDAS (requieren autenticación)
+// RUTAS PROTEGIDAS
 // ============================================
 
 /**
  * GET /api/v1/auth/verificar
  * Verificar validez del token
  */
-router.get('/verificar', verificarToken, loginController.verificarToken);
+router.get('/verificar', verificarJWT, loginController.verificarToken);
+
+// ============================================
+// EXPORTAR
+// ============================================
 
 module.exports = router;

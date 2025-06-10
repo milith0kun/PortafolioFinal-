@@ -1,69 +1,49 @@
 /**
- * 🔑 RUTAS DE RECUPERACIÓN DE CONTRASEÑA
+ * 🔑 RUTAS DE RECUPERACIÓN DE CONTRASEÑAS
  * 
- * Gestiona el proceso de recuperación de contraseñas:
- * 
- * POST /api/v1/auth/forgot-password
- * - Solicitar recuperación por email
- * - Generar token de recuperación
- * - Enviar email con enlace
- * 
- * POST /api/v1/auth/reset-password
- * - Verificar token de recuperación
- * - Establecer nueva contraseña
- * - Invalidar token usado
- * 
- * GET /api/v1/auth/verify-reset-token/:token
- * - Verificar validez del token
- * - Retornar estado del token
- */
-
-// TODO: Validación de email para recuperación
-// TODO: Rate limiting estricto para prevenir abuso
-// TODO: Tokens con expiración corta
-// TODO: Logs de seguridad para recuperaciones
-// TODO: Notificación de cambio exitoso
-/**
- * 🔑 RUTAS RECUPERACIÓN - Sistema Portafolio Docente UNSAAC
- * Rutas para recuperación de contraseñas
+ * Rutas disponibles:
+ * POST /api/v1/auth/forgot-password      - Solicitar recuperación
+ * GET  /api/v1/auth/verify-token/:token  - Verificar token de recuperación
+ * POST /api/v1/auth/reset-password       - Restablecer contraseña
+ * POST /api/v1/auth/change-password      - Cambiar contraseña (requiere login)
  */
 
 const express = require('express');
 const router = express.Router();
 
 const recuperacionController = require('../../../controladores/autenticacion/recuperacion.controlador');
-const { verificarToken } = require('../../../middleware/autenticacion/jwt.middleware');
+const { verificarJWT } = require('../../../middleware/autenticacion/jwt.middleware');
 
 // ============================================
-// RUTAS PÚBLICAS (sin autenticación)
+// RUTAS PÚBLICAS
 // ============================================
 
 /**
- * POST /api/v1/auth/solicitar-recuperacion
  * Solicitar recuperación de contraseña
  */
-router.post('/solicitar-recuperacion', recuperacionController.solicitarRecuperacion);
+router.post('/forgot-password', recuperacionController.solicitarRecuperacion);
 
 /**
- * GET /api/v1/auth/verificar-token/:token
  * Verificar token de recuperación
  */
-router.get('/verificar-token/:token', recuperacionController.verificarTokenRecuperacion);
+router.get('/verify-token/:token', recuperacionController.verificarTokenRecuperacion);
 
 /**
- * POST /api/v1/auth/restablecer-contrasena
- * Restablecer contraseña con token
+ * Restablecer contraseña usando token
  */
-router.post('/restablecer-contrasena', recuperacionController.restablecerContrasena);
+router.post('/reset-password', recuperacionController.restablecerContrasena);
 
 // ============================================
-// RUTAS PROTEGIDAS (requieren autenticación)
+// RUTAS PROTEGIDAS
 // ============================================
 
 /**
- * POST /api/v1/auth/cambiar-contrasena
- * Cambiar contraseña (usuario autenticado)
+ * Cambiar contraseña actual (requiere login)
  */
-router.post('/cambiar-contrasena', verificarToken, recuperacionController.cambiarContrasena);
+router.post('/change-password', verificarJWT, recuperacionController.cambiarContrasena);
+
+// ============================================
+// EXPORTAR RUTAS
+// ============================================
 
 module.exports = router;

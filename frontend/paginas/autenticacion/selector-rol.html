@@ -10,171 +10,298 @@
 
   <!-- CSS Principal -->
   <link rel="stylesheet" href="../../assets/css/principal.css">
+  <link rel="stylesheet" href="../../assets/css/paginas/autenticacion/selector-rol.css">
   
-  <!-- JavaScript -->
-  <script src="../../assets/js/nucleo/configuracion.js"></script>
-  <script src="../../assets/js/nucleo/autenticacion.js" defer></script>
-  <script src="../../assets/js/paginas/autenticacion/selector-rol.js" defer></script>
-
   <!-- Font Awesome para iconos -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Bootstrap CSS (si no está en principal.css) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body onload="verificarAutenticacion()">
-  <!-- Header principal -->
-  <header class="main-header">
-    <!-- Sección superior -->
-    <div class="header-top">
-      <div class="header-top-container">
-        <!-- Búsqueda -->
-        <div class="search-container">
-          <input type="text" class="search-input" placeholder="Buscar..." readonly>
-        </div>
+<body>
+  <!-- Spinner de carga inicial -->
+  <div id="contenedor-carga" class="loading-container">
+    <div class="loading-content">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+      <p class="mt-3">Verificando autenticación...</p>
+    </div>
+  </div>
 
-        <!-- Redes y usuario -->
-        <div class="header-actions">
-          <div class="social-icons">
-            <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
-            <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+  <!-- Contenedor de error -->
+  <div id="contenedor-error" class="d-none">
+    <!-- El contenido de error se generará dinámicamente -->
+  </div>
+
+  <!-- Contenedor principal -->
+  <div id="contenedor-selector-rol" class="d-none">
+    <!-- Header principal -->
+    <header class="main-header">
+      <!-- Sección superior -->
+      <div class="header-top">
+        <div class="header-top-container">
+          <!-- Búsqueda (deshabilitada) -->
+          <div class="search-container">
+            <input type="text" class="search-input" placeholder="Seleccione su rol..." readonly disabled>
           </div>
 
-          <div class="user-menu">
-            <div class="user-icon"><i class="fas fa-user-check"></i></div>
-            <span class="user-name" id="userName">Usuario Autenticado</span>
+          <!-- Redes y usuario -->
+          <div class="header-actions">
+            <div class="social-icons">
+              <a href="https://www.facebook.com/unsaac.oficial" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://twitter.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/unsaac_oficial" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.youtube.com/channel/UCunsaac" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+
+            <div class="user-menu">
+              <div class="user-icon"><i class="fas fa-user-check"></i></div>
+              <span class="user-name">Seleccionar Rol</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Logo -->
-    <div class="header-middle">
-      <div class="header-middle-container">
-        <div class="logo-container">
-          <div class="logo-img">
-            <img src="../../assets/imagenes/logos/logo-unsaac.png" alt="Logo UNSAAC">
+      <!-- Logo -->
+      <div class="header-middle">
+        <div class="header-middle-container">
+          <div class="logo-container">
+            <div class="logo-img"></div>
+            <div class="logo-text-container">
+              <span class="logo-title">Sistema de Portafolio</span>
+              <span class="logo-subtitle">Docente UNSAAC</span>
+            </div>
           </div>
-          <div class="logo-text-container">
-            <span class="logo-title">Sistema de Portafolio</span>
-            <span class="logo-subtitle">Docente UNSAAC</span>
-          </div>
-        </div>
 
-        <!-- Información del usuario -->
-        <div class="header-info">
-          <div class="user-info">
-            <span class="welcome-text">Bienvenido(a)</span>
-            <span class="user-full-name" id="userFullName">Cargando...</span>
+          <!-- Información del usuario -->
+          <div class="header-info">
+            <div class="user-info">
+              <span class="welcome-text">Bienvenido(a)</span>
+              <span id="nombre-usuario" class="user-full-name">Cargando...</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Menú de navegación -->
-    <div class="header-bottom">
-      <div class="header-bottom-container">
-        <button class="menu-toggle" aria-label="Abrir menú">
-          <i class="fas fa-bars"></i>
-        </button>
+      <!-- Menú de navegación -->
+      <div class="header-bottom">
+        <div class="header-bottom-container">
+          <button class="menu-toggle" aria-label="Abrir menú">
+            <i class="fas fa-bars"></i>
+          </button>
 
-        <nav class="main-nav">
-          <ul class="nav-list">
-            <li><a href="../../index.html">Inicio</a></li>
-            <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
-            <li><a href="#" onclick="cerrarSesion()" class="logout-link">Cerrar Sesión</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <!-- Contenido principal -->
-  <main class="main-content">
-    <div class="role-selector-container">
-      <!-- Encabezado -->
-      <div class="selector-header">
-        <div class="header-icon">
-          <i class="fas fa-users-cog"></i>
+          <nav class="main-nav">
+            <ul class="nav-list">
+              <li><a href="../../index.html">Inicio</a></li>
+              <li><a href="../compartidas/ayuda.html">Ayuda</a></li>
+              <li><a href="#" id="btn-cerrar-sesion" class="logout-link">Cerrar Sesión</a></li>
+            </ul>
+          </nav>
         </div>
-        <h1>Seleccionar Rol de Trabajo</h1>
-        <p class="header-description">
-          Su cuenta tiene asignados múltiples roles. Seleccione el rol con el que desea trabajar en esta sesión.
-        </p>
+      </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <div class="container py-5">
         
+        <!-- Alerta de error -->
+        <div id="alerta-error" class="alert alert-danger d-none" role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          <span id="texto-error"></span>
+        </div>
+
+        <!-- Encabezado del selector -->
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8 text-center">
+            <div class="selector-header">
+              <div class="header-icon mb-3">
+                <i class="fas fa-users-cog fa-4x text-primary"></i>
+              </div>
+              <h1 class="mb-3">Seleccionar Rol de Trabajo</h1>
+              <p class="lead text-muted">
+                Su cuenta tiene asignados múltiples roles. Seleccione el rol con el que desea trabajar en esta sesión.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- Información del usuario -->
-        <div class="user-card">
-          <div class="user-avatar">
-            <img id="userAvatar" src="../../assets/imagenes/avatares/default-avatar.png" alt="Avatar">
-          </div>
-          <div class="user-details">
-            <h3 id="userNameDisplay">Cargando usuario...</h3>
-            <p id="userEmail">correo@unsaac.edu.pe</p>
-            <span class="user-status active">
-              <i class="fas fa-circle"></i> Sesión activa
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Selector de roles -->
-      <div class="roles-grid" id="rolesGrid">
-        <!-- Los roles se cargarán dinámicamente -->
-        <div class="loading-roles">
-          <i class="fas fa-spinner fa-spin"></i>
-          <p>Cargando roles disponibles...</p>
-        </div>
-      </div>
-
-      <!-- Información adicional -->
-      <div class="selector-info">
-        <div class="info-card">
-          <h3><i class="fas fa-info-circle"></i> Información Importante</h3>
-          <ul class="info-list">
-            <li><strong>Cambio de rol:</strong> Puede cambiar de rol en cualquier momento desde su dashboard.</li>
-            <li><strong>Sesión:</strong> Su sesión se mantendrá activa independientemente del rol seleccionado.</li>
-            <li><strong>Permisos:</strong> Cada rol tiene acceso a funcionalidades específicas del sistema.</li>
-            <li><strong>Notificaciones:</strong> Recibirá notificaciones relacionadas con todos sus roles asignados.</li>
-          </ul>
-        </div>
-
-        <!-- Historial de accesos recientes -->
-        <div class="recent-access">
-          <h3><i class="fas fa-history"></i> Accesos Recientes</h3>
-          <div id="recentAccess" class="access-list">
-            <!-- Se cargará dinámicamente -->
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-6">
+            <div class="card user-info-card">
+              <div class="card-body text-center">
+                <div id="avatar-usuario" class="user-avatar mb-3">
+                  <!-- Avatar se generará dinámicamente -->
+                </div>
+                <h4 id="nombre-usuario-card" class="card-title">Cargando usuario...</h4>
+                <p id="correo-usuario" class="card-text text-muted">correo@unsaac.edu.pe</p>
+                <span class="badge bg-success">
+                  <i class="fas fa-circle me-1"></i> Sesión activa
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Acciones adicionales -->
-      <div class="selector-actions">
-        <button onclick="showUserProfile()" class="btn btn-secondary">
-          <i class="fas fa-user-edit"></i> Ver Perfil
-        </button>
-        <button onclick="showHelp()" class="btn btn-secondary">
-          <i class="fas fa-question-circle"></i> Ayuda
-        </button>
-        <button onclick="cerrarSesion()" class="btn btn-outline">
-          <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-        </button>
-      </div>
-    </div>
-  </main>
+        <!-- Selector de roles -->
+        <div class="row justify-content-center mb-5">
+          <div class="col-12">
+            <h3 class="text-center mb-4">Roles Disponibles</h3>
+            <div id="lista-roles" class="row justify-content-center">
+              <!-- Los roles se cargarán dinámicamente -->
+              <div class="col-12 text-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando roles...</span>
+                </div>
+                <p class="mt-3">Cargando roles disponibles...</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <!-- Footer -->
-  <footer class="main-footer">
-    <div class="footer-container">
-      <div class="footer-info">
-        <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
-      </div>
+        <!-- Información del rol seleccionado -->
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8">
+            <div id="info-rol-seleccionado" class="card d-none">
+              <div class="card-header">
+                <h5 id="titulo-rol-seleccionado" class="card-title mb-0">
+                  <i class="fas fa-info-circle me-2"></i>
+                  Información del Rol
+                </h5>
+              </div>
+              <div class="card-body">
+                <p id="descripcion-rol-seleccionado" class="card-text">
+                  Seleccione un rol para ver información detallada.
+                </p>
+                
+                <h6 class="mt-4 mb-3">Permisos y Funcionalidades:</h6>
+                <ul id="permisos-rol-seleccionado" class="list-group list-group-flush">
+                  <!-- Permisos se cargarán dinámicamente -->
+                </ul>
+              </div>
+              <div class="card-footer text-center">
+                <button id="btn-continuar" class="btn btn-primary btn-lg d-none" disabled>
+                  <i class="fas fa-arrow-right me-2"></i>
+                  Continuar con este Rol
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="footer-links">
-        <a href="#">Términos y Condiciones</a>
-        <a href="#">Política de Privacidad</a>
-        <a href="../compartidas/ayuda.html">Ayuda</a>
+        <!-- Información adicional -->
+        <div class="row justify-content-center">
+          <div class="col-lg-10">
+            <div class="row">
+              <!-- Información importante -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">
+                      <i class="fas fa-info-circle me-2 text-info"></i>
+                      Información Importante
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li class="mb-2">
+                        <i class="fas fa-sync-alt me-2 text-primary"></i>
+                        <strong>Cambio de rol:</strong> Puede cambiar de rol en cualquier momento desde su dashboard.
+                      </li>
+                      <li class="mb-2">
+                        <i class="fas fa-clock me-2 text-success"></i>
+                        <strong>Sesión:</strong> Su sesión se mantendrá activa independientemente del rol seleccionado.
+                      </li>
+                      <li class="mb-2">
+                        <i class="fas fa-shield-alt me-2 text-warning"></i>
+                        <strong>Permisos:</strong> Cada rol tiene acceso a funcionalidades específicas del sistema.
+                      </li>
+                      <li>
+                        <i class="fas fa-bell me-2 text-info"></i>
+                        <strong>Notificaciones:</strong> Recibirá notificaciones de todos sus roles asignados.
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Accesos rápidos -->
+              <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="card-title mb-0">
+                      <i class="fas fa-external-link-alt me-2 text-success"></i>
+                      Accesos Rápidos
+                    </h5>
+                  </div>
+                  <div class="card-body">
+                    <div class="d-grid gap-2">
+                      <button type="button" class="btn btn-outline-primary btn-sm">
+                        <i class="fas fa-user-edit me-2"></i>
+                        Ver Mi Perfil
+                      </button>
+                      <button type="button" class="btn btn-outline-info btn-sm">
+                        <i class="fas fa-question-circle me-2"></i>
+                        Centro de Ayuda
+                      </button>
+                      <button type="button" class="btn btn-outline-secondary btn-sm">
+                        <i class="fas fa-keyboard me-2"></i>
+                        Atajos de Teclado
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones adicionales -->
+        <div class="row justify-content-center mt-4">
+          <div class="col-lg-6 text-center">
+            <div class="d-flex gap-2 justify-content-center flex-wrap">
+              <button id="btn-volver" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Volver
+              </button>
+              <button class="btn btn-outline-danger">
+                <i class="fas fa-sign-out-alt me-2"></i>
+                Cerrar Sesión
+              </button>
+            </div>
+            
+            <!-- Atajos de teclado -->
+            <div class="mt-3">
+              <small class="text-muted">
+                <i class="fas fa-keyboard me-1"></i>
+                Atajos: 1-3 (seleccionar rol), Enter (confirmar), Esc (cerrar sesión)
+              </small>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
-  </footer>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+      <div class="footer-container">
+        <div class="footer-info">
+          <p>&copy; 2025 Universidad Nacional de San Antonio Abad del Cusco. Todos los derechos reservados.</p>
+        </div>
+        <div class="footer-links">
+          <a href="#">Términos y Condiciones</a>
+          <a href="#">Política de Privacidad</a>
+          <a href="../compartidas/ayuda.html">Ayuda</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts principales -->
+  <script src="../../assets/js/principal.js"></script>
 </body>
 </html>

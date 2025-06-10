@@ -23,7 +23,7 @@
  * Gestión de asignaciones docente ↔ asignatura
  */
 
-const { ejecutarConsulta } = require('../../base_datos/conexiones/mysql.conexion');
+const { ejecutarConsulta } = require('../../base_datos/conexiones/pool.conexion');
 
 /**
  * ➕ Asignar docente a asignatura

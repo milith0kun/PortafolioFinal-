@@ -1,72 +1,33 @@
 /**
- * 👤 RUTAS DE GESTIÓN DE SESIÓN
+ * 👤 RUTAS DE SESIÓN Y PERFIL
  * 
- * Maneja información de sesión del usuario actual:
- * 
- * GET /api/v1/auth/me
- * - Obtener información del usuario autenticado
- * - Incluir roles y permisos actuales
- * - Estado de la sesión
- * 
- * PUT /api/v1/auth/change-role
- * - Cambiar rol activo (si tiene múltiples)
- * - Regenerar token con nuevo rol
- * - Actualizar permisos
- * 
- * GET /api/v1/auth/permissions
- * - Obtener permisos del rol activo
- * - Lista de recursos accesibles
- * - Matriz de permisos actual
- */
-
-// TODO: Middleware de autenticación JWT requerido
-// TODO: Serialización consistente de datos de usuario
-// TODO: Cache de permisos para performance
-// TODO: Logs de cambios de rol
-// TODO: Validación de disponibilidad de rol
-/**
- * 👤 RUTAS SESIÓN - Sistema Portafolio Docente UNSAAC
- * Rutas para gestión de sesión actual
+ * Rutas:
+ * GET  /api/v1/auth/me               - Obtener perfil del usuario autenticado
+ * PUT  /api/v1/auth/me               - Actualizar perfil del usuario autenticado
+ * GET  /api/v1/auth/estadisticas     - Obtener estadísticas de sesión
+ * PUT  /api/v1/auth/change-role      - Cambiar rol activo
+ * GET  /api/v1/auth/historial        - Ver historial de accesos
  */
 
 const express = require('express');
 const router = express.Router();
 
 const sesionController = require('../../../controladores/autenticacion/sesion.controlador');
-const { verificarToken } = require('../../../middleware/autenticacion/jwt.middleware');
+const { verificarJWT } = require('../../../middleware/autenticacion/jwt.middleware');
 
-// ============================================
-// RUTAS PROTEGIDAS (requieren autenticación)
-// ============================================
+// ✅ Obtener perfil del usuario autenticado
+router.get('/me', verificarJWT, sesionController.obtenerPerfil);
 
-/**
- * GET /api/v1/auth/perfil
- * Obtener perfil del usuario actual
- */
-router.get('/perfil', verificarToken, sesionController.obtenerPerfil);
+// ✅ Actualizar perfil del usuario autenticado
+router.put('/me', verificarJWT, sesionController.actualizarPerfil);
 
-/**
- * PUT /api/v1/auth/perfil
- * Actualizar perfil del usuario actual
- */
-router.put('/perfil', verificarToken, sesionController.actualizarPerfil);
+// ✅ Obtener estadísticas de la sesión actual
+router.get('/estadisticas', verificarJWT, sesionController.obtenerEstadisticasSesion);
 
-/**
- * GET /api/v1/auth/estadisticas
- * Obtener estadísticas de sesión
- */
-router.get('/estadisticas', verificarToken, sesionController.obtenerEstadisticasSesion);
+// ✅ Cambiar el rol activo del usuario (si tiene varios)
+router.put('/change-role', verificarJWT, sesionController.cambiarRolActivo);
 
-/**
- * POST /api/v1/auth/cambiar-rol
- * Cambiar rol activo (para usuarios multi-rol)
- */
-router.post('/cambiar-rol', verificarToken, sesionController.cambiarRolActivo);
-
-/**
- * GET /api/v1/auth/historial-accesos
- * Obtener historial de accesos
- */
-router.get('/historial-accesos', verificarToken, sesionController.obtenerHistorialAccesos);
+// ✅ Obtener historial de accesos (último acceso, etc.)
+router.get('/historial', verificarJWT, sesionController.obtenerHistorialAccesos);
 
 module.exports = router;
